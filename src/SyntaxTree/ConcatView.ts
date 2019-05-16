@@ -2,7 +2,7 @@ import { CompositeView } from './CompositeView';
 import { View } from './View';
 import { moveElement } from './Utils';
 
-export class ConcatView implements CompositeView {
+export class ConcatView implements CompositeView<View> {
   concat: View[];
   orient: 'h' | 'v';
 
@@ -15,11 +15,11 @@ export class ConcatView implements CompositeView {
     return { [this.orient + 'concat']: this.concat.map(l => l.export()) };
   }
 
-  append(view: View) {
+  append(view: View, _option: any) {
     this.concat.push(view);
   }
 
-  prepend(view: View) {
+  prepend(view: View, _option: any) {
     this.concat.unshift(view);
   }
 
@@ -28,7 +28,7 @@ export class ConcatView implements CompositeView {
     return true;
   }
 
-  rearrange(from: number, to: number) {
+  rearrange(from: number, to: number, _option: any) {
     moveElement(this.concat, from, to);
   }
 }
