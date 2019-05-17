@@ -1,17 +1,16 @@
-import { CompositeView } from './CompositeView';
-import { View } from './View';
+import { View, CompositeView } from './View';
 import { moveElement } from './Utils';
 
 export class RepeatView implements CompositeView<string> {
-  repeatInfo: RepeatInfo;
-  view: View;
+  private repeatInfo: RepeatInfo;
+  private view: View;
 
-  constructor(view: View, rowChannel: string | undefined, columnChannel: string | undefined) {
+  public constructor(view: View, rowChannel: string | undefined, columnChannel: string | undefined) {
     this.repeatInfo = new RepeatInfo([], [], rowChannel, columnChannel);
     this.view = view;
   }
 
-  export() {
+  public export() {
     return {
       repeat: {
         ...(this.repeatInfo.isRepeating('row') ? { row: this.repeatInfo.row } : {}),
@@ -21,24 +20,24 @@ export class RepeatView implements CompositeView<string> {
     };
   }
 
-  append(view: string, option: 'row' | 'column') {
+  public append(field: string, option: 'row' | 'column') {
     if (this.repeatInfo.isRepeating(option)) {
-      this.repeatInfo[option].push(view);
+      this.repeatInfo[option].push(field);
     }
   }
 
-  prepend(view: string, option: 'row' | 'column') {
+  public prepend(field: string, option: 'row' | 'column') {
     if (this.repeatInfo.isRepeating(option)) {
-      this.repeatInfo[option].unshift(view);
+      this.repeatInfo[option].unshift(field);
     }
   }
 
-  isCompatible(_view: View): boolean {
+  public isCompatible(_view: View): boolean {
     // repeat is always compatible
     return true;
   }
 
-  rearrange(from: number, to: number, option: 'row' | 'column') {
+  public rearrange(from: number, to: number, option: 'row' | 'column') {
     if (this.repeatInfo.isRepeating(option)) {
       moveElement(this.repeatInfo[option], from, to);
     }
@@ -46,19 +45,19 @@ export class RepeatView implements CompositeView<string> {
 }
 
 class RepeatInfo {
-  row: string[];
-  column: string[];
-  rowChannel: string | undefined;
-  columnChannel: string | undefined;
+  public row: string[];
+  public column: string[];
+  public rowChannel: string | undefined;
+  public columnChannel: string | undefined;
 
-  constructor(row: string[], column: string[], rowChannel: string | undefined, columnChannel: string | undefined) {
+  public constructor(row: string[], column: string[], rowChannel: string | undefined, columnChannel: string | undefined) {
     this.row = rowChannel ? row : [];
     this.column = columnChannel ? column : [];
     this.rowChannel = rowChannel;
     this.columnChannel = columnChannel;
   }
 
-  isRepeating(option: 'row' | 'column'): boolean {
+  public isRepeating(option: 'row' | 'column'): boolean {
     return !!(<any>this)[`${option}Channel`];
   }
 }
