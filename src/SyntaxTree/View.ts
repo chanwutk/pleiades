@@ -1,6 +1,7 @@
 export interface View {
   /**
    * export Vega-Lite spec in vl.json format
+   * @returns exported Vega-Lite spec
    */
   export: () => object;
 }
@@ -8,11 +9,13 @@ export interface View {
 /**
  * An indicator for a view in CompositView.
  * Concat and Layer need a View to indicate the appearance of the view,
- * while Facet and Repeat only need a string that specify a field to indicate
+ * while Repeat only need a string that specify a field to indicate
  * the appearance of the view.
+ * Facet only need a field name for each axis to specify facet property, so
+ * it should not have a parameter. Thus, we use null.
  * TODO: explain this better!
  */
-type ViewIndocator = View | string;
+type ViewIndocator = View | string | null;
 
 export interface CompositeView<V extends ViewIndocator> extends View {
   /**
