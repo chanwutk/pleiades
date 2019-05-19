@@ -20,6 +20,16 @@ export class RepeatView implements CompositeView<string> {
     };
   }
 
+  /**
+   * Add a repeating axis
+   * @param channel encoding channel for the axis to be repeated
+   * @param orient orient of the added axis
+   */
+  public addAxis(channel: string, orient: 'row' | 'column') {
+    this.repeatInfo[orient] = [];
+    (<any>this.repeatInfo)[`${orient}Channel`] = channel;
+  }
+
   public append(field: string, option: 'row' | 'column') {
     if (this.repeatInfo.isRepeating(option)) {
       this.repeatInfo[option].push(field);
@@ -44,6 +54,9 @@ export class RepeatView implements CompositeView<string> {
   }
 }
 
+/**
+ * This class contains information for repeat
+ */
 class RepeatInfo {
   public row: string[];
   public column: string[];
@@ -57,13 +70,38 @@ class RepeatInfo {
     this.columnChannel = columnChannel;
   }
 
-  public isRepeating(option: 'row' | 'column'): boolean {
-    return !!(<any>this)[`${option}Channel`];
+
+  /**
+   * Add an orient to repeat `channel`
+   * @param orient an orient to be added
+   * @param channel the encoding channel the orient is repeating
+   */
+  public repeat(orient: 'row' | 'column', channel: string) {
+    if (!this.isRepeating(orient)) {
+      this[orient] = [];
+      (<any>this)[`${orient}Channel`] = channel;
+    }
+  }
+
+  /**
+   * Check if repeating the `axis`
+   * @param orient orient to be checked if repeating
+   */
+  public isRepeating(orient: 'row' | 'column'): boolean {
+    return !!(<any>this)[`${orient}Channel`];
   }
 }
 
+/**
+ * list of keys for nested spec
+ */
 const nestedTypes = ['layer', 'concat', 'hconcat', 'vconcat', 'spec'];
 
+/**
+ * Apply repeat information `repeat` to `spec`
+ * @param spec the spec the repeat information `repeat` to be applied
+ * @param repeat the repeat information to apply to `spec`
+ */
 function applyRepeat(spec: any, repeat: RepeatInfo) {
   let nestedType: string | undefined = undefined;
   nestedTypes.forEach(type => {
@@ -83,6 +121,11 @@ function applyRepeat(spec: any, repeat: RepeatInfo) {
   return output;
 }
 
+/**
+ * Apply repeat information `repeat` to `encoding`
+ * @param encoding the encoding repeat information `repeat` to be applied
+ * @param repeat the repeat information applying
+ */
 function applyRepeatToEncoding(encoding: any, repeat: RepeatInfo) {
   if (repeat.rowChannel && encoding[repeat.rowChannel]) {
     encoding[repeat.rowChannel].field = { repeat: 'row' };
