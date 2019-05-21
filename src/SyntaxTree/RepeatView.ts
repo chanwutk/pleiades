@@ -5,8 +5,8 @@ export class RepeatView implements CompositeView<string> {
   private repeatInfo: RepeatInfo;
   private view: ViewHolder;
 
-  public constructor(view: View, rowChannel: string | undefined, columnChannel: string | undefined) {
-    this.repeatInfo = new RepeatInfo([], [], rowChannel, columnChannel);
+  public constructor(view: View, info: ChannelInfo) {
+    this.repeatInfo = new RepeatInfo([], [], info);
     this.view = new ViewHolder(view);
   }
 
@@ -54,6 +54,11 @@ export class RepeatView implements CompositeView<string> {
   }
 }
 
+interface ChannelInfo {
+  rowChannel?: string;
+  columnChannel?: string
+}
+
 /**
  * This class contains information for repeat
  */
@@ -63,11 +68,11 @@ class RepeatInfo {
   public rowChannel: string | undefined;
   public columnChannel: string | undefined;
 
-  public constructor(row: string[], column: string[], rowChannel: string | undefined, columnChannel: string | undefined) {
-    this.row = rowChannel ? row : [];
-    this.column = columnChannel ? column : [];
-    this.rowChannel = rowChannel;
-    this.columnChannel = columnChannel;
+  public constructor(row: string[], column: string[], info: ChannelInfo) {
+    this.row = info.rowChannel ? row : [];
+    this.column = info.columnChannel ? column : [];
+    this.rowChannel = info.rowChannel;
+    this.columnChannel = info.columnChannel;
   }
 
 

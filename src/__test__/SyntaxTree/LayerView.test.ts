@@ -1,5 +1,6 @@
 import { LayerView } from '../../SyntaxTree/LayerView';
 import { UnitView } from '../../SyntaxTree/View';
+import { jsonCopy } from './TestUtils';
 
 const spec1 = {
   data: { url: "data/cars.json" },
@@ -45,31 +46,38 @@ describe('LayerView', () => {
   it('correctly appended', () => {
     const layer = new LayerView();
 
-    layer.append(new UnitView(spec1));
+    layer.append(new UnitView(jsonCopy(spec1)));
     expect(layer.export()).toEqual({ layer: [spec1] });
 
-    layer.append(new UnitView(spec2));
+    layer.append(new UnitView(jsonCopy(spec2)));
     expect(layer.export()).toEqual({ layer: [spec1, spec2] });
   });
 
   it('correctly prepended', () => {
     const layer = new LayerView();
 
-    layer.append(new UnitView(spec1));
+    layer.append(new UnitView(jsonCopy(spec1)));
     expect(layer.export()).toEqual({ layer: [spec1] });
 
-    layer.prepend(new UnitView(spec2));
+    layer.prepend(new UnitView(jsonCopy(spec2)));
     expect(layer.export()).toEqual({ layer: [spec2, spec1] });
   });
 
   it('correctly rearranged', () => {
     const layer = new LayerView();
 
-    layer.append(new UnitView(spec1));
-    layer.append(new UnitView(spec2));
-    layer.append(new UnitView(spec3));
+    layer.append(new UnitView(jsonCopy(spec1)));
+    layer.append(new UnitView(jsonCopy(spec2)));
+    layer.append(new UnitView(jsonCopy(spec3)));
     layer.rearrange(0, 2);
     expect(layer.export()).toEqual({ layer: [spec2, spec3, spec1] });
+  });
+
+  it('correctly check compatibility', () => {
+    const layer = new LayerView();
+
+    // the method is not implemented
+    expect(layer.isCompatible(new UnitView(jsonCopy(spec1)))).toBeTruthy();
   });
 });
 

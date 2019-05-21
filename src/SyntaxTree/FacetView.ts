@@ -12,7 +12,7 @@ export class FacetView implements CompositeView<null> {
 
   public export() {
     return {
-      facet: this.facet,
+      facet: this.facet.export(),
       spec: this.view.export()
     };
   }
@@ -30,15 +30,15 @@ export class FacetView implements CompositeView<null> {
     throw new Error('prepend is not supported for FacetView');
   }
 
-  public isCompatible(_: null): boolean {
-    // repeat is always compatible
+  public isCompatible(_: any): boolean {
+    // facet is always compatible
     return true;
   }
 
   public rearrange() {
     // switch between row and column
     if (this.facet['row'] && this.facet['column']) {
-      ({ row: this.facet.row, column: this.facet.column } = this.facet);
+      this.facet.swap();
     }
   }
 }
@@ -47,11 +47,22 @@ export class FacetView implements CompositeView<null> {
  * This class contains information for facet
  */
 export class FacetInfo {
-  row: {}
-  column: {}
+  row: {} | undefined
+  column: {} | undefined
 
-  constructor(row: {}, column: {}) {
-    this.row = row;
-    this.column = column
+  constructor(info: { row?: {}, column?: {} }) {
+    this.row = info.row;
+    this.column = info.column
+  }
+
+  export() {
+    return {
+      ...(this.row ? { row: this.row } : {}),
+      ...(this.column ? { column: this.column } : {}),
+    };
+  }
+
+  swap() {
+    [this.row, this.column] = [this.column, this.row];
   }
 }
