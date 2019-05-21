@@ -22,6 +22,10 @@ export class ConcatView implements CompositeView<View> {
     this.concat.unshift(new ViewHolder(view));
   }
 
+  public remove(index: number) {
+    this.concat.splice(index, 1);
+  }
+
   public isCompatible(_: View): boolean {
     // concat is always compatible
     return true;

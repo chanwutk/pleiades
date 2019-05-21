@@ -1,3 +1,4 @@
+import { jsonCopy } from './Utils';
 export interface View {
   /**
    * export Vega-Lite spec in vl.json format
@@ -59,6 +60,13 @@ export interface CompositeView<V extends ViewIndocator> extends View {
   prepend: (viewIndicator: V, option: any) => void;
 
   /**
+   * Remove a view from composite view
+   * @param {number} the index of the view to be removed
+   * @param {any} option an extra option for removing
+   */
+  remove: (index: number, option: any) => void;
+
+  /**
    * Check if `viewIndicator` is competible with the current view
    * @param {V} viewIndicator a view indicator to be checked
    * @returns true if `viewIndicator` is competible with the current view
@@ -75,10 +83,14 @@ export class UnitView implements View {
    * @param {object} spec Vega-Lite spec
    */
   public constructor(spec: {}) {
-    this.spec = spec;
+    this.spec = jsonCopy(spec);
+  }
+
+  public edit(spec: {}) {
+    this.spec = jsonCopy(spec);
   }
 
   public export() {
-    return this.spec;
+    return jsonCopy(this.spec);
   }
 }

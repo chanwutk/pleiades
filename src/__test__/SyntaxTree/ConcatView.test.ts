@@ -1,6 +1,6 @@
 import { ConcatView } from '../../SyntaxTree/ConcatView';
 import { UnitView } from '../../SyntaxTree/View';
-import { jsonCopy } from './TestUtils';
+import { jsonCopy } from '../../SyntaxTree/Utils';
 
 const spec1 = {
   data: { url: "data/cars.json" },
@@ -38,7 +38,7 @@ const spec3 = {
 };
 
 describe('ConcatView', () => {
-  it('correctly initialized', () => {
+  it('is correctly initialized', () => {
     const hconcat = new ConcatView('h');
     expect(hconcat.export()).toEqual({ hconcat: [] });
 
@@ -46,7 +46,7 @@ describe('ConcatView', () => {
     expect(vconcat.export()).toEqual({ vconcat: [] });
   });
 
-  it('correctly appended', () => {
+  it('is correctly appended', () => {
     const concat = new ConcatView('h');
 
     concat.append(new UnitView(jsonCopy(spec1)));
@@ -56,7 +56,7 @@ describe('ConcatView', () => {
     expect(concat.export()).toEqual({ hconcat: [spec1, spec2] });
   });
 
-  it('correctly prepended', () => {
+  it('is correctly prepended', () => {
     const concat = new ConcatView('h');
 
     concat.append(new UnitView(jsonCopy(spec1)));
@@ -66,7 +66,17 @@ describe('ConcatView', () => {
     expect(concat.export()).toEqual({ hconcat: [spec2, spec1] });
   });
 
-  it('correctly rearranged', () => {
+  it('correctly removes view', () => {
+    const concat = new ConcatView('h');
+    concat.append(new UnitView(jsonCopy(spec1)));
+    concat.append(new UnitView(jsonCopy(spec2)));
+    concat.append(new UnitView(jsonCopy(spec3)));
+
+    concat.remove(1);
+    expect(concat.export()).toEqual({ hconcat: [spec1, spec3] });
+  });
+
+  it('is correctly rearranged', () => {
     const concat = new ConcatView('h');
 
     concat.append(new UnitView(jsonCopy(spec1)));
@@ -76,7 +86,7 @@ describe('ConcatView', () => {
     expect(concat.export()).toEqual({ hconcat: [spec2, spec3, spec1] });
   });
 
-  it('correctly check compatibility', () => {
+  it('correctly checks for compatibility', () => {
     const concat = new ConcatView('h');
     concat.append(new UnitView(jsonCopy(spec1)));
     expect(concat.isCompatible(new UnitView(jsonCopy(spec2)))).toBeTruthy();

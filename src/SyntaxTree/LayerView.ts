@@ -20,6 +20,10 @@ export class LayerView implements CompositeView<View> {
     this.layer.unshift(new ViewHolder(view));
   }
 
+  public remove(index: number) {
+    this.layer.splice(index, 1);
+  }
+
   public isCompatible(_: View): boolean {
     // TODO: check if view is compatible with the rest of the specs in this.layer
     return true;

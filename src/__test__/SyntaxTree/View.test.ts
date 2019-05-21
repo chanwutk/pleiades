@@ -10,14 +10,22 @@ const spec = {
 };
 
 describe('UnitView', () => {
-  it('correctly export', () => {
+  it('correctly exports', () => {
     const view = new UnitView(spec);
+    expect(view.export()).toEqual(spec);
+  });
+
+  it('correctly edits spec', () => {
+    const view = new UnitView({});
+    expect(view.export()).toEqual({});
+
+    view.edit(spec);
     expect(view.export()).toEqual(spec);
   });
 });
 
 describe('ViewHolder', () => {
-  it('correctly export from View', () => {
+  it('correctly exports from View', () => {
     const view = new UnitView(spec);
     const holder = new ViewHolder(view);
 

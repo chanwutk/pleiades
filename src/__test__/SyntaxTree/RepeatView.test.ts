@@ -1,6 +1,6 @@
 import { RepeatView } from '../../SyntaxTree/RepeatView';
 import { UnitView } from '../../SyntaxTree/View';
-import { jsonCopy } from './TestUtils';
+import { jsonCopy } from '../../SyntaxTree/Utils';
 
 const spec = {
   data: { url: "data/cars.json" },
@@ -12,7 +12,7 @@ const spec = {
 };
 
 describe('RepeatView', () => {
-  it('correctly initialized', () => {
+  it('is correctly initialized', () => {
     const facet1 = new RepeatView(new UnitView(jsonCopy(spec)), {});
     expect(facet1.export()).toEqual({ repeat: {}, spec });
 
@@ -43,8 +43,7 @@ describe('RepeatView', () => {
     });
   });
 
-
-  it('correctly addAxis', () => {
+  it('is correctly addAxis', () => {
     const facet = new RepeatView(new UnitView(jsonCopy(spec)), {});
     facet.addAxis('x', 'row');
     expect(facet.export()).toEqual({
@@ -73,7 +72,36 @@ describe('RepeatView', () => {
     });
   });
 
-  it('correctly appended', () => {
+  it('is correctly removeAxis', () => {
+    const facet = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
+    facet.removeAxis('column');
+    expect(facet.export()).toEqual({
+      repeat: { row: [] },
+      spec: {
+        data: { url: "data/cars.json" },
+        mark: "point",
+        encoding: {
+          x: { field: { repeat: "row" }, type: "quantitative" },
+          y: { field: "Miles_per_Gallon", type: "quantitative" }
+        }
+      }
+    });
+
+    facet.removeAxis('row');
+    expect(facet.export()).toEqual({
+      repeat: {},
+      spec: {
+        data: { url: "data/cars.json" },
+        mark: "point",
+        encoding: {
+          x: { field: "Horsepower", type: "quantitative" },
+          y: { field: "Miles_per_Gallon", type: "quantitative" }
+        }
+      }
+    });
+  });
+
+  it('is correctly appended', () => {
     const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
 
     repeat.append('field1', 'row');
@@ -87,7 +115,7 @@ describe('RepeatView', () => {
     expect(repeat.export().repeat).toEqual({ row: ['field1', 'field2'], column: ['field3', 'field4'] });
   });
 
-  it('correctly prepended', () => {
+  it('is correctly prepended', () => {
     const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
 
     repeat.append('field1', 'row');
@@ -99,7 +127,18 @@ describe('RepeatView', () => {
     expect(repeat.export().repeat).toEqual({ row: ['field2', 'field1'], column: ['field4', 'field3'] });
   });
 
-  it('correctly rearranged', () => {
+  it('correctly removes view', () => {
+    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x' });
+    repeat.append('field1', 'row');
+    repeat.append('field2', 'row');
+    repeat.append('field3', 'row');
+    repeat.append('field4', 'row');
+
+    repeat.remove(2, 'row');
+    expect(repeat.export().repeat).toEqual({ row: ['field1', 'field2', 'field4'] });
+  });
+
+  it('is correctly rearranged', () => {
     const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
     repeat.append('field1', 'row');
     repeat.append('field2', 'row');
@@ -118,7 +157,7 @@ describe('RepeatView', () => {
     });
   });
 
-  it('correctly check compatibility', () => {
+  it('correctly checks for compatibility', () => {
     const facet = new RepeatView(new UnitView(jsonCopy(spec)), {});
     expect(facet.isCompatible('field')).toBeTruthy();
   });

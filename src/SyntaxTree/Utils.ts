@@ -25,6 +25,10 @@ export function moveElement(arr: Array<any>, from: number, to: number) {
   arr[to] = fromElm;
 }
 
+export function jsonCopy(obj: {}) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 // export function isFacetSpec(spec: any): boolean {
 //   return !!spec && spec['facet'] !== undefined;
 // }

@@ -12,10 +12,7 @@ export class RepeatView implements CompositeView<string> {
 
   public export() {
     return {
-      repeat: {
-        ...(this.repeatInfo.isRepeating('row') ? { row: this.repeatInfo.row } : {}),
-        ...(this.repeatInfo.isRepeating('column') ? { column: this.repeatInfo.column } : {})
-      },
+      repeat: this.repeatInfo.export(),
       spec: applyRepeat(this.view.export(), this.repeatInfo)
     };
   }
@@ -26,8 +23,15 @@ export class RepeatView implements CompositeView<string> {
    * @param orient orient of the added axis
    */
   public addAxis(channel: string, orient: 'row' | 'column') {
-    this.repeatInfo[orient] = [];
-    (<any>this.repeatInfo)[`${orient}Channel`] = channel;
+    this.repeatInfo.addAxis(channel, orient);
+  }
+
+  /**
+   * Remove a repeating axis
+   * @param orient orient of the removed axis
+   */
+  public removeAxis(orient: 'row' | 'column') {
+    this.repeatInfo.removeAxis(orient);
   }
 
   public append(field: string, option: 'row' | 'column') {
@@ -40,6 +44,10 @@ export class RepeatView implements CompositeView<string> {
     if (this.repeatInfo.isRepeating(option)) {
       this.repeatInfo[option].unshift(field);
     }
+  }
+
+  public remove(index: number, axis: 'row' | 'column') {
+    this.repeatInfo.remove(index, axis);
   }
 
   public isCompatible(_: string): boolean {
@@ -94,6 +102,36 @@ class RepeatInfo {
    */
   public isRepeating(orient: 'row' | 'column'): boolean {
     return !!(<any>this)[`${orient}Channel`];
+  }
+
+  public export() {
+    return {
+      ...(this.isRepeating('row') ? { row: this.row } : {}),
+      ...(this.isRepeating('column') ? { column: this.column } : {})
+    };
+  }
+
+  public remove(index: number, axis: 'row' | 'column') {
+    this[axis].splice(index, 1);
+  }
+
+  /**
+   * Add a repeating axis
+   * @param channel encoding channel for the axis to be repeated
+   * @param orient orient of the added axis
+   */
+  public addAxis(channel: string, orient: 'row' | 'column') {
+    this[orient] = [];
+    (<any>this)[`${orient}Channel`] = channel;
+  }
+
+  /**
+   * Remove a repeating axis
+   * @param orient orient of the removed axis
+   */
+  public removeAxis(orient: 'row' | 'column') {
+    this[orient] = [];
+    (<any>this)[`${orient}Channel`] = undefined;
   }
 }
 

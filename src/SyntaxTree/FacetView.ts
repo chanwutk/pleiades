@@ -30,6 +30,10 @@ export class FacetView implements CompositeView<null> {
     throw new Error('prepend is not supported for FacetView');
   }
 
+  public remove(_: number, axis: 'row' | 'column') {
+    this.facet.remove(axis);
+  }
+
   public isCompatible(_: any): boolean {
     // facet is always compatible
     return true;
@@ -38,7 +42,7 @@ export class FacetView implements CompositeView<null> {
   public rearrange() {
     // switch between row and column
     if (this.facet['row'] && this.facet['column']) {
-      this.facet.swap();
+      this.facet.swapAxis();
     }
   }
 }
@@ -55,14 +59,18 @@ export class FacetInfo {
     this.column = info.column
   }
 
-  export() {
+  public export() {
     return {
       ...(this.row ? { row: this.row } : {}),
       ...(this.column ? { column: this.column } : {}),
     };
   }
 
-  swap() {
+  public swapAxis() {
     [this.row, this.column] = [this.column, this.row];
+  }
+
+  public remove(axis: 'row' | 'column') {
+    this[axis] = undefined;
   }
 }
