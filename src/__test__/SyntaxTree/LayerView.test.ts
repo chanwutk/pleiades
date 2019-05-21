@@ -1,5 +1,5 @@
-import { LayerView } from './LayerView';
-import { UnitView } from './View';
+import { LayerView } from '../../SyntaxTree/LayerView';
+import { UnitView } from '../../SyntaxTree/View';
 
 const spec1 = {
   data: { url: "data/cars.json" },

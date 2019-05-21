@@ -1,4 +1,4 @@
-import { ViewHolder, UnitView } from './View';
+import { ViewHolder, UnitView } from '../../SyntaxTree/View';
 
 const spec = {
   data: { url: "data/cars.json" },

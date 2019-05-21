@@ -1,4 +1,4 @@
-import { moveElement } from './Utils';
+import { moveElement } from '../../SyntaxTree/Utils';
 
 describe('moveElement', () => {
   it('correctly moves element to back', () => {
