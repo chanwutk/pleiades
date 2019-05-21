@@ -6,6 +6,22 @@ export interface View {
   export: () => object;
 }
 
+export class ViewHolder {
+  view: View;
+
+  constructor(view: View) {
+    this.view = view;
+  }
+
+  /**
+   * export Vega-Lite spec of the holding view in vl.json format
+   * @returns exported Vega-Lite spec
+   */
+  export() {
+    return this.view.export();
+  }
+}
+
 /**
  * An indicator for a view in CompositView.
  * Concat and Layer need a View to indicate the appearance of the view,
@@ -41,6 +57,14 @@ export interface CompositeView<V extends ViewIndocator> extends View {
    * @param {any} option an extra option for appending.
    */
   prepend: (viewIndicator: V, option: any) => void;
+
+  /**
+   * Check if `viewIndicator` is competible with the current view
+   * @param {V} viewIndicator a view indicator to be checked
+   * @returns true if `viewIndicator` is competible with the current view
+   *          false otherwise.
+   */
+  isCompatible: (viewIndicator: V) => boolean;
 }
 
 export class UnitView implements View {

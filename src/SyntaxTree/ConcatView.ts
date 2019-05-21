@@ -1,8 +1,8 @@
-import { View, CompositeView } from './View';
+import { View, CompositeView, ViewHolder } from './View';
 import { moveElement } from './Utils';
 
 export class ConcatView implements CompositeView<View> {
-  private concat: View[];
+  private concat: ViewHolder[];
   private orient: 'h' | 'v';
 
   public constructor(orient: 'h' | 'v') {
@@ -15,14 +15,14 @@ export class ConcatView implements CompositeView<View> {
   }
 
   public append(view: View, _option: any) {
-    this.concat.push(view);
+    this.concat.push(new ViewHolder(view));
   }
 
   public prepend(view: View, _option: any) {
-    this.concat.unshift(view);
+    this.concat.unshift(new ViewHolder(view));
   }
 
-  public isCompatible(_view: View): boolean {
+  public isCompatible(_: View): boolean {
     // concat is always compatible
     return true;
   }

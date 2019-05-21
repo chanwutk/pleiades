@@ -1,13 +1,13 @@
-import { View, CompositeView } from './View';
+import { View, CompositeView, ViewHolder } from './View';
 
 
 export class FacetView implements CompositeView<null> {
-  private view: View;
+  private view: ViewHolder;
   private facet: FacetInfo;
 
   public constructor(view: View, facet: FacetInfo) {
     this.facet = facet;
-    this.view = view;
+    this.view = new ViewHolder(view);
   }
 
   public export() {
@@ -30,7 +30,7 @@ export class FacetView implements CompositeView<null> {
     throw new Error('prepend is not supported for FacetView');
   }
 
-  public isCompatible(_view: View): boolean {
+  public isCompatible(_: null): boolean {
     // repeat is always compatible
     return true;
   }
@@ -38,9 +38,7 @@ export class FacetView implements CompositeView<null> {
   public rearrange() {
     // switch between row and column
     if (this.facet['row'] && this.facet['column']) {
-      const { row, column } = this.facet;
-      this.facet.row = column;
-      this.facet.column = row;
+      ({ row: this.facet.row, column: this.facet.column } = this.facet);
     }
   }
 }

@@ -1,13 +1,13 @@
-import { View, CompositeView } from './View';
+import { View, CompositeView, ViewHolder } from './View';
 import { moveElement } from './Utils';
 
 export class RepeatView implements CompositeView<string> {
   private repeatInfo: RepeatInfo;
-  private view: View;
+  private view: ViewHolder;
 
   public constructor(view: View, rowChannel: string | undefined, columnChannel: string | undefined) {
     this.repeatInfo = new RepeatInfo([], [], rowChannel, columnChannel);
-    this.view = view;
+    this.view = new ViewHolder(view);
   }
 
   public export() {
@@ -42,7 +42,7 @@ export class RepeatView implements CompositeView<string> {
     }
   }
 
-  public isCompatible(_view: View): boolean {
+  public isCompatible(_: string): boolean {
     // repeat is always compatible
     return true;
   }
