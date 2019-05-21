@@ -14,11 +14,11 @@ export class ConcatView implements CompositeView<View> {
     return { [this.orient + 'concat']: this.concat.map(l => l.export()) };
   }
 
-  public append(view: View, _option: any) {
+  public append(view: View) {
     this.concat.push(new ViewHolder(view));
   }
 
-  public prepend(view: View, _option: any) {
+  public prepend(view: View) {
     this.concat.unshift(new ViewHolder(view));
   }
 
@@ -27,7 +27,7 @@ export class ConcatView implements CompositeView<View> {
     return true;
   }
 
-  public rearrange(from: number, to: number, _option: any) {
+  public rearrange(from: number, to: number) {
     moveElement(this.concat, from, to);
   }
 }

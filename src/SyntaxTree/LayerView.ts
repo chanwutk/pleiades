@@ -12,11 +12,11 @@ export class LayerView implements CompositeView<View> {
     return { layer: this.layer.map(l => l.export()) };
   }
 
-  public append(view: View, _option: any) {
+  public append(view: View) {
     this.layer.push(new ViewHolder(view));
   }
 
-  public prepend(view: View, _option: any) {
+  public prepend(view: View) {
     this.layer.unshift(new ViewHolder(view));
   }
 
@@ -25,7 +25,7 @@ export class LayerView implements CompositeView<View> {
     return true;
   }
 
-  public rearrange(from: number, to: number, _option: any) {
+  public rearrange(from: number, to: number) {
     moveElement(this.layer, from, to);
   }
 }
