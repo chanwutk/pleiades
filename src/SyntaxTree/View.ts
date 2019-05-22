@@ -23,9 +23,15 @@ export class ViewHolder {
   }
 }
 
+export class UnitViewHolder extends ViewHolder {
+  constructor(view: UnitView) {
+    super(view);
+  }
+}
+
 /**
  * An indicator for a view in CompositView.
- * Concat and Layer need a View to indicate the appearance of the view,
+ * Concat and Layer need a View and UnitView to indicate the appearance of the view,
  * while Repeat only need a string that specify a field to indicate
  * the appearance of the view.
  * Facet only need a field name for each axis to specify facet property, so
