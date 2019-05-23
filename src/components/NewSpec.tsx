@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { SpecForm } from './SpecForm';
+import { PopupEditor } from './PopupEditor';
 
 export interface INewSpecProps {
-  onAdd: (txt: string) => void;
+  onAdd: (txt: string) => boolean;
 }
 
 export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
@@ -15,24 +15,28 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
   };
 
   const handleClose = (toSave: boolean) => {
-    setShowModal(false);
     if (toSave) {
-      setCurrentSpec(currentShownSpec);
-      onAdd(currentShownSpec);
+      if (onAdd(currentShownSpec)) {
+        setCurrentSpec(currentShownSpec);
+        setShowModal(false);
+      }
     } else {
       setCurrentShownSpec(currentSpec);
+      setShowModal(false);
     }
   };
 
   return (
     <>
-      <button id="btn-newspec" onClick={handleClick}>+</button>
-      <SpecForm
+      <div className="button-group">
+        <button id="btn-newspec" onClick={handleClick}>+</button>
+      </div>
+      <PopupEditor
         isOpen={showModal}
         contentLabel="New Spec"
         onClose={handleClose}
-        spec={currentShownSpec}
-        setSpec={setCurrentShownSpec}
+        value={currentShownSpec}
+        setValue={txt => setCurrentShownSpec(txt)}
       />
     </>
   );

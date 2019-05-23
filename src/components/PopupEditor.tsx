@@ -7,20 +7,17 @@ import MonacoEditor, {
 
 ReactModal.setAppElement('#root');
 
-export interface ISpecFormProps {
+export interface IPopupEditorProps {
   isOpen: boolean;
   onClose: (toSave: boolean) => void;
   contentLabel: string;
-  spec: string;
-  setSpec: (txt: string) => void;
+  value: string;
+  setValue: ChangeHandler;
 }
 
-export const SpecForm: React.FC<ISpecFormProps> = (
-  { isOpen, onClose, contentLabel, spec, setSpec }
+export const PopupEditor: React.FC<IPopupEditorProps> = (
+  { isOpen, onClose, contentLabel, value, setValue }
 ) => {
-  const handleChange: ChangeHandler = val => {
-    setSpec(val);
-  };
 
   const handleEditorDidMount: EditorDidMount = editor => {
     editor.focus();
@@ -35,8 +32,8 @@ export const SpecForm: React.FC<ISpecFormProps> = (
       <div className="editor">
         <MonacoEditor
           language="json"
-          value={spec}
-          onChange={handleChange}
+          value={value}
+          onChange={setValue}
           editorDidMount={handleEditorDidMount}
         />
       </div>
