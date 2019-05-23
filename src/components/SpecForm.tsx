@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactModal from 'react-modal';
 import MonacoEditor, {
   EditorDidMount,
@@ -7,14 +7,18 @@ import MonacoEditor, {
 
 ReactModal.setAppElement('#root');
 
-export const SpecForm: React.FC<{
+export interface ISpecFormProps {
   isOpen: boolean;
   onClose: (toSave: boolean) => void;
   contentLabel: string;
   spec: string;
   setSpec: (txt: string) => void;
-}> = ({ isOpen, onClose, contentLabel, spec, setSpec }) => {
-  const handleChange: ChangeHandler = (val, e) => {
+}
+
+export const SpecForm: React.FC<ISpecFormProps> = (
+  { isOpen, onClose, contentLabel, spec, setSpec }
+) => {
+  const handleChange: ChangeHandler = val => {
     setSpec(val);
   };
 

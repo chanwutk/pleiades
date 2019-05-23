@@ -1,0 +1,30 @@
+@mixin debug-layout {
+  border: 1px black solid;
+}
+
+#main {
+  height: 600px;
+  display: flex;
+}
+
+.nav-bar {
+  @include debug-layout;
+  flex-grow: 1;
+}
+
+#btn-newspec {
+  margin: 5px;
+}
+
+.left-side {
+  width: 250px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-side {
+  @include debug-layout;
+  flex-grow: 1;
+  height: 100%;
+}

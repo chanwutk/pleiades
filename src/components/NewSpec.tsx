@@ -26,7 +26,7 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
 
   return (
     <>
-      <button onClick={handleClick}>+</button>
+      <button id="btn-newspec" onClick={handleClick}>+</button>
       <SpecForm
         isOpen={showModal}
         contentLabel="New Spec"
