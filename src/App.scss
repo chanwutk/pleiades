@@ -7,11 +7,6 @@
   display: flex;
 }
 
-.nav-bar {
-  @include debug-layout;
-  flex-grow: 1;
-  overflow: auto;
-}
 
 #btn-newspec {
   margin: 5px;
@@ -24,10 +19,26 @@
   flex-direction: column;
 }
 
+.nav-bar {
+  @include debug-layout;
+  flex-grow: 1;
+  overflow: auto;
+}
+
 .right-side {
   @include debug-layout;
   flex-grow: 1;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mode-bar {
+  @include debug-layout;
+  height: 50px;
+}
+
+.main-view {
+  flex-grow: 1;
 }
 
 .modal {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavigationBar } from './components/NavigationBar';
 import { NewSpec } from './components/NewSpec';
 import { MainView } from './components/MainView';
+import { ModeBar } from './components/ModeBar';
 import * as vl from 'vega-lite';
 import './App.scss';
 
@@ -34,6 +35,7 @@ const App: React.FC = () => {
         <NavigationBar specs={currentSpecs} />
       </div>
       <div className="right-side">
+        <ModeBar />
         <MainView />
       </div>
     </div>
