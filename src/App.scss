@@ -10,6 +10,7 @@
 .nav-bar {
   @include debug-layout;
   flex-grow: 1;
+  overflow: auto;
 }
 
 #btn-newspec {
@@ -27,4 +28,28 @@
   @include debug-layout;
   flex-grow: 1;
   height: 100%;
+}
+
+.modal {
+  display: flex;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  border: 1px solid #ccc;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+}
+
+.editor {
+  flex-grow: 1;
+}
+
+/* Prevent the body to scroll while the modal is open */
+.ReactModal__Body--open {
+  overflow: hidden;
 }

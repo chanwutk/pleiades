@@ -27,17 +27,19 @@ export const SpecForm: React.FC<ISpecFormProps> = (
   };
 
   return (
-    <ReactModal isOpen={isOpen} contentLabel={contentLabel}>
-      <button onClick={() => onClose(true)}>Save</button>
-      <button onClick={() => onClose(false)}>Cancel</button>
-      <MonacoEditor
-        width="800"
-        height="600"
-        language="json"
-        value={spec}
-        onChange={handleChange}
-        editorDidMount={handleEditorDidMount}
-      />
+    <ReactModal isOpen={isOpen} contentLabel={contentLabel} className="modal">
+      <div className="button-group">
+        <button onClick={() => onClose(true)}>Save</button>
+        <button onClick={() => onClose(false)}>Cancel</button>
+      </div>
+      <div className="editor">
+        <MonacoEditor
+          language="json"
+          value={spec}
+          onChange={handleChange}
+          editorDidMount={handleEditorDidMount}
+        />
+      </div>
     </ReactModal>
   );
 };
