@@ -66,9 +66,14 @@
   overflow: hidden;
 }
 
-.preview-active {
-  border: 1px orange solid;
+.preview {
+  position: relative;
+
+  &.active {
+    border: 1px orange solid;
+  }
 }
+
 
 .modal-toolbar {
   margin-bottom: 15px;
@@ -78,4 +83,18 @@
   font-style: italic;
   color: red;
   float: right;
+}
+
+.preview-side {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 10px;
+  height: auto;
+  background: rgba(0, 0, 0, 0.1);
+
+  button {
+    width: 100%;
+  }
 }

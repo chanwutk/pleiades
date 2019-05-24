@@ -22,13 +22,14 @@ const barData = {
 export const NavigationBar: React.FC<INavigationBarProps> = ({ specs }) => {
   const [activePreview, setActivePreview] = useState(null);
 
-  const handleClick = i => () => {
+  const handleActivate = i => () => {
     if (activePreview === i) {
       setActivePreview(null);
     } else {
       setActivePreview(i);
     }
   }
+
   return (
     <div className="nav-bar">
       {specs.map((spec, i) => (
@@ -37,7 +38,7 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ specs }) => {
           spec={spec}
           data={barData}
           active={i === activePreview}
-          onClick={handleClick(i)}
+          onActivate={handleActivate(i)}
         />
       ))}
     </div>
