@@ -33,6 +33,7 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ specs }) => {
     <div className="nav-bar">
       {specs.map((spec, i) => (
         <SpecPreview
+          key={spec.id}
           spec={spec}
           data={barData}
           active={i === activePreview}
