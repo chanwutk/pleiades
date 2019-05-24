@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { last } from './utils';
 import { NavigationBar } from './components/NavigationBar';
 import { NewSpec } from './components/NewSpec';
 import { MainView } from './components/MainView';
@@ -6,29 +7,45 @@ import { ModeBar } from './components/ModeBar';
 import './App.scss';
 
 const App: React.FC = () => {
-  const [currentSpecs, setCurrentSpecs] = useState([] as RawSpec[]);
-  const [specCount, setSpecCount] = useState(0);
+  const [states, setStates] = useState([{ specs: [], specCount: 0 }] as State[]);
 
   const handleAdd = (json: any) => {
-    setCurrentSpecs(currentSpecs.concat([{
-      id: specCount,
-      spec: json
+    const { specs, specCount } = last(states);
+    setStates(states.concat([{
+      specs: specs.concat([{
+        id: specCount,
+        spec: json,
+      }]),
+      specCount: specCount + 1
     }]));
-    setSpecCount(specCount + 1);
   };
 
   const handleModify = (id: number) => (json: any) => {
-    setCurrentSpecs(currentSpecs.map(spec => {
-      if (spec.id === id) {
-        return { id, spec: json };
-      } else {
-        return spec;
-      }
-    }));
+    const { specs, specCount } = last(states);
+    setStates(states.concat([{
+      specs: specs.map(spec => {
+        if (spec.id === id) {
+          return { id, spec: json };
+        } else {
+          return spec;
+        }
+      }),
+      specCount: specCount
+    }]));
   };
 
   const handleDelete = (id: number) => () => {
-    setCurrentSpecs(currentSpecs.filter(spec => spec.id !== id));
+    const { specs, specCount } = last(states);
+    setStates(states.concat([{
+      specs: specs.filter(spec => spec.id !== id),
+      specCount: specCount
+    }]));
+  }
+
+  const handleUndo = () => {
+    if (states.length > 1) {
+      setStates(states.slice(0, states.length - 1));
+    }
   }
 
   return (
@@ -36,14 +53,14 @@ const App: React.FC = () => {
       <div className="left-side">
         <NewSpec onAdd={handleAdd} />
         <NavigationBar
-          specs={currentSpecs}
+          specs={last(states).specs}
           onModify={handleModify}
           onDelete={handleDelete}
         />
 
       </div>
       <div className="right-side">
-        <ModeBar />
+        <ModeBar onUndo={handleUndo} />
         <MainView />
       </div>
     </div>

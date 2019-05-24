@@ -5,6 +5,7 @@ import stringify from 'json-stringify-pretty-compact';
 import { Edit, Trash2 } from 'react-feather';
 import { VegaLiteEditor } from './VegaLiteEditor';
 import { FakeButton } from './FakeButton';
+import { previewWidth } from '../App.scss';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
@@ -16,7 +17,13 @@ export interface ISpecPreviewProps {
 
 const MemoizedVegaLite = React.memo(VegaLite);
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active, onActivate, onModify, onDelete }) => {
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({
+  spec,
+  active,
+  onActivate,
+  onModify,
+  onDelete
+}) => {
 
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
@@ -39,7 +46,11 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active, onActiv
         })}
         onClick={onActivate} >
         <div className="preview-image">
-          <MemoizedVegaLite spec={spec.spec} width={120} height={120} />
+          <MemoizedVegaLite
+            spec={spec.spec}
+            width={+previewWidth}
+            height={+previewWidth}
+          />
         </div>
         <div className="preview-side">
           <FakeButton onClick={handleModify}>

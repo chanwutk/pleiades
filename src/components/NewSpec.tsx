@@ -22,7 +22,7 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
       <div className="new-spec">
         <FakeButton onClick={handleOpen}>
           <Plus className="preview-icon" />
-          &nbsp; Add a new spec
+          &nbsp; New Spec
         </FakeButton>
       </div>
       <VegaLiteEditor
