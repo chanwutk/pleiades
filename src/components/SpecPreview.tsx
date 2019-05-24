@@ -9,9 +9,10 @@ export interface ISpecPreviewProps {
   active: boolean;
   onActivate: () => void;
   onModify: (json: any) => void;
+  onDelete: () => void;
 }
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, onActivate, onModify }) => {
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, onActivate, onModify, onDelete }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
@@ -22,7 +23,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, o
   };
 
   const handleDelete = () => {
-    alert('delete ' + spec.id);
+    onDelete();
   };
 
   return (

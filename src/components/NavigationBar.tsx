@@ -4,6 +4,7 @@ import { SpecPreview } from './SpecPreview';
 export interface INavigationBarProps {
   specs: RawSpec[];
   onModify: (id: number) => (json: any) => void;
+  onDelete: (id: number) => () => void;
 }
 
 const barData = {
@@ -20,7 +21,7 @@ const barData = {
   ]
 };
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({ specs, onModify }) => {
+export const NavigationBar: React.FC<INavigationBarProps> = ({ specs, onModify, onDelete }) => {
   const [activePreview, setActivePreview] = useState(null);
 
   const handleActivate = id => () => {
@@ -41,6 +42,7 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({ specs, onModify }
           active={spec.id === activePreview}
           onActivate={handleActivate(spec.id)}
           onModify={onModify(spec.id)}
+          onDelete={onDelete(spec.id)}
         />
       ))}
     </div>

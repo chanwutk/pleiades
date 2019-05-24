@@ -30,13 +30,19 @@ const App: React.FC = () => {
     }));
   };
 
+  const handleDelete = (id: number) => () => {
+    setCurrentSpecs(currentSpecs.filter(spec => spec.id !== id));
+  }
+
   return (
     <div id="main">
       <div className="left-side">
         <NewSpec onAdd={handleAdd} />
         <NavigationBar
           specs={currentSpecs}
-          onModify={handleModify} />
+          onModify={handleModify}
+          onDelete={handleDelete} />
+
       </div>
       <div className="right-side">
         <ModeBar />
