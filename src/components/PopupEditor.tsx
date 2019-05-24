@@ -82,7 +82,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
           </FakeButton>
           {
             examples.map((example, i) => (
-              <FakeButton onClick={() => setValue(stringify(example))}>
+              <FakeButton key={i} onClick={() => setValue(stringify(example))}>
                 Example {i + 1}
               </FakeButton>
             ))
