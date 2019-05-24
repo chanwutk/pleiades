@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { success, failure } from './utils';
 import { NavigationBar } from './components/NavigationBar';
 import { NewSpec } from './components/NewSpec';
 import { MainView } from './components/MainView';
@@ -16,12 +17,12 @@ const App: React.FC = () => {
       // currently we only call it for side-effect (to see if it errors or not)
       vl.compile(json);
       setCurrentSpecs(currentSpecs.concat([json]));
-      return true;
+      return success(null);
     } catch (e) {
       if (e instanceof SyntaxError) {
-        return false;
+        return failure(e.message);
       } else if (e.message === 'Invalid spec') {
-        return false;
+        return failure(e.message);
       } else {
         throw e;
       }

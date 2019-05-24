@@ -13,21 +13,29 @@ export interface IPopupEditorProps {
   contentLabel: string;
   value: string;
   setValue: ChangeHandler;
+  errorMsg?: string;
 }
 
-export const PopupEditor: React.FC<IPopupEditorProps> = (
-  { isOpen, onClose, contentLabel, value, setValue }
-) => {
-
+export const PopupEditor: React.FC<IPopupEditorProps> = ({
+  isOpen,
+  onClose,
+  contentLabel,
+  value,
+  setValue,
+  errorMsg
+}) => {
   const handleEditorDidMount: EditorDidMount = editor => {
     editor.focus();
   };
 
   return (
     <ReactModal isOpen={isOpen} contentLabel={contentLabel} className="modal">
-      <div className="button-group">
+      <div className="modal-toolbar">
         <button onClick={() => onClose(true)}>Save</button>
         <button onClick={() => onClose(false)}>Cancel</button>
+        <span className="error-msg">
+          {errorMsg ? errorMsg : null}
+        </span>
       </div>
       <div className="editor">
         <MonacoEditor

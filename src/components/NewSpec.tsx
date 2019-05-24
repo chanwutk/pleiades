@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { PopupEditor } from './PopupEditor';
 
 export interface INewSpecProps {
-  onAdd: (txt: string) => boolean;
+  onAdd: (txt: string) => Either<null, string>;
 }
 
 export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleOpen = () => {
     // TODO: do we want to reset the editor to blank every time we click new spec?
@@ -17,10 +18,16 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
 
   const handleClose = (toSave: boolean) => {
     if (toSave) {
-      const isSuccessful = onAdd(currentSpec);
-      if (isSuccessful) {
-        setCurrentSpec('');
-        setShowModal(false);
+      const result = onAdd(currentSpec);
+      switch (result.tag) {
+        case 'success':
+          setErrorMsg('');
+          setCurrentSpec('');
+          setShowModal(false);
+          break;
+        case 'failure':
+          setErrorMsg(result.value);
+          break;
       }
     } else {
       setShowModal(false);
@@ -30,7 +37,9 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
   return (
     <>
       <div className="button-group">
-        <button id="btn-newspec" onClick={handleOpen}>+</button>
+        <button id="btn-newspec" onClick={handleOpen}>
+          <i className="fas fa-plus-circle"></i>
+        </button>
       </div>
       <PopupEditor
         isOpen={showModal}
@@ -38,6 +47,7 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
         onClose={handleClose}
         value={currentSpec}
         setValue={setCurrentSpec}
+        errorMsg={errorMsg}
       />
     </>
   );
