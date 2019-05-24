@@ -39,7 +39,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active, onActiv
         })}
         onClick={onActivate} >
         <div className="preview-image">
-          <MemoizedVegaLite spec={spec.spec} />
+          <MemoizedVegaLite spec={spec.spec} width={120} height={120} />
         </div>
         <div className="preview-side">
           <FakeButton onClick={handleModify}>
