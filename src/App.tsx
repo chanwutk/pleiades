@@ -8,7 +8,8 @@ import * as vl from 'vega-lite';
 import './App.scss';
 
 const App: React.FC = () => {
-  const [currentSpecs, setCurrentSpecs] = useState([] as any[]);
+  const [currentSpecs, setCurrentSpecs] = useState([] as RawSpec[]);
+  const [specCount, setSpecCount] = useState(0);
 
   const handleAdd = (txt: string) => {
     try {
@@ -16,7 +17,12 @@ const App: React.FC = () => {
       // TODO: can we do anything with the output of the compilation?
       // currently we only call it for side-effect (to see if it errors or not)
       vl.compile(json);
-      setCurrentSpecs(currentSpecs.concat([json]));
+      setCurrentSpecs(currentSpecs.concat([{
+        id: specCount,
+        spec: json
+      }]));
+
+      setSpecCount(specCount + 1);
       return success(null);
     } catch (e) {
       if (e instanceof SyntaxError) {

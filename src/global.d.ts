@@ -8,4 +8,9 @@ interface Failure<T> {
   value: T;
 }
 
+interface RawSpec {
+  spec: any;
+  id: number;
+}
+
 type Either<S, T> = Success<S> | Failure<T>;

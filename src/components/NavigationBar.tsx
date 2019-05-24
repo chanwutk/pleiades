@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SpecPreview } from './SpecPreview';
 
 export interface INavigationBarProps {
-  specs: any[]
+  specs: RawSpec[]
 }
 
 const barData = {

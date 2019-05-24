@@ -2,7 +2,7 @@ import React from 'react';
 import VegaLite from 'react-vega-lite';
 
 export interface ISpecPreviewProps {
-  spec: any;
+  spec: RawSpec;
   data: any;
   active: boolean;
   onClick: () => void;
@@ -13,7 +13,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, o
     <div
       className={active ? 'preview-active' : ''}
       onClick={onClick} >
-      <VegaLite spec={spec} data={data} />
+      <VegaLite spec={spec.spec} data={data} />
     </div>
   );
 };
