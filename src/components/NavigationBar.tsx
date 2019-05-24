@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SpecPreview } from './SpecPreview';
 
 export interface INavigationBarProps {
@@ -20,9 +20,25 @@ const barData = {
 };
 
 export const NavigationBar: React.FC<INavigationBarProps> = ({ specs }) => {
+  const [activePreview, setActivePreview] = useState(null);
+
+  const handleClick = i => () => {
+    if (activePreview === i) {
+      setActivePreview(null);
+    } else {
+      setActivePreview(i);
+    }
+  }
   return (
     <div className="nav-bar">
-      {specs.map(spec => <SpecPreview spec={spec} data={barData} />)}
+      {specs.map((spec, i) => (
+        <SpecPreview
+          spec={spec}
+          data={barData}
+          active={i === activePreview}
+          onClick={handleClick(i)}
+        />
+      ))}
     </div>
   );
 };
