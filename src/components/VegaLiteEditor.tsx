@@ -19,6 +19,10 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({ showModal, setS
   const stringToSpec = (value: string) => {
     try {
       const json = JSON.parse(value);
+      if (!('data' in json)) {
+        return failure('data field must exist.');
+      }
+
       // TODO: can we do anything with the output of the compilation?
       // currently we only call it for side-effect (to see if it errors or not)
       vl.compile(json);

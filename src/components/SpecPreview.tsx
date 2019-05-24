@@ -7,14 +7,15 @@ import { Edit, Trash2 } from 'react-feather';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
-  data: any;
   active: boolean;
   onActivate: () => void;
   onModify: (json: any) => void;
   onDelete: () => void;
 }
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, onActivate, onModify, onDelete }) => {
+const MemoizedVegaLite = React.memo(VegaLite);
+
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active, onActivate, onModify, onDelete }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
@@ -37,7 +38,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, o
         })}
         onClick={onActivate} >
         <div className="preview-image">
-          <VegaLite spec={spec.spec} data={data} />
+          <MemoizedVegaLite spec={spec.spec} />
         </div>
         <div className="preview-side">
           <div className="fake-button" onClick={handleModify}>
