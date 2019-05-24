@@ -19,8 +19,8 @@ const App: React.FC = () => {
   };
 
   const handleModifySpec = (id: number) => (json: any) => {
-    const newState = R.over(R.lensProp('specs'), specs =>
-      specs.map((spec: RawSpec) => {
+    const newState = R.over(R.lensProp('specs'), (specs: RawSpec[]) =>
+      specs.map(spec => {
         if (spec.id === id) {
           return { id, spec: json };
         } else {
@@ -33,8 +33,8 @@ const App: React.FC = () => {
   };
 
   const handleDeleteSpec = (id: number) => () => {
-    const newState = R.over(R.lensProp('specs'), specs =>
-      specs.filter((spec: RawSpec) => spec.id !== id),
+    const newState = R.over(R.lensProp('specs'), (specs: RawSpec[]) =>
+      specs.filter(spec => spec.id !== id),
       states[0]
     );
     setStates(R.prepend(newState, states));
