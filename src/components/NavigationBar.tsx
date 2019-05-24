@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { SpecPreview } from './SpecPreview';
 
 export interface INavigationBarProps {
-  specs: RawSpec[]
+  specs: RawSpec[];
+  onModify: (id: number) => (json: any) => void;
 }
 
 const barData = {
@@ -19,26 +20,27 @@ const barData = {
   ]
 };
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({ specs }) => {
+export const NavigationBar: React.FC<INavigationBarProps> = ({ specs, onModify }) => {
   const [activePreview, setActivePreview] = useState(null);
 
-  const handleActivate = i => () => {
-    if (activePreview === i) {
+  const handleActivate = id => () => {
+    if (activePreview === id) {
       setActivePreview(null);
     } else {
-      setActivePreview(i);
+      setActivePreview(id);
     }
   }
 
   return (
     <div className="nav-bar">
-      {specs.map((spec, i) => (
+      {specs.map((spec) => (
         <SpecPreview
           key={spec.id}
           spec={spec}
           data={barData}
-          active={i === activePreview}
-          onActivate={handleActivate(i)}
+          active={spec.id === activePreview}
+          onActivate={handleActivate(spec.id)}
+          onModify={onModify(spec.id)}
         />
       ))}
     </div>
