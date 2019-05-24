@@ -20,10 +20,7 @@ const App: React.FC = () => {
   const handleModify = (id: number) => (json: any) => {
     setCurrentSpecs(currentSpecs.map(spec => {
       if (spec.id === id) {
-        return {
-          id,
-          spec: json
-        };
+        return { id, spec: json };
       } else {
         return spec;
       }
@@ -41,7 +38,8 @@ const App: React.FC = () => {
         <NavigationBar
           specs={currentSpecs}
           onModify={handleModify}
-          onDelete={handleDelete} />
+          onDelete={handleDelete}
+        />
 
       </div>
       <div className="right-side">

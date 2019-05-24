@@ -8,32 +8,29 @@
 }
 
 
-#btn-newspec {
-  margin: 5px;
-}
-
 .left-side {
   width: 250px;
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  border-right: 2px rgba(0, 0, 0, 0.2) solid;
+  padding: 0 10px 0 10px;
 }
 
 .nav-bar {
-  @include debug-layout;
   flex-grow: 1;
   overflow: auto;
 }
 
 .right-side {
-  @include debug-layout;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .mode-bar {
-  @include debug-layout;
   height: 50px;
 }
 
@@ -68,6 +65,7 @@
 
 .preview {
   position: relative;
+  border: 1px white solid;
 
   &.active {
     border: 1px orange solid;
@@ -77,24 +75,51 @@
 
 .modal-toolbar {
   margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-buttons {
+  display: flex;
 }
 
 .error-msg {
   font-style: italic;
   color: red;
-  float: right;
+  margin: 10px;
 }
 
 .preview-side {
   position: absolute;
   right: 0;
   top: 0;
-  bottom: 0;
-  padding: 10px;
-  height: auto;
-  background: rgba(0, 0, 0, 0.1);
 
-  button {
-    width: 100%;
+  // bottom: 0;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+}
+
+.fake-button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.2);
   }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  opacity: 0.6;
+}
+
+.new-spec {
+  margin-bottom: 10px;
 }

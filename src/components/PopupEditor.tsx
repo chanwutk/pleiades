@@ -4,6 +4,7 @@ import MonacoEditor, {
   EditorDidMount,
   ChangeHandler
 } from 'react-monaco-editor';
+import { X, Save } from 'react-feather';
 
 ReactModal.setAppElement('#root');
 
@@ -31,8 +32,14 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
   return (
     <ReactModal isOpen={isOpen} contentLabel={contentLabel} className="modal">
       <div className="modal-toolbar">
-        <button onClick={() => onClose(true)}>Save</button>
-        <button onClick={() => onClose(false)}>Cancel</button>
+        <div className="modal-buttons">
+          <div className="fake-button" onClick={() => onClose(true)}>
+            <Save />
+          </div>
+          <div className="fake-button" onClick={() => onClose(false)}>
+            <X />
+          </div>
+        </div>
         <span className="error-msg">
           {errorMsg ? errorMsg : null}
         </span>
@@ -43,6 +50,15 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
           value={value}
           onChange={setValue}
           editorDidMount={handleEditorDidMount}
+          options={{
+            automaticLayout: true,
+            cursorBlinking: 'smooth',
+            folding: true,
+            lineNumbersMinChars: 4,
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            wordWrap: 'on',
+          }}
         />
       </div>
     </ReactModal>

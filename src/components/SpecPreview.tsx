@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { VegaLiteEditor } from './VegaLiteEditor';
 import VegaLite from 'react-vega-lite';
 import classNames from 'classnames';
+import stringify from 'json-stringify-pretty-compact';
+import { Edit, Trash2 } from 'react-feather';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
@@ -18,7 +20,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, o
   const [currentSpec, setCurrentSpec] = useState('');
 
   const handleModify = () => {
-    setCurrentSpec(JSON.stringify(spec.spec, null, 2));
+    setCurrentSpec(stringify(spec.spec));
     setShowModal(true);
   };
 
@@ -34,14 +36,16 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, data, active, o
           'preview': true
         })}
         onClick={onActivate} >
-        <VegaLite spec={spec.spec} data={data} />
+        <div className="preview-image">
+          <VegaLite spec={spec.spec} data={data} />
+        </div>
         <div className="preview-side">
-          <button onClick={handleModify}>
-            <i className="fas fa-wrench"></i>
-          </button>
-          <button onClick={handleDelete}>
-            <i className="fas fa-trash"></i>
-          </button>
+          <div className="fake-button" onClick={handleModify}>
+            <Edit />
+          </div>
+          <div className="fake-button" onClick={handleDelete}>
+            <Trash2 />
+          </div>
         </div>
       </div>
       <VegaLiteEditor
