@@ -8,41 +8,56 @@ import './App.scss';
 
 const App: React.FC = () => {
   const [states, setStates] = useState([{ specs: [], specCount: 0 }] as State[]);
+  const [redoStack, setRedoStack] = useState([] as State[]);
+
+  const addState = (state: State) => {
+    setStates(R.prepend(state, states));
+    setRedoStack([]);
+  }
 
   const handleAddSpec = (json: any) => {
     const { specs, specCount } = states[0];
-    const newState = {
+    addState({
       specs: R.append({ id: specCount, spec: json }, specs),
       specCount: specCount + 1,
-    };
-    setStates(R.prepend(newState, states));
+    });
   };
 
   const handleModifySpec = (id: number) => (json: any) => {
-    const newState = R.over(R.lensProp('specs'), (specs: RawSpec[]) =>
-      specs.map(spec => {
-        if (spec.id === id) {
-          return { id, spec: json };
-        } else {
-          return spec;
-        }
-      }),
-      states[0]
+    addState(
+      R.over(R.lensProp('specs'), (specs: RawSpec[]) =>
+        specs.map(spec => {
+          if (spec.id === id) {
+            return { id, spec: json };
+          } else {
+            return spec;
+          }
+        }),
+        states[0]
+      )
     );
-    setStates(R.prepend(newState, states));
   };
 
   const handleDeleteSpec = (id: number) => () => {
-    const newState = R.over(R.lensProp('specs'), (specs: RawSpec[]) =>
-      specs.filter(spec => spec.id !== id),
-      states[0]
+    addState(
+      R.over(R.lensProp('specs'), (specs: RawSpec[]) =>
+        specs.filter(spec => spec.id !== id),
+        states[0]
+      )
     );
-    setStates(R.prepend(newState, states));
   }
 
   const handleUndo = () => {
     if (states.length > 1) {
+      setRedoStack(R.prepend(states[0], redoStack));
       setStates(states.slice(1));
+    }
+  }
+
+  const handleRedo = () => {
+    if (redoStack.length > 0) {
+      setStates(R.prepend(redoStack[0], states));
+      setRedoStack(redoStack.slice(1));
     }
   }
 
@@ -57,7 +72,10 @@ const App: React.FC = () => {
         />
       </div>
       <div className="right-side">
-        <ModeBar onUndo={handleUndo} />
+        <ModeBar
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+        />
         <MainView />
       </div>
     </div>
