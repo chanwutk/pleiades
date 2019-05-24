@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { VegaLiteEditor } from './VegaLiteEditor';
 import VegaLite from 'react-vega-lite';
 import classNames from 'classnames';
 import stringify from 'json-stringify-pretty-compact';
 import { Edit, Trash2 } from 'react-feather';
+import { VegaLiteEditor } from './VegaLiteEditor';
+import { FakeButton } from './FakeButton';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
@@ -41,12 +42,12 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active, onActiv
           <MemoizedVegaLite spec={spec.spec} />
         </div>
         <div className="preview-side">
-          <div className="fake-button" onClick={handleModify}>
+          <FakeButton onClick={handleModify}>
             <Edit />
-          </div>
-          <div className="fake-button" onClick={handleDelete}>
+          </FakeButton>
+          <FakeButton onClick={handleDelete} >
             <Trash2 />
-          </div>
+          </FakeButton>
         </div>
       </div>
       <VegaLiteEditor

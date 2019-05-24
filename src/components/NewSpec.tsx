@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { VegaLiteEditor } from './VegaLiteEditor';
 import { Plus } from 'react-feather';
+import { VegaLiteEditor } from './VegaLiteEditor';
+import { FakeButton } from './FakeButton';
 
 export interface INewSpecProps {
   onAdd: (json: any) => void;
@@ -19,10 +20,10 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
   return (
     <>
       <div className="new-spec">
-        <div className="fake-button" onClick={handleOpen}>
+        <FakeButton onClick={handleOpen}>
           <Plus className="preview-icon" />
           &nbsp; Add a new spec
-        </div>
+        </FakeButton>
       </div>
       <VegaLiteEditor
         showModal={showModal}
