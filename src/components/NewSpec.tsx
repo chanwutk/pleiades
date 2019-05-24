@@ -8,20 +8,21 @@ export interface INewSpecProps {
 export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
-  const [currentShownSpec, setCurrentShownSpec] = useState('');
 
-  const handleClick = () => {
+  const handleOpen = () => {
+    // TODO: do we want to reset the editor to blank every time we click new spec?
+    // if so, move setCurrentSpec('') below here instead.
     setShowModal(true);
   };
 
   const handleClose = (toSave: boolean) => {
     if (toSave) {
-      if (onAdd(currentShownSpec)) {
-        setCurrentSpec(currentShownSpec);
+      const isSuccessful = onAdd(currentSpec);
+      if (isSuccessful) {
+        setCurrentSpec('');
         setShowModal(false);
       }
     } else {
-      setCurrentShownSpec(currentSpec);
       setShowModal(false);
     }
   };
@@ -29,14 +30,14 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
   return (
     <>
       <div className="button-group">
-        <button id="btn-newspec" onClick={handleClick}>+</button>
+        <button id="btn-newspec" onClick={handleOpen}>+</button>
       </div>
       <PopupEditor
         isOpen={showModal}
         contentLabel="New Spec"
         onClose={handleClose}
-        value={currentShownSpec}
-        setValue={txt => setCurrentShownSpec(txt)}
+        value={currentSpec}
+        setValue={setCurrentSpec}
       />
     </>
   );
