@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { last } from './utils';
+import * as R from 'ramda';
 import { NavigationBar } from './components/NavigationBar';
 import { NewSpec } from './components/NewSpec';
 import { MainView } from './components/MainView';
@@ -9,55 +9,52 @@ import './App.scss';
 const App: React.FC = () => {
   const [states, setStates] = useState([{ specs: [], specCount: 0 }] as State[]);
 
-  const handleAdd = (json: any) => {
-    const { specs, specCount } = last(states);
-    setStates(states.concat([{
-      specs: specs.concat([{
-        id: specCount,
-        spec: json,
-      }]),
-      specCount: specCount + 1
-    }]));
+  const handleAddSpec = (json: any) => {
+    const { specs, specCount } = states[0];
+    const newState = {
+      specs: R.append({ id: specCount, spec: json }, specs),
+      specCount: specCount + 1,
+    };
+    setStates(R.prepend(newState, states));
   };
 
-  const handleModify = (id: number) => (json: any) => {
-    const { specs, specCount } = last(states);
-    setStates(states.concat([{
-      specs: specs.map(spec => {
+  const handleModifySpec = (id: number) => (json: any) => {
+    const newState = R.over(R.lensProp('specs'), specs =>
+      specs.map((spec: RawSpec) => {
         if (spec.id === id) {
           return { id, spec: json };
         } else {
           return spec;
         }
       }),
-      specCount: specCount
-    }]));
+      states[0]
+    );
+    setStates(R.prepend(newState, states));
   };
 
-  const handleDelete = (id: number) => () => {
-    const { specs, specCount } = last(states);
-    setStates(states.concat([{
-      specs: specs.filter(spec => spec.id !== id),
-      specCount: specCount
-    }]));
+  const handleDeleteSpec = (id: number) => () => {
+    const newState = R.over(R.lensProp('specs'), specs =>
+      specs.filter((spec: RawSpec) => spec.id !== id),
+      states[0]
+    );
+    setStates(R.prepend(newState, states));
   }
 
   const handleUndo = () => {
     if (states.length > 1) {
-      setStates(states.slice(0, states.length - 1));
+      setStates(states.slice(1));
     }
   }
 
   return (
     <div id="main">
       <div className="left-side">
-        <NewSpec onAdd={handleAdd} />
+        <NewSpec onAdd={handleAddSpec} />
         <NavigationBar
-          specs={last(states).specs}
-          onModify={handleModify}
-          onDelete={handleDelete}
+          specs={states[0].specs}
+          onModify={handleModifySpec}
+          onDelete={handleDeleteSpec}
         />
-
       </div>
       <div className="right-side">
         <ModeBar onUndo={handleUndo} />
