@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { RotateCcw, RotateCw } from 'react-feather';
-import { FakeButton } from './FakeButton';
+import Button from '@material-ui/core/Button';
+import Undo from '@material-ui/icons/Undo';
+import Redo from '@material-ui/icons/Redo';
+import Grid from '@material-ui/core/Grid';
 
 interface IModeBarProps {
   onUndo: () => void;
@@ -9,25 +11,22 @@ interface IModeBarProps {
 
 export const ModeBar: React.FC<IModeBarProps> = ({ onUndo, onRedo }) => {
   const [currentMode, setCurrentMode] = useState('');
-
   return (
-    <div className="mode-bar">
-      <div className="mode-group">
-        <FakeButton onClick={(() => { })}>Layer</FakeButton>
-        <FakeButton onClick={(() => { })}>Concat</FakeButton>
-        <FakeButton onClick={(() => { })}>Repeat</FakeButton>
-        <FakeButton onClick={(() => { })}>Facet</FakeButton>
-      </div>
-      <div className="undo-redo-group">
-        <FakeButton onClick={onUndo}>
-          <RotateCcw />
-          &nbsp; Undo
-        </FakeButton>
-        <FakeButton onClick={onRedo}>
-          <RotateCw />
-          &nbsp; Redo
-        </FakeButton>
-      </div>
-    </div>
+    <Grid container justify="space-between">
+      <Grid item>
+        <Button onClick={() => {}}>Layer</Button>
+        <Button onClick={() => {}}>Concat</Button>
+        <Button onClick={() => {}}>Repeat</Button>
+        <Button onClick={() => {}}>Facet</Button>
+      </Grid>
+      <Grid item>
+        <Button onClick={onUndo}>
+          <Undo /> &nbsp; Undo
+        </Button>
+        <Button onClick={onRedo}>
+          <Redo /> &nbsp; Redo
+        </Button>
+      </Grid>
+    </Grid>
   );
 };

@@ -1,17 +1,18 @@
 import React from 'react';
-import ReactModal from 'react-modal';
 import MonacoEditor, { EditorDidMount } from 'react-monaco-editor';
-import { FakeButton } from './FakeButton';
-import { X, Save } from 'react-feather';
+import Close from '@material-ui/icons/Close';
+import Save from '@material-ui/icons/Save';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
-
-ReactModal.setAppElement('#root');
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 
 export interface IPopupEditorProps {
   isOpen: boolean;
   onClose: (toSave: boolean) => void;
-  contentLabel: string;
   value: string;
   setValue: (txt: string) => void;
   alias: string;
@@ -20,18 +21,28 @@ export interface IPopupEditorProps {
   extras: React.ReactNode[];
 }
 
+const editorHeight = 400;
+
 const useStyles = makeStyles(theme => ({
   textField: {
     marginTop: theme.spacing(0),
     marginBottom: theme.spacing(4),
-    width: 300,
+    width: 300
   },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1)
+  },
+  errorMessage: {
+    fontStyle: 'italic',
+    color: 'red'
+  }
 }));
 
 export const PopupEditor: React.FC<IPopupEditorProps> = ({
   isOpen,
   onClose,
-  contentLabel,
   value,
   setValue,
   alias,
@@ -44,46 +55,57 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
   const handleEditorDidMount: EditorDidMount = editor => editor.focus();
 
   return (
-    <ReactModal isOpen={isOpen} contentLabel={contentLabel} className="modal">
-      <div className="modal-toolbar">
-        <div className="modal-buttons">
-          <FakeButton onClick={() => onClose(false)}>
-            <X />
-            &nbsp; Close
-          </FakeButton>
-          <FakeButton onClick={() => onClose(true)}>
-            <Save />
-            &nbsp; Save
-          </FakeButton>
-          {extras}
-        </div>
-        <span className="error-msg">{errorMsg ? errorMsg : null}</span>
-      </div>
-      <TextField
-        id="standard-name"
-        label="Name"
-        className={classes.textField}
-        value={alias}
-        onChange={event => setAlias(event.target.value)}
-        margin="normal"
-      />
-      <div className="editor">
-        <MonacoEditor
-          language="json"
-          value={value}
-          onChange={txt => setValue(txt)}
-          editorDidMount={handleEditorDidMount}
-          options={{
-            automaticLayout: true,
-            cursorBlinking: 'smooth',
-            folding: true,
-            lineNumbersMinChars: 4,
-            minimap: { enabled: false },
-            scrollBeyondLastLine: false,
-            wordWrap: 'on'
-          }}
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      aria-labelledby="form-dialog-title"
+      maxWidth="lg"
+      fullWidth={true}
+    >
+      <DialogTitle disableTypography>
+        <TextField
+          id="standard-name"
+          label="Name"
+          className={classes.textField}
+          value={alias}
+          onChange={event => setAlias(event.target.value)}
+          margin="normal"
         />
-      </div>
-    </ReactModal>
+        <Button onClick={() => onClose(true)}>
+          <Save />
+          &nbsp; Save
+        </Button>
+        {extras}
+        <IconButton
+          className={classes.closeButton}
+          onClick={() => onClose(false)}
+        >
+          <Close />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <div className="editor">
+          <MonacoEditor
+            language="json"
+            value={value}
+            height={editorHeight}
+            onChange={txt => setValue(txt)}
+            editorDidMount={handleEditorDidMount}
+            options={{
+              automaticLayout: true,
+              cursorBlinking: 'smooth',
+              folding: true,
+              lineNumbersMinChars: 4,
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              wordWrap: 'on'
+            }}
+          />
+        </div>
+        <span className={classes.errorMessage}>
+          {errorMsg ? errorMsg : null}
+        </span>
+      </DialogContent>
+    </Dialog>
   );
 };

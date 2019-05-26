@@ -1,25 +1,39 @@
 import React from 'react';
-import ReactTooltip from 'react-tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles } from '@material-ui/core/styles';
 
 export interface ITooltipTableProps {
-  id: string;
-  children: string[][];
+  table: string[][];
+  children: any;
 }
 
+const useStyles = makeStyles(_ => ({
+  keyColumn: { textAlign: 'right' }
+}));
+
 export const TooltipTable: React.FC<ITooltipTableProps> = ({
-  id,
+  table,
   children
-}) => (
-  <ReactTooltip effect="solid" id={id}>
-    <table className="tooltip-table">
-      {children.map(([key, val]) => (
-        <tr>
-          <td>
-            <strong>{key}</strong>:
-          </td>
-          <td>{val}</td>
-        </tr>
-      ))}
+}) => {
+  const classes = useStyles();
+  const title = (
+    <table>
+      <tbody>
+        {table.map(([key, val]) => (
+          <tr key={key}>
+            <td className={classes.keyColumn}>
+              <strong>{key}</strong>:
+            </td>
+            <td>{val}</td>
+          </tr>
+        ))}
+      </tbody>
     </table>
-  </ReactTooltip>
-);
+  );
+
+  return (
+    <Tooltip placement="top" title={title}>
+      {children}
+    </Tooltip>
+  );
+};

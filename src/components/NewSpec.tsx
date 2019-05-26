@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus } from 'react-feather';
+import PlaylistAdd from '@material-ui/icons/PlaylistAdd';
 import { VegaLiteEditor } from './VegaLiteEditor';
-import { FakeButton } from './FakeButton';
+import Button from '@material-ui/core/Button';
 
 export interface INewSpecProps {
   onAdd: (alias: string, json: any) => void;
@@ -20,16 +20,12 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
 
   return (
     <>
-      <div className="new-spec">
-        <FakeButton onClick={handleOpen}>
-          <Plus className="preview-icon" />
-          &nbsp; New Spec
-        </FakeButton>
-      </div>
+      <Button onClick={handleOpen}>
+        <PlaylistAdd /> &nbsp; New Spec
+      </Button>
       <VegaLiteEditor
         showModal={showModal}
         setShowModal={setShowModal}
-        contentLabel="New Spec"
         onSuccess={onAdd}
         value={currentSpec}
         setValue={setCurrentSpec}

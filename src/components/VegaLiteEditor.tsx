@@ -3,7 +3,7 @@ import { PopupEditor } from './PopupEditor';
 import { success, failure } from '../utils';
 import * as vl from 'vega-lite';
 import stringify from 'json-stringify-pretty-compact';
-import { FakeButton } from './FakeButton';
+import Button from '@material-ui/core/Button';
 
 export interface IVegaLiteEditorProps {
   showModal: boolean;
@@ -12,7 +12,6 @@ export interface IVegaLiteEditorProps {
   setValue: (txt: string) => void;
   alias: string;
   setAlias: (txt: string) => void;
-  contentLabel: string;
   onSuccess: (alias: string, json: any) => void;
 }
 
@@ -53,7 +52,6 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
   setValue,
   alias,
   setAlias,
-  contentLabel,
   onSuccess
 }) => {
   const [errorMsg, setErrorMsg] = useState('');
@@ -102,15 +100,14 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
   };
 
   const extras = examples.map((example, i) => (
-    <FakeButton key={i} onClick={() => setValue(stringify(example))}>
+    <Button key={i} onClick={() => setValue(stringify(example))}>
       Example {i + 1}
-    </FakeButton>
+    </Button>
   ));
 
   return (
     <PopupEditor
       isOpen={showModal}
-      contentLabel={contentLabel}
       onClose={handleClose}
       value={value}
       setValue={setValue}

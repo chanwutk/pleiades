@@ -1,10 +1,31 @@
 import React, { useState } from 'react';
+import { hot } from 'react-hot-loader';
 import * as R from 'ramda';
 import { NavigationBar } from './components/NavigationBar';
 import { NewSpec } from './components/NewSpec';
 import { MainView } from './components/MainView';
 import { ModeBar } from './components/ModeBar';
-import './App.scss';
+import { makeStyles } from '@material-ui/core/styles';
+import { sidebarWidth } from './variables';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: 600,
+    display: 'flex'
+  },
+  left: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    width: sidebarWidth,
+    marginRight: theme.spacing(1)
+  },
+  right: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column'
+  }
+}));
 
 const App: React.FC = () => {
   const [states, setStates] = useState<State[]>([{ specs: [], specCount: 0 }]);
@@ -19,7 +40,7 @@ const App: React.FC = () => {
     const { specs, specCount } = states[0];
     addState({
       specs: R.append({ id: specCount, spec: json, alias }, specs),
-      specCount: specCount + 1,
+      specCount: specCount + 1
     });
   };
 
@@ -28,7 +49,9 @@ const App: React.FC = () => {
       R.over(
         R.lensProp('specs'),
         (specs: RawSpec[]) =>
-          specs.map(spec => (spec.id === id ? { id, spec: json, alias } : spec)),
+          specs.map(
+            spec => (spec.id === id ? { id, spec: json, alias } : spec)
+          ),
         states[0]
       )
     );
@@ -58,9 +81,11 @@ const App: React.FC = () => {
     }
   };
 
+  const classes = useStyles();
+
   return (
-    <div id="main">
-      <div className="left-side">
+    <div className={classes.root}>
+      <div className={classes.left}>
         <NewSpec onAdd={handleAddSpec} />
         <NavigationBar
           specs={states[0].specs}
@@ -68,7 +93,7 @@ const App: React.FC = () => {
           onDelete={handleDeleteSpec}
         />
       </div>
-      <div className="right-side">
+      <div className={classes.right}>
         <ModeBar onUndo={handleUndo} onRedo={handleRedo} />
         <MainView />
       </div>
@@ -76,4 +101,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default hot(module)(App);

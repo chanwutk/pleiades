@@ -1,5 +1,15 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  main: {
+    backgroundColor: theme.palette.grey[200],
+    marginTop: theme.spacing(1),
+    flexGrow: 1
+  }
+}));
 
 export const MainView: React.FC = () => {
-  return <div className="main-view" />;
+  const classes = useStyles();
+  return <div className={classes.main} />;
 };

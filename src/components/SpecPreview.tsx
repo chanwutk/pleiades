@@ -1,29 +1,46 @@
 import React, { useState } from 'react';
 import VegaLite from 'react-vega-lite';
-import classNames from 'classnames';
 import stringify from 'json-stringify-pretty-compact';
-import { Edit, Trash2 } from 'react-feather';
+import Delete from '@material-ui/icons/Delete';
+import Edit from '@material-ui/icons/Edit';
 import { VegaLiteEditor } from './VegaLiteEditor';
-import { FakeButton } from './FakeButton';
-import { previewWidth } from '../App.scss';
 import { TooltipTable } from './TooltipTable';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/core/styles';
+import { sidebarWidth } from '../variables';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
   active: boolean;
-  onActivate: () => void;
+  onToggleActive: () => void;
   onModify: (alise: string, json: any) => void;
   onDelete: () => void;
 }
 
 const MemoizedVegaLite = React.memo(VegaLite);
 
+const useStyles = makeStyles(_ => ({
+  image: {
+    overflow: 'hidden',
+    height: sidebarWidth
+  },
+  preview: {
+    position: 'relative',
+    border: 1,
+    borderColor: ((active: boolean) => (active ? 'orange' : 'white')) as any,
+    borderStyle: 'solid'
+  }
+}));
+
 export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   spec,
-  active,
-  onActivate,
+  onToggleActive,
   onModify,
-  onDelete
+  onDelete,
+  active
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
@@ -39,38 +56,41 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
     onDelete();
   };
 
+  const classes = useStyles(active);
+
   return (
     <>
-      <div
-        className={classNames({ active: active, preview: true })}
-        onClick={onActivate}
-      >
-        <div className="preview-image" data-tip data-for={spec.id + ''}>
-          <MemoizedVegaLite
-            spec={spec.spec}
-            width={+previewWidth}
-            height={+previewWidth}
-          />
-        </div>
-
-        <TooltipTable id={spec.id + ''}>
-          {[['Data URL', spec.spec.data.url], ['Mark Type', spec.spec.mark]]}
+      <ListItem className={classes.preview} onClick={onToggleActive}>
+        <TooltipTable
+          table={[
+            ['Data URL', spec.spec.data.url],
+            ['Mark Type', spec.spec.mark]
+          ]}
+        >
+          <div className={classes.image}>
+            <MemoizedVegaLite
+              spec={spec.spec}
+              width={sidebarWidth}
+              height={sidebarWidth}
+            />
+          </div>
         </TooltipTable>
 
-        <div className="preview-side">
-          <FakeButton onClick={handleModify}>
+        <Box position="absolute" right="0" top="0">
+          <Button onClick={handleModify}>
             <Edit />
-          </FakeButton>
-          <FakeButton onClick={handleDelete}>
-            <Trash2 />
-          </FakeButton>
-        </div>
-      </div>
-      <div>{spec.alias}</div>
+          </Button>
+          <Button onClick={handleDelete}>
+            <Delete />
+          </Button>
+        </Box>
+
+        <div>{spec.alias}</div>
+      </ListItem>
+      <Divider />
       <VegaLiteEditor
         showModal={showModal}
         setShowModal={setShowModal}
-        contentLabel="Modify Spec"
         onSuccess={onModify}
         value={currentSpec}
         setValue={setCurrentSpec}

@@ -1,4 +1,4 @@
-declare module '*.scss'
+declare module '*.scss';
 
 interface Success<T> {
   tag: 'success';
@@ -17,8 +17,8 @@ interface RawSpec {
 }
 
 interface State {
-  specs: RawSpec[],
-  specCount: number
+  specs: RawSpec[];
+  specCount: number;
 }
 
 type Either<S, T> = Success<S> | Failure<T>;
