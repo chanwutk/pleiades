@@ -10,7 +10,7 @@ export const TooltipTable: React.FC<ITooltipTableProps> = ({
   id,
   children
 }) => (
-  <ReactTooltip effect="solid" id={id + ''}>
+  <ReactTooltip effect="solid" id={id}>
     <table className="tooltip-table">
       {children.map(([key, val]) => (
         <tr>
