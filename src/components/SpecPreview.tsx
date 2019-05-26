@@ -6,6 +6,7 @@ import { Edit, Trash2 } from 'react-feather';
 import { VegaLiteEditor } from './VegaLiteEditor';
 import { FakeButton } from './FakeButton';
 import { previewWidth } from '../App.scss';
+import { TooltipTable } from './TooltipTable';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
@@ -42,13 +43,18 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
         className={classNames({ active: active, preview: true })}
         onClick={onActivate}
       >
-        <div className="preview-image">
+        <div className="preview-image" data-tip data-for={spec.id + ''}>
           <MemoizedVegaLite
             spec={spec.spec}
             width={+previewWidth}
             height={+previewWidth}
           />
         </div>
+
+        <TooltipTable id={spec.id + ''}>
+          {[['Data URL', spec.spec.data.url], ['Mark Type', spec.spec.mark]]}
+        </TooltipTable>
+
         <div className="preview-side">
           <FakeButton onClick={handleModify}>
             <Edit />
