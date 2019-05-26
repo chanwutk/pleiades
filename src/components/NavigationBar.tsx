@@ -3,7 +3,7 @@ import { SpecPreview } from './SpecPreview';
 
 export interface INavigationBarProps {
   specs: RawSpec[];
-  onModify: (id: number) => (json: any) => void;
+  onModify: (id: number) => (alias: string, json: any) => void;
   onDelete: (id: number) => () => void;
 }
 

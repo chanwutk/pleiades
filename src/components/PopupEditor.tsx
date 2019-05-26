@@ -3,6 +3,8 @@ import ReactModal from 'react-modal';
 import MonacoEditor, { EditorDidMount } from 'react-monaco-editor';
 import { FakeButton } from './FakeButton';
 import { X, Save } from 'react-feather';
+import { makeStyles } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core';
 
 ReactModal.setAppElement('#root');
 
@@ -12,9 +14,19 @@ export interface IPopupEditorProps {
   contentLabel: string;
   value: string;
   setValue: (txt: string) => void;
+  alias: string;
+  setAlias: (txt: string) => void;
   errorMsg?: string;
   extras: React.ReactNode[];
 }
+
+const useStyles = makeStyles(theme => ({
+  textField: {
+    marginTop: theme.spacing(0),
+    marginBottom: theme.spacing(4),
+    width: 300,
+  },
+}));
 
 export const PopupEditor: React.FC<IPopupEditorProps> = ({
   isOpen,
@@ -22,10 +34,15 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
   contentLabel,
   value,
   setValue,
+  alias,
+  setAlias,
   errorMsg,
   extras
 }) => {
+  const classes = useStyles();
+
   const handleEditorDidMount: EditorDidMount = editor => editor.focus();
+
   return (
     <ReactModal isOpen={isOpen} contentLabel={contentLabel} className="modal">
       <div className="modal-toolbar">
@@ -42,6 +59,14 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
         </div>
         <span className="error-msg">{errorMsg ? errorMsg : null}</span>
       </div>
+      <TextField
+        id="standard-name"
+        label="Name"
+        className={classes.textField}
+        value={alias}
+        onChange={event => setAlias(event.target.value)}
+        margin="normal"
+      />
       <div className="editor">
         <MonacoEditor
           language="json"

@@ -10,8 +10,10 @@ export interface IVegaLiteEditorProps {
   setShowModal: (val: boolean) => void;
   value: string;
   setValue: (txt: string) => void;
+  alias: string;
+  setAlias: (txt: string) => void;
   contentLabel: string;
-  onSuccess: (json: any) => void;
+  onSuccess: (alias: string, json: any) => void;
 }
 
 const examples = [
@@ -49,6 +51,8 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
   setShowModal,
   value,
   setValue,
+  alias,
+  setAlias,
   contentLabel,
   onSuccess
 }) => {
@@ -82,7 +86,7 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
       switch (result.tag) {
         case 'success':
           setErrorMsg('');
-          onSuccess(result.value);
+          onSuccess(alias, result.value);
           setShowModal(false);
           return;
         case 'failure':
@@ -110,6 +114,8 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
       onClose={handleClose}
       value={value}
       setValue={setValue}
+      alias={alias}
+      setAlias={setAlias}
       errorMsg={errorMsg}
       extras={extras}
     />

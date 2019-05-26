@@ -15,20 +15,20 @@ const App: React.FC = () => {
     setRedoStack([]);
   };
 
-  const handleAddSpec = (json: any) => {
+  const handleAddSpec = (alias: string, json: any) => {
     const { specs, specCount } = states[0];
     addState({
-      specs: R.append({ id: specCount, spec: json }, specs),
-      specCount: specCount + 1
+      specs: R.append({ id: specCount, spec: json, alias }, specs),
+      specCount: specCount + 1,
     });
   };
 
-  const handleModifySpec = (id: number) => (json: any) => {
+  const handleModifySpec = (id: number) => (alias: string, json: any) => {
     addState(
       R.over(
         R.lensProp('specs'),
         (specs: RawSpec[]) =>
-          specs.map(spec => (spec.id === id ? { id, spec: json } : spec)),
+          specs.map(spec => (spec.id === id ? { id, spec: json, alias } : spec)),
         states[0]
       )
     );

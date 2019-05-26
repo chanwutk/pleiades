@@ -12,6 +12,7 @@ interface Failure<T> {
 
 interface RawSpec {
   spec: any;
+  alias: string;
   id: number;
 }
 

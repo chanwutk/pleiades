@@ -4,15 +4,17 @@ import { VegaLiteEditor } from './VegaLiteEditor';
 import { FakeButton } from './FakeButton';
 
 export interface INewSpecProps {
-  onAdd: (json: any) => void;
+  onAdd: (alias: string, json: any) => void;
 }
 
 export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
+  const [currentAlias, setCurrentAlias] = useState('');
 
   const handleOpen = () => {
     setCurrentSpec('');
+    setCurrentAlias('');
     setShowModal(true);
   };
 
@@ -31,6 +33,8 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
         onSuccess={onAdd}
         value={currentSpec}
         setValue={setCurrentSpec}
+        alias={currentAlias}
+        setAlias={setCurrentAlias}
       />
     </>
   );

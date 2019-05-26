@@ -12,7 +12,7 @@ export interface ISpecPreviewProps {
   spec: RawSpec;
   active: boolean;
   onActivate: () => void;
-  onModify: (json: any) => void;
+  onModify: (alise: string, json: any) => void;
   onDelete: () => void;
 }
 
@@ -27,9 +27,11 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
+  const [currentAlias, setCurrentAlias] = useState('');
 
   const handleModify = () => {
     setCurrentSpec(stringify(spec.spec));
+    setCurrentAlias(spec.alias);
     setShowModal(true);
   };
 
@@ -64,6 +66,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
           </FakeButton>
         </div>
       </div>
+      <div>{spec.alias}</div>
       <VegaLiteEditor
         showModal={showModal}
         setShowModal={setShowModal}
@@ -71,6 +74,8 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
         onSuccess={onModify}
         value={currentSpec}
         setValue={setCurrentSpec}
+        alias={currentAlias}
+        setAlias={setCurrentAlias}
       />
     </>
   );
