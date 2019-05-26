@@ -14,7 +14,9 @@ const useStyles = makeStyles(theme => ({
   list: {
     overflowY: 'auto',
     overflowX: 'hidden',
-    flexGrow: 1
+    flexGrow: 1,
+    paddingTop: 0,
+    paddingBottom: 0
   }
 }));
 
