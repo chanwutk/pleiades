@@ -111,11 +111,14 @@ $preview-width: 150;
   // justify-content: center;
 }
 
+$button-color: 240;
+$button-color-hover: 192;
+
 .fake-button {
   padding: 10px;
   margin: 5px;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba($button-color, $button-color, $button-color, 0.8);
   border-radius: 10px;
   height: 25px;
   display: flex;
@@ -124,7 +127,12 @@ $preview-width: 150;
   user-select: none;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(
+      $button-color-hover,
+      $button-color-hover,
+      $button-color-hover,
+      0.8
+    );
   }
 }
 
