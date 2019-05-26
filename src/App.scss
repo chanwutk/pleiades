@@ -43,6 +43,12 @@ $preview-width: 150;
   display: flex;
   background-color: white;
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.mode-bar > * {
+  display: flex;
 }
 
 .main-view {
