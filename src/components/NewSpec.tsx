@@ -8,7 +8,6 @@ export interface INewSpecProps {
 }
 
 export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
-
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
 

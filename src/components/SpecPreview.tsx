@@ -24,7 +24,6 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   onModify,
   onDelete
 }) => {
-
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
 
@@ -40,11 +39,9 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   return (
     <>
       <div
-        className={classNames({
-          'active': active,
-          'preview': true
-        })}
-        onClick={onActivate} >
+        className={classNames({ active: active, preview: true })}
+        onClick={onActivate}
+      >
         <div className="preview-image">
           <MemoizedVegaLite
             spec={spec.spec}
@@ -56,7 +53,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
           <FakeButton onClick={handleModify}>
             <Edit />
           </FakeButton>
-          <FakeButton onClick={handleDelete} >
+          <FakeButton onClick={handleDelete}>
             <Trash2 />
           </FakeButton>
         </div>

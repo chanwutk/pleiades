@@ -1,7 +1,5 @@
 import React from 'react';
 
 export const MainView: React.FC = () => {
-  return (
-    <div className="main-view" />
-  );
+  return <div className="main-view" />;
 };

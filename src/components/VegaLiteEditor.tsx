@@ -12,8 +12,14 @@ export interface IVegaLiteEditorProps {
   onSuccess: (json: any) => void;
 }
 
-export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({ showModal, setShowModal, value, setValue, contentLabel, onSuccess }) => {
-
+export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
+  showModal,
+  setShowModal,
+  value,
+  setValue,
+  contentLabel,
+  onSuccess
+}) => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const stringToSpec = (value: string) => {
@@ -36,7 +42,7 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({ showModal, setS
         throw e;
       }
     }
-  }
+  };
 
   const handleClose = (toSave: boolean) => {
     if (toSave) {
@@ -45,7 +51,8 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({ showModal, setS
         case 'success':
           setErrorMsg('');
           onSuccess(result.value);
-          setShowModal(false); return;
+          setShowModal(false);
+          return;
         case 'failure':
           setErrorMsg(result.value);
           // NOTE: this does not close the dialog
@@ -53,9 +60,10 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({ showModal, setS
       }
     } else {
       setErrorMsg('');
-      setShowModal(false); return;
+      setShowModal(false);
+      return;
     }
-  }
+  };
 
   return (
     <PopupEditor

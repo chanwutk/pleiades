@@ -7,20 +7,19 @@ export interface INavigationBarProps {
   onDelete: (id: number) => () => void;
 }
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({ specs, onModify, onDelete }) => {
-  const [activePreview, setActivePreview] = useState(null);
+export const NavigationBar: React.FC<INavigationBarProps> = ({
+  specs,
+  onModify,
+  onDelete
+}) => {
+  const [activePreview, setActivePreview] = useState<number | null>(null);
 
-  const handleActivate = id => () => {
-    if (activePreview === id) {
-      setActivePreview(null);
-    } else {
-      setActivePreview(id);
-    }
-  }
+  const handleActivate = (id: number) => () =>
+    setActivePreview(activePreview === id ? null : id);
 
   return (
     <div className="nav-bar">
-      {specs.map((spec) => (
+      {specs.map(spec => (
         <SpecPreview
           key={spec.id}
           spec={spec}
