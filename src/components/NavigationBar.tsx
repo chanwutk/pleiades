@@ -3,6 +3,7 @@ import { SpecPreview } from './SpecPreview';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
+import { RawSpec } from '../global';
 
 export interface INavigationBarProps {
   specs: RawSpec[];

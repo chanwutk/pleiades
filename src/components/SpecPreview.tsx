@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { sidebarWidth } from '../variables';
 import shallowequal from 'shallowequal';
+import { RawSpec } from '../global';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
@@ -21,7 +22,7 @@ export interface ISpecPreviewProps {
   onDelete: () => void;
 }
 
-const MemoizedVegaLite = React.memo(
+export const MemoizedVegaLite = React.memo(
   VegaLite,
   ({ spec: xSpec, ...xRest }, { spec: ySpec, ...yRest }) => {
     return shallowequal(xRest, yRest) && Vega.isSameSpec(xSpec, ySpec);

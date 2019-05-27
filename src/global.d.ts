@@ -1,3 +1,4 @@
+import { View } from './SyntaxTree/View';
 declare module '*.scss';
 
 interface Success<T> {
@@ -19,6 +20,10 @@ interface RawSpec {
 interface State {
   specs: RawSpec[];
   specCount: number;
+  mode: Mode;
+  mainViewElements: View | null;
 }
+
+type Mode = "initial" | "layer" | "concat" | "repeat" | "facet" | null;
 
 type Either<S, T> = Success<S> | Failure<T>;
