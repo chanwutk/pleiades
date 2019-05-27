@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 const App: React.FC = () => {
   const [states, setStates] = useState<State[]>([{ specs: [], specCount: 0, mode: "initial", mainViewElements: null }]);
   const [redoStack, setRedoStack] = useState<State[]>([]);
-  const [viz, setViz] = useState<React.FC | null>(null);
+  const [viz, setViz] = useState<JSX.Element>(<div>Empty View</div>);
 
   const addState = (state: State) => {
     setStates(R.prepend(state, states));
@@ -111,7 +111,7 @@ const App: React.FC = () => {
           onUndo={handleUndo}
           onRedo={handleRedo}
           onSelectMode={handleSelectMode}
-          state={states[0]}
+          mode={states[0].mode}
         />
         <MainView viz={viz} />
       </div>

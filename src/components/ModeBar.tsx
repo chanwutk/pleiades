@@ -9,28 +9,28 @@ interface IModeBarProps {
   onUndo: () => void;
   onRedo: () => void;
   onSelectMode: (mode: Mode) => void;
-  state: State;
+  mode: Mode;
 }
 
-export const ModeBar: React.FC<IModeBarProps> = ({ onUndo, onRedo, onSelectMode, state }) => {
+export const ModeBar: React.FC<IModeBarProps> = ({ onUndo, onRedo, onSelectMode, mode }) => {
   return (
     <Grid container justify="space-between">
       <Grid item>
         <Button
           onClick={() => onSelectMode("layer")}
-          disabled={!!state.mode}
+          disabled={!!mode}
         >Layer</Button>
         <Button
           onClick={() => onSelectMode("concat")}
-          disabled={!!state.mode}
+          disabled={!!mode}
         >Concat</Button>
         <Button
           onClick={() => onSelectMode("repeat")}
-          disabled={!!state.mode}
+          disabled={!!mode}
         >Repeat</Button>
         <Button
           onClick={() => onSelectMode("facet")}
-          disabled={!!state.mode}
+          disabled={!!mode}
         >Facet</Button>
       </Grid>
       <Grid item>

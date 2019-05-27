@@ -1,4 +1,4 @@
-import { View } from './SyntaxTree/View';
+import { View, ViewHolder } from './SyntaxTree/View';
 declare module '*.scss';
 
 interface Success<T> {
@@ -21,7 +21,7 @@ interface State {
   specs: RawSpec[];
   specCount: number;
   mode: Mode;
-  mainViewElements: View | null;
+  mainViewElements: ViewHolder | null;
 }
 
 type Mode = "initial" | "layer" | "concat" | "repeat" | "facet" | null;
