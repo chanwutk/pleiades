@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { hot } from 'react-hot-loader';
-import * as R from 'ramda';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { NavigationBar } from './components/NavigationBar';
 import { NewSpec } from './components/NewSpec';
 import { MainView } from './components/MainView';
 import { ModeBar } from './components/ModeBar';
-import { makeStyles } from '@material-ui/core/styles';
 import { sidebarWidth } from './variables';
+import { AppDispatch } from './contexts';
+import { reducer } from './reducer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,76 +30,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App: React.FC = () => {
-  const [states, setStates] = useState<State[]>([{ specs: [], specCount: 0 }]);
-  const [redoStack, setRedoStack] = useState<State[]>([]);
-
-  const addState = (state: State) => {
-    setStates(R.prepend(state, states));
-    setRedoStack([]);
-  };
-
-  const handleAddSpec = (alias: string, json: any) => {
-    const { specs, specCount } = states[0];
-    addState({
-      specs: R.append({ id: specCount, spec: json, alias }, specs),
-      specCount: specCount + 1
-    });
-  };
-
-  const handleModifySpec = (id: number) => (alias: string, json: any) => {
-    addState(
-      R.over(
-        R.lensProp('specs'),
-        (specs: RawSpec[]) =>
-          specs.map(
-            spec => (spec.id === id ? { id, spec: json, alias } : spec)
-          ),
-        states[0]
-      )
-    );
-  };
-
-  const handleDeleteSpec = (id: number) => () => {
-    addState(
-      R.over(
-        R.lensProp('specs'),
-        (specs: RawSpec[]) => specs.filter(spec => spec.id !== id),
-        states[0]
-      )
-    );
-  };
-
-  const handleUndo = () => {
-    if (states.length > 1) {
-      setRedoStack(R.prepend(states[0], redoStack));
-      setStates(states.slice(1));
-    }
-  };
-
-  const handleRedo = () => {
-    if (redoStack.length > 0) {
-      setStates(R.prepend(redoStack[0], states));
-      setRedoStack(redoStack.slice(1));
-    }
-  };
+  const [state, dispatch] = useReducer<Reducer>(reducer, {
+    current: { specs: [], specCount: 0 },
+    undoStack: [],
+    redoStack: []
+  });
 
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <div className={classes.left}>
-        <NewSpec onAdd={handleAddSpec} />
-        <NavigationBar
-          specs={states[0].specs}
-          onModify={handleModifySpec}
-          onDelete={handleDeleteSpec}
-        />
+    <AppDispatch.Provider value={dispatch}>
+      <div className={classes.root}>
+        <div className={classes.left}>
+          <NewSpec />
+          <NavigationBar specs={state.current.specs} />
+        </div>
+        <div className={classes.right}>
+          <ModeBar />
+          <MainView />
+        </div>
       </div>
-      <div className={classes.right}>
-        <ModeBar onUndo={handleUndo} onRedo={handleRedo} />
-        <MainView />
-      </div>
-    </div>
+    </AppDispatch.Provider>
   );
 };
 

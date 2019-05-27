@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { PopupEditor } from './PopupEditor';
-import { success, failure } from '../utils';
 import * as vl from 'vega-lite';
 import stringify from 'json-stringify-pretty-compact';
 import Button from '@material-ui/core/Button';
+
+import { success, failure } from '../utils';
+import { PopupEditor } from './PopupEditor';
 
 export interface IVegaLiteEditorProps {
   showModal: boolean;

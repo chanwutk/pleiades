@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { SpecPreview } from './SpecPreview';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 
+import { SpecPreview } from './SpecPreview';
+
 export interface INavigationBarProps {
-  specs: RawSpec[];
-  onModify: (id: number) => (alias: string, json: any) => void;
-  onDelete: (id: number) => () => void;
+  specs: IBaseSpec[];
 }
 
 const useStyles = makeStyles(theme => ({
@@ -20,11 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({
-  specs,
-  onModify,
-  onDelete
-}) => {
+export const NavigationBar: React.FC<INavigationBarProps> = ({ specs }) => {
   const [activePreview, setActivePreview] = useState<number | null>(null);
 
   const handleToggleActive = (id: number) => () =>
@@ -41,8 +36,6 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({
           spec={spec}
           active={spec.id === activePreview}
           onToggleActive={handleToggleActive(spec.id)}
-          onModify={onModify(spec.id)}
-          onDelete={onDelete(spec.id)}
         />
       ))}
     </List>

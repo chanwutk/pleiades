@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PlaylistAdd from '@material-ui/icons/PlaylistAdd';
-import { VegaLiteEditor } from './VegaLiteEditor';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-export interface INewSpecProps {
-  onAdd: (alias: string, json: any) => void;
-}
+import { AppDispatch } from '../contexts';
+import { VegaLiteEditor } from './VegaLiteEditor';
 
 const useStyles = makeStyles(theme => ({
   button: { marginBottom: theme.spacing(1) }
 }));
 
-export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
+export const NewSpec: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
+
+  const dispatch = useContext(AppDispatch);
+
+  const handleSuccess = (alias: string, json: any) => {
+    dispatch({ type: 'add-spec', json, alias });
+  };
 
   const handleOpen = () => {
     setCurrentSpec('');
@@ -33,7 +37,7 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
       <VegaLiteEditor
         showModal={showModal}
         setShowModal={setShowModal}
-        onSuccess={onAdd}
+        onSuccess={handleSuccess}
         value={currentSpec}
         setValue={setCurrentSpec}
         alias={currentAlias}

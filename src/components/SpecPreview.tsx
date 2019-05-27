@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import shallowequal from 'shallowequal';
 import VegaLite from 'react-vega-lite';
 import Vega from 'react-vega';
 import stringify from 'json-stringify-pretty-compact';
@@ -10,15 +11,14 @@ import Fab from '@material-ui/core/Fab';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { AppDispatch } from '../contexts';
 import { sidebarWidth } from '../variables';
-import shallowequal from 'shallowequal';
 
 export interface ISpecPreviewProps {
-  spec: RawSpec;
+  spec: IBaseSpec;
   active: boolean;
   onToggleActive: () => void;
-  onModify: (alise: string, json: any) => void;
-  onDelete: () => void;
 }
 
 const MemoizedVegaLite = React.memo(
@@ -76,8 +76,6 @@ const useStyles = makeStyles(theme => ({
 export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   spec,
   onToggleActive,
-  onModify,
-  onDelete,
   active
 }) => {
   const [showModal, setShowModal] = useState(false);
@@ -90,8 +88,14 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
     setShowModal(true);
   };
 
+  const dispatch = useContext(AppDispatch);
+
   const handleDelete = () => {
-    onDelete();
+    dispatch({ type: 'delete-spec', id: spec.id });
+  };
+
+  const handleSuccess = (alias: string, json: any) => {
+    dispatch({ type: 'modify-spec', json, alias, id: spec.id });
   };
 
   const classes = useStyles(active);
@@ -137,7 +141,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
       <VegaLiteEditor
         showModal={showModal}
         setShowModal={setShowModal}
-        onSuccess={onModify}
+        onSuccess={handleSuccess}
         value={currentSpec}
         setValue={setCurrentSpec}
         alias={currentAlias}

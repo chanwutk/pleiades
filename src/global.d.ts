@@ -1,24 +1,30 @@
-declare module '*.scss';
-
-interface Success<T> {
+interface ISuccess<T> {
   tag: 'success';
   value: T;
 }
 
-interface Failure<T> {
+interface IFailure<T> {
   tag: 'failure';
   value: T;
 }
 
-interface RawSpec {
+type Either<S, T> = ISuccess<S> | IFailure<T>;
+
+interface IBaseSpec {
   spec: any;
   alias: string;
   id: number;
 }
 
-interface State {
+interface IState {
   specs: RawSpec[];
   specCount: number;
 }
 
-type Either<S, T> = Success<S> | Failure<T>;
+interface IGlobalState {
+  undoStack: IState[];
+  redoStack: IState[];
+  current: IState;
+}
+
+type Reducer = React.Reducer<IGlobalState, Action>;
