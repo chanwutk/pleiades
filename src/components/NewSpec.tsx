@@ -19,7 +19,7 @@ export const NewSpec: React.FC<INewSpecProps> = ({ onAdd }) => {
 
   const handleOpen = () => {
     setCurrentSpec('');
-    setCurrentAlias('');
+    setCurrentAlias('Untitled');
     setShowModal(true);
   };
 

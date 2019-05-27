@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import VegaLite from 'react-vega-lite';
+import Vega from 'react-vega';
 import stringify from 'json-stringify-pretty-compact';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
@@ -10,6 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { sidebarWidth } from '../variables';
+import shallowequal from 'shallowequal';
 
 export interface ISpecPreviewProps {
   spec: RawSpec;
@@ -19,7 +21,12 @@ export interface ISpecPreviewProps {
   onDelete: () => void;
 }
 
-const MemoizedVegaLite = React.memo(VegaLite);
+const MemoizedVegaLite = React.memo(
+  VegaLite,
+  ({ spec: xSpec, ...xRest }, { spec: ySpec, ...yRest }) => {
+    return shallowequal(xRest, yRest) && Vega.isSameSpec(xSpec, ySpec);
+  }
+);
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
