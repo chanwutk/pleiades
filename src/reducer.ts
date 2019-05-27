@@ -82,3 +82,14 @@ export const reducer: Reducer = (globalState, action) => {
       throw new Error('impossible');
   }
 };
+
+export const initialState: IGlobalState = {
+  current: {
+    specs: [],
+    specCount: 0,
+    mode: 'initial',
+    mainViewElements: null
+  },
+  undoStack: [],
+  redoStack: []
+};

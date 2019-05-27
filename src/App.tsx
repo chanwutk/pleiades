@@ -8,7 +8,7 @@ import { MainView } from './components/MainView';
 import { ModeBar } from './components/ModeBar';
 import { sidebarWidth } from './variables';
 import { AppDispatch } from './contexts';
-import { reducer } from './reducer';
+import { reducer, initialState } from './reducer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,16 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App: React.FC = () => {
-  const [state, dispatch] = useReducer<Reducer>(reducer, {
-    current: {
-      specs: [],
-      specCount: 0,
-      mode: 'initial',
-      mainViewElements: null
-    },
-    undoStack: [],
-    redoStack: []
-  });
+  const [state, dispatch] = useReducer<Reducer>(reducer, initialState);
   const [viz, setViz] = useState<JSX.Element>(<div>Empty View</div>);
 
   const classes = useStyles();

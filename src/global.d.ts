@@ -17,7 +17,7 @@ interface IBaseSpec {
 }
 
 interface IState {
-  specs: RawSpec[];
+  specs: IBaseSpec[];
   specCount: number;
   mode: Mode;
   mainViewElements: ViewHolder | null;

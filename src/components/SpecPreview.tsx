@@ -1,7 +1,4 @@
 import React, { useState, useContext } from 'react';
-import shallowequal from 'shallowequal';
-import VegaLite from 'react-vega-lite';
-import Vega from 'react-vega';
 import stringify from 'json-stringify-pretty-compact';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
@@ -14,19 +11,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { AppDispatch } from '../contexts';
 import { sidebarWidth } from '../variables';
+import { VegaLite } from './VegaLite';
 
 export interface ISpecPreviewProps {
   spec: IBaseSpec;
   active: boolean;
   onToggleActive: () => void;
 }
-
-export const MemoizedVegaLite = React.memo(
-  VegaLite,
-  ({ spec: xSpec, ...xRest }, { spec: ySpec, ...yRest }) => {
-    return shallowequal(xRest, yRest) && Vega.isSameSpec(xSpec, ySpec);
-  }
-);
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -115,7 +106,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
         >
           <div className={classes.wrapper}>
             <div className={classes.image}>
-              <MemoizedVegaLite
+              <VegaLite
                 spec={spec.spec}
                 width={sidebarWidth}
                 height={sidebarWidth}
