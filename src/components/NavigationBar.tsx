@@ -9,7 +9,7 @@ export interface INavigationBarProps {
   specs: IBaseSpec[];
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(_ => ({
   list: {
     overflowY: 'auto',
     overflowX: 'hidden',

@@ -21,7 +21,7 @@ export interface ISpecPreviewProps {
   onToggleActive: () => void;
 }
 
-const MemoizedVegaLite = React.memo(
+export const MemoizedVegaLite = React.memo(
   VegaLite,
   ({ spec: xSpec, ...xRest }, { spec: ySpec, ...yRest }) => {
     return shallowequal(xRest, yRest) && Vega.isSameSpec(xSpec, ySpec);

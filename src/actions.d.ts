@@ -24,9 +24,15 @@ interface IRedoAction {
   type: 'redo';
 }
 
+interface ISelectModeAction {
+  type: 'select-mode';
+  mode: Mode;
+}
+
 type Action =
   | IAddSpecAction
   | IModifySpecAction
   | IDeleteSpecAction
   | IUndoAction
-  | IRedoAction;
+  | IRedoAction
+  | ISelectModeAction;

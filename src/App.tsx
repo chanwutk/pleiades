@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 import { hot } from 'react-hot-loader';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -31,10 +31,16 @@ const useStyles = makeStyles(theme => ({
 
 const App: React.FC = () => {
   const [state, dispatch] = useReducer<Reducer>(reducer, {
-    current: { specs: [], specCount: 0 },
+    current: {
+      specs: [],
+      specCount: 0,
+      mode: 'initial',
+      mainViewElements: null
+    },
     undoStack: [],
     redoStack: []
   });
+  const [viz, setViz] = useState<JSX.Element>(<div>Empty View</div>);
 
   const classes = useStyles();
 
@@ -46,8 +52,8 @@ const App: React.FC = () => {
           <NavigationBar specs={state.current.specs} />
         </div>
         <div className={classes.right}>
-          <ModeBar />
-          <MainView />
+          <ModeBar mode={state.current.mode} />
+          <MainView viz={viz} />
         </div>
       </div>
     </AppDispatch.Provider>

@@ -14,12 +14,13 @@ const newGlobalState = (
 export const reducer: Reducer = (globalState, action) => {
   switch (action.type) {
     case 'add-spec':
-      return newGlobalState(globalState, ({ specs, specCount }) => ({
+      return newGlobalState(globalState, ({ specs, specCount, ...rest }) => ({
         specs: R.append(
           { id: specCount, spec: action.json, alias: action.alias },
           specs
         ),
-        specCount: specCount + 1
+        specCount: specCount + 1,
+        ...rest
       }));
 
     case 'modify-spec':
@@ -63,6 +64,16 @@ export const reducer: Reducer = (globalState, action) => {
           current: redoStack[0],
           undoStack: R.prepend(current, undoStack)
         };
+      } else {
+        return globalState;
+      }
+    }
+    case 'select-mode': {
+      if (!globalState.current.mode) {
+        return newGlobalState(
+          globalState,
+          R.over(R.lensProp('mode'), _ => action.mode)
+        );
       } else {
         return globalState;
       }
