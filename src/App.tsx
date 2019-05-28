@@ -39,11 +39,11 @@ const App: React.FC = () => {
       <div className={classes.root}>
         <div className={classes.left}>
           <NewSpec />
-          <NavigationBar specs={state.current.specs} />
+          <NavigationBar state={state} />
         </div>
         <div className={classes.right}>
-          <ModeBar mode={state.current.mode} />
-          <MainView />
+          <ModeBar state={state} />
+          <MainView view={state.current.mainViewElements} />
         </div>
       </div>
     </AppDispatch.Provider>

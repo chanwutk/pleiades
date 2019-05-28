@@ -1,5 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { VegaLite } from './VegaLite';
+
+export interface IMainViewProps {
+  view: any;
+}
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -12,9 +17,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const MainView: React.FC = () => {
+export const MainView: React.FC<IMainViewProps> = ({ view }) => {
   const classes = useStyles();
   return (
-    <div className={classes.main} />
+    <div className={classes.main}>
+      {
+        view ?
+          <VegaLite
+            spec={view.export()} // todo: display each component of the spec
+          /> :
+          "Empty View"
+      }
+    </div>
   );
 };

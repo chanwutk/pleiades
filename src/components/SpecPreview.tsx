@@ -12,11 +12,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppDispatch } from '../contexts';
 import { sidebarWidth } from '../variables';
 import { VegaLite } from './VegaLite';
+import { UnitViewHolder, UnitView } from '../SyntaxTree/View';
 
 export interface ISpecPreviewProps {
   spec: IBaseSpec;
-  active: boolean;
-  onToggleActive: () => void;
+  mode: Mode;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -66,8 +66,7 @@ const useStyles = makeStyles(theme => ({
 
 export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   spec,
-  onToggleActive,
-  active
+  mode
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
@@ -89,14 +88,23 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
     dispatch({ type: 'modify-spec', json, alias, id: spec.id });
   };
 
-  const classes = useStyles(active);
+  const handleClick = () => {
+    switch (mode) {
+      case 'initial':
+        dispatch({ type: 'modify-view', newView: new UnitViewHolder(new UnitView(spec.spec)) });
+        break;
+    }
+    dispatch({ type: 'select-mode', mode: null });
+  }
+
+  const classes = useStyles(false);
 
   return (
     <>
       <ListItem
         disableGutters
         className={classes.preview}
-        onClick={onToggleActive}
+        onClick={handleClick}
       >
         <TooltipTable
           table={[

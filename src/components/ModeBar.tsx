@@ -7,30 +7,33 @@ import Grid from '@material-ui/core/Grid';
 import { AppDispatch } from '../contexts';
 
 interface IModeBarProps {
-  mode: Mode;
+  state: IGlobalState;
 }
 
-export const ModeBar: React.FC<IModeBarProps> = ({ mode }) => {
+export const ModeBar: React.FC<IModeBarProps> = ({ state }) => {
   const dispatch = useContext(AppDispatch);
 
   const handleUndo = () => dispatch({ type: 'undo' });
   const handleRedo = () => dispatch({ type: 'redo' });
-  const handleSelectMode = (mode: Mode) =>
-    dispatch({ type: 'select-mode', mode });
+  const handleSelectMode = (selectingMode: Mode) => {
+    dispatch({ type: 'select-mode', mode: selectingMode });
+  }
+
+  const disabled = state.current.mode !== null;
 
   return (
     <Grid container justify="space-between">
       <Grid item>
-        <Button onClick={() => handleSelectMode('layer')} disabled={!!mode}>
+        <Button onClick={() => handleSelectMode('layer')} disabled={disabled}>
           Layer
         </Button>
-        <Button onClick={() => handleSelectMode('concat')} disabled={!!mode}>
+        <Button onClick={() => handleSelectMode('concat')} disabled={disabled}>
           Concat
         </Button>
-        <Button onClick={() => handleSelectMode('repeat')} disabled={!!mode}>
+        <Button onClick={() => handleSelectMode('repeat')} disabled={disabled}>
           Repeat
         </Button>
-        <Button onClick={() => handleSelectMode('facet')} disabled={!!mode}>
+        <Button onClick={() => handleSelectMode('facet')} disabled={disabled}>
           Facet
         </Button>
       </Grid>

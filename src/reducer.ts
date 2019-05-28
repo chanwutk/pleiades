@@ -69,14 +69,19 @@ export const reducer: Reducer = (globalState, action) => {
       }
     }
     case 'select-mode': {
-      if (!globalState.current.mode) {
-        return newGlobalState(
-          globalState,
-          R.over(R.lensProp('mode'), _ => action.mode)
-        );
-      } else {
-        return globalState;
-      }
+      return newGlobalState(
+        globalState,
+        R.over(R.lensProp('mode'), _ => action.mode)
+      );
+    }
+    case 'modify-view': {
+      return newGlobalState(
+        globalState,
+        R.over(
+          R.lensProp('mainViewElements'),
+          _ => action.newView
+        )
+      );
     }
     default:
       throw new Error('impossible');

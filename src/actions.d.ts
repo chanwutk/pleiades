@@ -29,10 +29,16 @@ interface ISelectModeAction {
   mode: Mode;
 }
 
+interface IModifyViewAction {
+  type: 'modify-view';
+  newView: ViewHolder;
+}
+
 type Action =
   | IAddSpecAction
   | IModifySpecAction
   | IDeleteSpecAction
   | IUndoAction
   | IRedoAction
-  | ISelectModeAction;
+  | ISelectModeAction
+  | IModifyViewAction;

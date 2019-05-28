@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import { SpecPreview } from './SpecPreview';
 
 export interface INavigationBarProps {
-  specs: IBaseSpec[];
+  state: IGlobalState;
 }
 
 const useStyles = makeStyles(_ => ({
@@ -19,23 +19,17 @@ const useStyles = makeStyles(_ => ({
   }
 }));
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({ specs }) => {
-  const [activePreview, setActivePreview] = useState<number | null>(null);
-
-  const handleToggleActive = (id: number) => () =>
-    setActivePreview(activePreview === id ? null : id);
-
+export const NavigationBar: React.FC<INavigationBarProps> = ({ state }) => {
   const classes = useStyles();
 
   return (
     <List className={classes.list}>
       <Divider />
-      {specs.map(spec => (
+      {state.current.specs.map(spec => (
         <SpecPreview
           key={spec.id}
           spec={spec}
-          active={spec.id === activePreview}
-          onToggleActive={handleToggleActive(spec.id)}
+          mode={state.current.mode}
         />
       ))}
     </List>
