@@ -1,10 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-interface IMainViewProps {
-  viz: JSX.Element;
-}
-
 const useStyles = makeStyles(theme => ({
   main: {
     backgroundColor: theme.palette.grey[200],
@@ -16,11 +12,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const MainView: React.FC<IMainViewProps> = ({ viz }) => {
+export const MainView: React.FC = () => {
   const classes = useStyles();
   return (
-    <div className={classes.main}>
-      {viz}
-    </div>
+    <div className={classes.main} />
   );
 };

@@ -31,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 
 const App: React.FC = () => {
   const [state, dispatch] = useReducer<Reducer>(reducer, initialState);
-  const [viz, setViz] = useState<JSX.Element>(<div>Empty View</div>);
 
   const classes = useStyles();
 
@@ -44,7 +43,7 @@ const App: React.FC = () => {
         </div>
         <div className={classes.right}>
           <ModeBar mode={state.current.mode} />
-          <MainView viz={viz} />
+          <MainView />
         </div>
       </div>
     </AppDispatch.Provider>
