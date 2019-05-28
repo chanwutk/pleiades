@@ -24,9 +24,13 @@ export class LayerView implements CompositeView<UnitView> {
     this.layer.splice(index, 1);
   }
 
-  public isCompatible(_: UnitView): boolean {
-    // TODO: check if view is compatible with the rest of the specs in this.layer
-    return true;
+  public isCompatible(view: UnitView): boolean {
+    const spec = view.export();
+    return !spec['spec']
+      && !spec['layer']
+      && !spec['concat']
+      && !spec['hconcat']
+      && !spec['vconcat'];
   }
 
   public rearrange(from: number, to: number) {
