@@ -41,8 +41,14 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     userSelect: 'none',
     border: 1,
-    borderColor: ((active: boolean) => (active ? 'orange' : 'white')) as any,
-    borderStyle: 'solid'
+    borderColor: 'transparent',
+    borderStyle: 'solid',
+    '&:hover': {
+      borderColor: ((active: boolean) => active ? 'orange' : 'transparent') as any,
+    },
+    '&:active': {
+      borderColor: ((active: boolean) => active ? 'black' : 'transparent') as any,
+    },
   },
   center: {
     position: 'absolute',
@@ -97,7 +103,9 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
     dispatch({ type: 'select-mode', mode: null });
   }
 
-  const classes = useStyles(false);
+  const active = true;
+
+  const classes = useStyles(active);
 
   return (
     <>
