@@ -44,11 +44,13 @@ const useStyles = makeStyles(theme => ({
     borderColor: 'transparent',
     borderStyle: 'solid',
     '&:hover': {
-      borderColor: ((active: boolean) => active ? 'orange' : 'transparent') as any,
+      borderColor: ((active: boolean) =>
+        active ? 'orange' : 'transparent') as any
     },
     '&:active': {
-      borderColor: ((active: boolean) => active ? 'black' : 'transparent') as any,
-    },
+      borderColor: ((active: boolean) =>
+        active ? 'black' : 'transparent') as any
+    }
   },
   center: {
     position: 'absolute',
@@ -70,10 +72,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({
-  spec,
-  mode
-}) => {
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, mode }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
@@ -97,11 +96,12 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   const handleClick = () => {
     switch (mode) {
       case 'initial':
-        dispatch({ type: 'modify-view', newView: new UnitViewHolder(new UnitView(spec.spec)) });
-        break;
+        return dispatch({
+          type: 'modify-view',
+          newView: new UnitViewHolder(new UnitView(spec.spec))
+        });
     }
-    dispatch({ type: 'select-mode', mode: null });
-  }
+  };
 
   const active = true;
 

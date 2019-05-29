@@ -71,15 +71,15 @@ export const reducer: Reducer = (globalState, action) => {
     case 'select-mode': {
       return newGlobalState(
         globalState,
-        R.over(R.lensProp('mode'), _ => action.mode)
+        R.over(R.lensProp('mode'), R.always(action.mode))
       );
     }
     case 'modify-view': {
       return newGlobalState(
         globalState,
-        R.over(
-          R.lensProp('mainViewElements'),
-          _ => action.newView
+        R.pipe(
+          R.over(R.lensProp('mainViewElements'), R.always(action.newView)),
+          R.over(R.lensProp('mode'), R.always(null))
         )
       );
     }
