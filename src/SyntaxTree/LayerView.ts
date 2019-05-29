@@ -36,4 +36,8 @@ export class LayerView implements CompositeView<UnitView> {
   public rearrange(from: number, to: number) {
     moveElement(this.layer, from, to);
   }
+
+  public getType() {
+    return 'layer';
+  }
 }

@@ -50,7 +50,7 @@ const App: React.FC = () => {
             operand2={state.current.operand2}
             result={state.current.result}
           />
-          <MainView view={state.current.result} />
+          <MainView result={state.current.result} operand2={state.current.operand2} />
         </div>
       </div>
     </AppDispatch.Provider>

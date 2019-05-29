@@ -1,9 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { VegaLite } from './VegaLite';
+import { ViewHolder } from '../SyntaxTree/View';
+import { UnitComponent } from './views/UnitComponent';
+import { LayerComponent } from './views/LayerComponent';
 
 export interface IMainViewProps {
-  view: any;
+  result: ViewHolder;
+  operand2: ViewHolder;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -17,15 +20,27 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const MainView: React.FC<IMainViewProps> = ({ view }) => {
+export const MainView: React.FC<IMainViewProps> = ({ result, operand2 }) => {
   const classes = useStyles();
+
+  const makeViewComponent = (viewHolder: ViewHolder) => {
+    switch (viewHolder.view.getType()) {
+      case 'unit': {
+        return <UnitComponent view={viewHolder} operand2={operand2} />;
+      }
+      case 'layer': {
+        return <LayerComponent view={viewHolder} operand2={operand2} />;
+      }
+      default:
+        throw new Error(`${viewHolder.view.getType()} view has not been implemented`);
+    }
+  };
+
   return (
     <div className={classes.main}>
       {
-        view ?
-          <VegaLite
-            spec={view.export()} // todo: display each component of the spec
-          /> :
+        result ?
+          makeViewComponent(result) :
           "Empty View"
       }
     </div>

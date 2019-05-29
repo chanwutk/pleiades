@@ -45,6 +45,10 @@ export class FacetView implements CompositeView<null> {
       this.facet.swapAxis();
     }
   }
+
+  public getType() {
+    return 'facet';
+  }
 }
 
 /**
