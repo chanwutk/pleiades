@@ -35,4 +35,13 @@ export class ConcatView extends CompositeView<View> {
   public rearrange(from: number, to: number) {
     moveElement(this.concat, from, to);
   }
+
+  public clone() {
+    const cloned = new ConcatView(this.orient);
+    cloned.id = this.id;
+    this.concat.forEach((viewHolder: ViewHolder) =>
+      cloned.concat.push(viewHolder.clone())
+    );
+    return cloned;
+  }
 }

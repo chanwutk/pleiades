@@ -61,6 +61,15 @@ export class RepeatView extends CompositeView<string> {
       moveElement(this.repeatInfo[option], from, to);
     }
   }
+
+  public clone() {
+    const cloned = new RepeatView(
+      this.view.view.clone(),
+      this.repeatInfo.getChannelInfo()
+    );
+    cloned.id = this.id;
+    return cloned;
+  }
 }
 
 interface ChannelInfo {
@@ -132,6 +141,13 @@ class RepeatInfo {
   public removeAxis(orient: 'row' | 'column') {
     this[orient] = [];
     (<any>this)[`${orient}Channel`] = undefined;
+  }
+
+  public getChannelInfo(): ChannelInfo {
+    return {
+      ...(this.rowChannel ? { rowChannel: this.rowChannel } : {}),
+      ...(this.columnChannel ? { columnChannel: this.columnChannel } : {}),
+    };
   }
 }
 

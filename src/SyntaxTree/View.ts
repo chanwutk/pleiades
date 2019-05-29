@@ -3,7 +3,7 @@ import { jsonCopy } from './Utils';
 let idCounter = 0;
 
 export abstract class View {
-  private id: number;
+  protected id: number;
   private type: string;
 
   constructor(type) {
@@ -24,6 +24,8 @@ export abstract class View {
    * @returns exported Vega-Lite spec
    */
   abstract export(): object;
+
+  abstract clone(): View;
 }
 
 export class ViewHolder {
@@ -40,11 +42,19 @@ export class ViewHolder {
   export() {
     return this.view.export();
   }
+
+  clone() {
+    return new ViewHolder(this.view.clone());
+  }
 }
 
 export class UnitViewHolder extends ViewHolder {
   constructor(view: UnitView) {
     super(view);
+  }
+
+  clone() {
+    return new UnitViewHolder(this.view.clone() as UnitView);
   }
 }
 
@@ -118,5 +128,11 @@ export class UnitView extends View {
 
   public export() {
     return jsonCopy(this.spec);
+  }
+
+  public clone() {
+    const cloned = new UnitView(jsonCopy(this.spec));
+    cloned.id = this.id;
+    return cloned;
   }
 }

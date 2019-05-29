@@ -1,4 +1,5 @@
 import { View, CompositeView, ViewHolder } from './View';
+import { jsonCopy } from './Utils';
 
 export class FacetView extends CompositeView<null> {
   private view: ViewHolder;
@@ -45,6 +46,12 @@ export class FacetView extends CompositeView<null> {
       this.facet.swapAxis();
     }
   }
+
+  public clone() {
+    const cloned = new FacetView(this.view.view.clone(), this.facet.clone());
+    cloned.id = this.id;
+    return cloned;
+  }
 }
 
 /**
@@ -72,5 +79,12 @@ export class FacetInfo {
 
   public remove(axis: 'row' | 'column') {
     this[axis] = undefined;
+  }
+
+  public clone() {
+    return new FacetInfo({
+      ...(this.row ? { row: jsonCopy(this.row) } : {}),
+      ...(this.column ? { column: jsonCopy(this.column) } : {}),
+    });
   }
 }
