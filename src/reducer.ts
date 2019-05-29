@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import { UnitViewHolder, UnitView } from './SyntaxTree/View';
 import { assertNever } from './utils';
+import { LayerView } from './SyntaxTree/LayerView';
 
 const newGlobalState = (
   oldState: IGlobalState,
@@ -93,10 +94,20 @@ export const reducer: Reducer = (globalState, action) => {
         globalState,
         R.pipe(
           R.over(R.lensProp('result'), result => {
+            // There is still a cloning issue that make undo crash
+            // need more discussion on this.
+            globalState.current.result = R.clone(result);
             switch (action.operator) {
               case 'place':
                 return new UnitViewHolder(new UnitView(action.operand1));
               case 'layer':
+                const layer = new LayerView();
+                const operand1View = new UnitView(action.operand1);
+                if (layer.isCompatible(operand1View) && layer.isCompatible(action.operand2.view)) {
+                  layer.append(action.operand2.view);
+                  layer.append(operand1View);
+                  action.operand2.view = layer;
+                }
                 return result;
               case 'concat':
                 return result;

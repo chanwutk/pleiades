@@ -23,10 +23,6 @@ export class ViewHolder {
   export() {
     return this.view.export();
   }
-
-  getView() {
-    return this.view;
-  }
 }
 
 export class UnitViewHolder extends ViewHolder {
