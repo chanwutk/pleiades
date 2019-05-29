@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { AppDispatch } from '../contexts';
-import { sidebarWidth } from '../variables';
+import { sidebarWidth, borderWidth } from '../variables';
 import { VegaLite } from './VegaLite';
 
 export interface ISpecPreviewProps {
@@ -24,30 +24,36 @@ const useStyles = makeStyles(theme => ({
     height: sidebarWidth,
     '&::after': {
       display: 'block',
-      position: 'relative',
-      marginTop: '-57%',
-      width: sidebarWidth,
+      position: 'absolute',
+      width: sidebarWidth - 2 * borderWidth,
       backgroundImage:
         'linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.75))',
       height: '75%',
-      content: "''"
+      content: "''",
+      bottom: 0,
+      alignSelf: 'center',
     }
   },
   image: {
     overflow: 'hidden',
-    height: sidebarWidth
+    height: sidebarWidth,
+    width: sidebarWidth - 2 * borderWidth,
   },
   preview: {
     position: 'relative',
     userSelect: 'none',
-    border: 2,
-    borderColor: ((active: boolean) => active ? '#3caea3' : 'transparent') as any,
+    width: sidebarWidth,
+    marginTop: 5,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    border: borderWidth,
+    borderColor: ((active: boolean) => active ? '#3caea3' : 'lightgrey') as any,
     borderStyle: 'solid',
     '&:hover': {
-      borderColor: '#f6d55c'
+      borderColor: ((active: boolean) => active ? '#3caea3' : 'darkgrey') as any,
     },
     '&:active': {
-      borderColor: '#ed553b'
+      borderColor: ((active: boolean) => 'grey') as any,
     }
   },
   center: {
@@ -135,7 +141,6 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, operand1Id, act
           {spec.alias}
         </div>
       </ListItem>
-      <Divider />
       <VegaLiteEditor
         showModal={showModal}
         setShowModal={setShowModal}

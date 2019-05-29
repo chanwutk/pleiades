@@ -15,7 +15,10 @@ const useStyles = makeStyles(_ => ({
     overflowX: 'hidden',
     flexGrow: 1,
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
   }
 }));
 
