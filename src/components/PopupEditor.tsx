@@ -1,5 +1,8 @@
 import React from 'react';
-import MonacoEditor, { EditorDidMount } from 'react-monaco-editor';
+import MonacoEditor, {
+  EditorDidMount,
+  EditorWillMount
+} from 'react-monaco-editor';
 import Close from '@material-ui/icons/Close';
 import Save from '@material-ui/icons/Save';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +12,28 @@ import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
+
+import vegaLiteSchema from 'vega-lite/build/vega-lite-schema.json';
+
+/**
+ * Adds markdownDescription props to a schema. See https://github.com/Microsoft/monaco-editor/issues/885
+ */
+const addMarkdownProps = value => {
+  if (typeof value === 'object' && value !== null) {
+    if (value.description) {
+      value.markdownDescription = value.description;
+    }
+
+    for (const key in value) {
+      if (value.hasOwnProperty(key)) {
+        value[key] = addMarkdownProps(value[key]);
+      }
+    }
+  }
+  return value;
+};
+
+addMarkdownProps(vegaLiteSchema);
 
 export interface IPopupEditorProps {
   isOpen: boolean;
@@ -40,6 +65,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const schema = [
+  {
+    schema: vegaLiteSchema,
+    uri: 'https://vega.github.io/schema/vega-lite/v3.json'
+  }
+];
+
 export const PopupEditor: React.FC<IPopupEditorProps> = ({
   isOpen,
   onClose,
@@ -52,7 +84,18 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
 }) => {
   const classes = useStyles();
 
-  const handleEditorDidMount: EditorDidMount = editor => editor.focus();
+  const handleEditorDidMount: EditorDidMount = editor => {
+    editor.focus();
+  };
+
+  const handleEditorWillMount: EditorWillMount = monaco => {
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      allowComments: false,
+      enableSchemaRequest: true,
+      schemas: schema,
+      validate: true
+    });
+  };
 
   return (
     <Dialog
@@ -91,6 +134,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
             height={editorHeight}
             onChange={txt => setValue(txt)}
             editorDidMount={handleEditorDidMount}
+            editorWillMount={handleEditorWillMount}
             options={{
               automaticLayout: true,
               cursorBlinking: 'smooth',
