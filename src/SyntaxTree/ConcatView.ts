@@ -34,4 +34,8 @@ export class ConcatView implements CompositeView<View> {
   public rearrange(from: number, to: number) {
     moveElement(this.concat, from, to);
   }
+
+  public getType() {
+    return 'concat';
+  }
 }

@@ -5,6 +5,8 @@ export interface View {
    * @returns exported Vega-Lite spec
    */
   export: () => object;
+
+  getType: () => string;
 }
 
 export class ViewHolder {
@@ -20,6 +22,10 @@ export class ViewHolder {
    */
   export() {
     return this.view.export();
+  }
+
+  getView() {
+    return this.view;
   }
 }
 
@@ -98,5 +104,9 @@ export class UnitView implements View {
 
   public export() {
     return jsonCopy(this.spec);
+  }
+
+  public getType() {
+    return 'unit';
   }
 }

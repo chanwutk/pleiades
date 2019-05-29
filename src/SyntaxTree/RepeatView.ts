@@ -60,6 +60,10 @@ export class RepeatView implements CompositeView<string> {
       moveElement(this.repeatInfo[option], from, to);
     }
   }
+
+  public getType() {
+    return 'repeat';
+  }
 }
 
 interface ChannelInfo {
