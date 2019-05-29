@@ -46,6 +46,28 @@ const examples = [
   }
 ];
 
+const stringToSpec = (value: string) => {
+  try {
+    const json = JSON.parse(value);
+    if (!('data' in json) || !('url' in json.data)) {
+      return failure('data field must exist and must be url.');
+    }
+
+    // TODO: can we do anything with the output of the compilation?
+    // currently we only call it for side-effect (to see if it errors or not)
+    vl.compile(json);
+    return success(json);
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      return failure(e.message);
+    } else if (e.message === 'Invalid spec') {
+      return failure(e.message);
+    } else {
+      throw e;
+    }
+  }
+};
+
 export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
   showModal,
   setShowModal,
@@ -56,28 +78,6 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
   onSuccess
 }) => {
   const [errorMsg, setErrorMsg] = useState('');
-
-  const stringToSpec = (value: string) => {
-    try {
-      const json = JSON.parse(value);
-      if (!('data' in json) || !('url' in json.data)) {
-        return failure('data field must exist and must be url.');
-      }
-
-      // TODO: can we do anything with the output of the compilation?
-      // currently we only call it for side-effect (to see if it errors or not)
-      vl.compile(json);
-      return success(json);
-    } catch (e) {
-      if (e instanceof SyntaxError) {
-        return failure(e.message);
-      } else if (e.message === 'Invalid spec') {
-        return failure(e.message);
-      } else {
-        throw e;
-      }
-    }
-  };
 
   const handleClose = (toSave: boolean) => {
     if (toSave) {
@@ -100,6 +100,19 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
     }
   };
 
+  const handleChange = (txt: string) => {
+    const result = stringToSpec(txt);
+    switch (result.tag) {
+      case 'success':
+        setErrorMsg('');
+        break;
+      case 'failure':
+        setErrorMsg(result.value);
+        break;
+    }
+    setValue(txt);
+  };
+
   const extras = examples.map((example, i) => (
     <Button key={i} onClick={() => setValue(stringify(example))}>
       Example {i + 1}
@@ -111,7 +124,7 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
       isOpen={showModal}
       onClose={handleClose}
       value={value}
-      setValue={setValue}
+      onChange={handleChange}
       alias={alias}
       setAlias={setAlias}
       errorMsg={errorMsg}

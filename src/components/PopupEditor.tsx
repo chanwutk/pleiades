@@ -1,7 +1,8 @@
 import React from 'react';
 import MonacoEditor, {
   EditorDidMount,
-  EditorWillMount
+  EditorWillMount,
+  DiffChangeHandler
 } from 'react-monaco-editor';
 import Close from '@material-ui/icons/Close';
 import Save from '@material-ui/icons/Save';
@@ -39,7 +40,7 @@ export interface IPopupEditorProps {
   isOpen: boolean;
   onClose: (toSave: boolean) => void;
   value: string;
-  setValue: (txt: string) => void;
+  onChange: DiffChangeHandler;
   alias: string;
   setAlias: (txt: string) => void;
   errorMsg?: string;
@@ -76,7 +77,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
   isOpen,
   onClose,
   value,
-  setValue,
+  onChange,
   alias,
   setAlias,
   errorMsg,
@@ -132,7 +133,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
             language="json"
             value={value}
             height={editorHeight}
-            onChange={txt => setValue(txt)}
+            onChange={onChange}
             editorDidMount={handleEditorDidMount}
             editorWillMount={handleEditorWillMount}
             options={{
@@ -147,7 +148,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
           />
         </div>
         <span className={classes.errorMessage}>
-          {errorMsg ? errorMsg : null}
+          {errorMsg !== null ? <>{errorMsg} &nbsp;</> : null}
         </span>
       </DialogContent>
     </Dialog>
