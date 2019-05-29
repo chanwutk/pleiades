@@ -9,7 +9,10 @@
  */
 export function moveElement(arr: Array<any>, from: number, to: number) {
   if (!(from in arr && to in arr)) {
-    throw new Error(`from (=${from}) or to (=${to}) is out of arr bound (=[0,${arr.length - 1}])`);
+    throw new Error(
+      `from (=${from}) or to (=${to}) is out of arr bound (=[0,${arr.length -
+        1}])`
+    );
   }
 
   const fromElm = arr[from];

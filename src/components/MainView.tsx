@@ -14,10 +14,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.grey[200],
     marginTop: theme.spacing(1),
     flexGrow: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  }
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 export const MainView: React.FC<IMainViewProps> = ({ result, operand2 }) => {
@@ -32,17 +32,15 @@ export const MainView: React.FC<IMainViewProps> = ({ result, operand2 }) => {
         return <LayerComponent view={viewHolder} operand2={operand2} />;
       }
       default:
-        throw new Error(`${viewHolder.view.getType()} view has not been implemented`);
+        throw new Error(
+          `${viewHolder.view.getType()} view has not been implemented`
+        );
     }
   };
 
   return (
     <div className={classes.main}>
-      {
-        result ?
-          makeViewComponent(result) :
-          "Empty View"
-      }
+      {result ? makeViewComponent(result) : 'Empty View'}
     </div>
   );
 };

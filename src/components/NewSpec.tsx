@@ -7,7 +7,7 @@ import { AppDispatch } from '../contexts';
 import { VegaLiteEditor } from './VegaLiteEditor';
 
 const useStyles = makeStyles(theme => ({
-  button: { marginBottom: theme.spacing(1) }
+  button: { marginBottom: theme.spacing(1) },
 }));
 
 export const NewSpec: React.FC = () => {

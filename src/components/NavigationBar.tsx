@@ -17,12 +17,12 @@ const useStyles = makeStyles(_ => ({
     paddingBottom: 0,
     display: 'flex',
     flexDirection: 'column',
-    alignContent: 'center'
-  }
+    alignContent: 'center',
+  },
 }));
 
 export const NavigationBar: React.FC<INavigationBarProps> = ({
-  currentState
+  currentState,
 }) => {
   const classes = useStyles();
 

@@ -18,7 +18,7 @@ export const OperationBar: React.FC<IOperationBarProps> = ({
   specs,
   operand1Id,
   operand2,
-  result
+  result,
 }) => {
   const dispatch = useContext(AppDispatch);
 

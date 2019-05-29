@@ -2,7 +2,7 @@ import React from 'react';
 import MonacoEditor, {
   EditorDidMount,
   EditorWillMount,
-  DiffChangeHandler
+  DiffChangeHandler,
 } from 'react-monaco-editor';
 import Close from '@material-ui/icons/Close';
 import Save from '@material-ui/icons/Save';
@@ -53,24 +53,24 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginTop: theme.spacing(0),
     marginBottom: theme.spacing(4),
-    width: 300
+    width: 300,
   },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
-    top: theme.spacing(1)
+    top: theme.spacing(1),
   },
   errorMessage: {
     fontStyle: 'italic',
-    color: 'red'
-  }
+    color: 'red',
+  },
 }));
 
 const schema = [
   {
     schema: vegaLiteSchema,
-    uri: 'https://vega.github.io/schema/vega-lite/v3.json'
-  }
+    uri: 'https://vega.github.io/schema/vega-lite/v3.json',
+  },
 ];
 
 export const PopupEditor: React.FC<IPopupEditorProps> = ({
@@ -81,7 +81,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
   alias,
   setAlias,
   errorMsg,
-  extras
+  extras,
 }) => {
   const classes = useStyles();
 
@@ -94,7 +94,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
       allowComments: false,
       enableSchemaRequest: true,
       schemas: schema,
-      validate: true
+      validate: true,
     });
   };
 
@@ -143,7 +143,7 @@ export const PopupEditor: React.FC<IPopupEditorProps> = ({
               lineNumbersMinChars: 4,
               minimap: { enabled: false },
               scrollBeyondLastLine: false,
-              wordWrap: 'on'
+              wordWrap: 'on',
             }}
           />
         </div>

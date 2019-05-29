@@ -8,12 +8,12 @@ export interface ITooltipTableProps {
 }
 
 const useStyles = makeStyles(_ => ({
-  keyColumn: { textAlign: 'right' }
+  keyColumn: { textAlign: 'right' },
 }));
 
 export const TooltipTable: React.FC<ITooltipTableProps> = ({
   table,
-  children
+  children,
 }) => {
   const classes = useStyles();
   const title = (
