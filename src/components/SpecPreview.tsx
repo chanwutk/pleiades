@@ -16,7 +16,8 @@ import { UnitViewHolder, UnitView } from '../SyntaxTree/View';
 
 export interface ISpecPreviewProps {
   spec: IBaseSpec;
-  mode: Mode;
+  operand1Id: number | null;
+  active: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -40,16 +41,14 @@ const useStyles = makeStyles(theme => ({
   preview: {
     position: 'relative',
     userSelect: 'none',
-    border: 1,
-    borderColor: 'transparent',
+    border: 2,
+    borderColor: ((active: boolean) => active ? '#3caea3' : 'transparent') as any,
     borderStyle: 'solid',
     '&:hover': {
-      borderColor: ((active: boolean) =>
-        active ? 'orange' : 'transparent') as any
+      borderColor: '#f6d55c'
     },
     '&:active': {
-      borderColor: ((active: boolean) =>
-        active ? 'black' : 'transparent') as any
+      borderColor: '#ed553b'
     }
   },
   center: {
@@ -72,7 +71,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, mode }) => {
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, operand1Id, active }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
@@ -93,17 +92,10 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, mode }) => {
     dispatch({ type: 'modify-spec', json, alias, id: spec.id });
   };
 
-  const handleClick = () => {
-    switch (mode) {
-      case 'initial':
-        return dispatch({
-          type: 'modify-view',
-          newView: new UnitViewHolder(new UnitView(spec.spec))
-        });
-    }
+  const handleToggleActive = () => {
+    const { id } = spec;
+    dispatch({ type: 'select-operand1', id: id === operand1Id ? null : id });
   };
-
-  const active = true;
 
   const classes = useStyles(active);
 
@@ -112,7 +104,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, mode }) => {
       <ListItem
         disableGutters
         className={classes.preview}
-        onClick={handleClick}
+        onClick={handleToggleActive}
       >
         <TooltipTable
           table={[

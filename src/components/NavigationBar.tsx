@@ -6,8 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import { SpecPreview } from './SpecPreview';
 
 export interface INavigationBarProps {
-  specs: IBaseSpec[];
-  mode: Mode;
+  currentState: IState;
 }
 
 const useStyles = makeStyles(_ => ({
@@ -20,17 +19,19 @@ const useStyles = makeStyles(_ => ({
   }
 }));
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({
-  specs,
-  mode
-}) => {
+export const NavigationBar: React.FC<INavigationBarProps> = ({ currentState }) => {
   const classes = useStyles();
 
   return (
     <List className={classes.list}>
       <Divider />
-      {specs.map(spec => (
-        <SpecPreview key={spec.id} spec={spec} mode={mode} />
+      {currentState.specs.map(spec => (
+        <SpecPreview
+          key={spec.id}
+          spec={spec}
+          operand1Id={currentState.operand1Id}
+          active={spec.id === currentState.operand1Id}
+        />
       ))}
     </List>
   );

@@ -19,11 +19,12 @@ interface IBaseSpec {
 interface IState {
   specs: IBaseSpec[];
   specCount: number;
-  mode: Mode;
-  mainViewElements: ViewHolder | null;
+  operand1Id: number | null;
+  operand2: any;
+  result: ViewHolder | null;
 }
 
-type Mode = 'initial' | 'layer' | 'concat' | 'repeat' | 'facet' | null;
+type Operator = 'layer' | 'concat' | 'repeat' | 'facet' | 'place';
 
 interface IGlobalState {
   undoStack: IState[];

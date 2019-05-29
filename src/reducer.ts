@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { UnitViewHolder, UnitView } from './SyntaxTree/View';
 
 const newGlobalState = (
   oldState: IGlobalState,
@@ -39,9 +40,18 @@ export const reducer: Reducer = (globalState, action) => {
     case 'delete-spec':
       return newGlobalState(
         globalState,
-        R.over(
-          R.lensProp('specs'),
-          R.filter((spec: IBaseSpec) => spec.id !== action.id)
+        R.pipe(
+          R.over(
+            R.lensProp('specs'),
+            R.filter((spec: IBaseSpec) => spec.id !== action.id)
+          ),
+          R.over(
+            R.lensProp('operand1Id'),
+            () => {
+              const { current: { operand1Id } } = globalState;
+              return operand1Id === action.id ? null : operand1Id;
+            }
+          )
         )
       );
     case 'undo': {
@@ -68,19 +78,34 @@ export const reducer: Reducer = (globalState, action) => {
         return globalState;
       }
     }
-    case 'select-mode': {
+    case 'select-operand1': {
       return newGlobalState(
         globalState,
-        R.over(R.lensProp('mode'), R.always(action.mode))
+        R.over(R.lensProp('operand1Id'), R.always(action.id)),
       );
     }
-    case 'modify-view': {
+    case 'select-operand2': {
+      return newGlobalState(
+        globalState,
+        R.over(R.lensProp('operand2'), R.always(action.operand)),
+      );
+    }
+    case 'operate': {
       return newGlobalState(
         globalState,
         R.pipe(
-          R.over(R.lensProp('mainViewElements'), R.always(action.newView)),
-          R.over(R.lensProp('mode'), R.always(null))
-        )
+          R.over(R.lensProp('result'), () => {
+            const operand1 = new UnitViewHolder(new UnitView(action.operand1));
+            switch (action.operator) {
+              case 'place': {
+                return operand1;
+              }
+              default: return globalState.current.result;
+            }
+          }),
+          R.over(R.lensProp('operand1Id'), R.always(null)),
+          R.over(R.lensProp('operand2'), R.always(null)),
+        ),
       );
     }
     default:
@@ -92,8 +117,9 @@ export const initialState: IGlobalState = {
   current: {
     specs: [],
     specCount: 0,
-    mode: 'initial',
-    mainViewElements: null
+    operand1Id: null,
+    operand2: null,
+    result: null
   },
   undoStack: [],
   redoStack: []

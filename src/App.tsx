@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { NavigationBar } from './components/NavigationBar';
 import { NewSpec } from './components/NewSpec';
 import { MainView } from './components/MainView';
-import { ModeBar } from './components/ModeBar';
+import { OperationBar } from './components/OperationBar';
 import { sidebarWidth } from './variables';
 import { AppDispatch } from './contexts';
 import { reducer, initialState } from './reducer';
@@ -40,13 +40,17 @@ const App: React.FC = () => {
         <div className={classes.left}>
           <NewSpec />
           <NavigationBar
-            specs={state.current.specs}
-            mode={state.current.mode}
+            currentState={state.current}
           />
         </div>
         <div className={classes.right}>
-          <ModeBar mode={state.current.mode} />
-          <MainView view={state.current.mainViewElements} />
+          <OperationBar
+            specs={state.current.specs}
+            operand1Id={state.current.operand1Id}
+            operand2={state.current.operand2}
+            result={state.current.result}
+          />
+          <MainView view={state.current.result} />
         </div>
       </div>
     </AppDispatch.Provider>

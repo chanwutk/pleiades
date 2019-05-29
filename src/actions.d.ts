@@ -24,14 +24,21 @@ interface IRedoAction {
   type: 'redo';
 }
 
-interface ISelectModeAction {
-  type: 'select-mode';
-  mode: Mode;
+interface ISelectOperand1Action {
+  type: 'select-operand1';
+  id: number | null;
 }
 
-interface IModifyViewAction {
-  type: 'modify-view';
-  newView: ViewHolder;
+interface ISelectOperand2Action {
+  type: 'select-operand2';
+  operand: any;
+}
+
+interface IOperateAction {
+  type: 'operate';
+  operand1: any;
+  operand2: any;
+  operator: Operator;
 }
 
 type Action =
@@ -40,5 +47,6 @@ type Action =
   | IDeleteSpecAction
   | IUndoAction
   | IRedoAction
-  | ISelectModeAction
-  | IModifyViewAction;
+  | ISelectOperand1Action
+  | ISelectOperand2Action
+  | IOperateAction;
