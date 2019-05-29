@@ -12,7 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppDispatch } from '../contexts';
 import { sidebarWidth } from '../variables';
 import { VegaLite } from './VegaLite';
-import { UnitViewHolder, UnitView } from '../SyntaxTree/View';
 
 export interface ISpecPreviewProps {
   spec: IBaseSpec;

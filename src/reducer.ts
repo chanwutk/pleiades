@@ -96,11 +96,26 @@ export const reducer: Reducer = (globalState, action) => {
         R.pipe(
           R.over(R.lensProp('result'), () => {
             const operand1 = new UnitViewHolder(new UnitView(action.operand1));
+            const { current } = globalState;
+            const { result } = current;
+            current.result = R.clone(result);
             switch (action.operator) {
               case 'place': {
                 return operand1;
               }
-              default: return globalState.current.result;
+              case 'layer': {
+                return result;
+              }
+              case 'concat': {
+                return result;
+              }
+              case 'repeat': {
+                return result;
+              }
+              case 'facet': {
+                return result;
+              }
+              default: return result;
             }
           }),
           R.over(R.lensProp('operand1Id'), R.always(null)),
