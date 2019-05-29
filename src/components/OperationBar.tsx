@@ -9,9 +9,9 @@ import { ViewHolder } from '../SyntaxTree/View';
 
 interface IOperationBarProps {
   specs: IBaseSpec[];
-  operand1Id?: number;
+  operand1Id: number | null;
   operand2: any;
-  result?: ViewHolder;
+  result: ViewHolder | null;
 }
 
 export const OperationBar: React.FC<IOperationBarProps> = ({

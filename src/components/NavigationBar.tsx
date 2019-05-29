@@ -1,7 +1,6 @@
 import React from 'react';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
 
 import { SpecPreview } from './SpecPreview';
 
@@ -18,16 +17,17 @@ const useStyles = makeStyles(_ => ({
     paddingBottom: 0,
     display: 'flex',
     flexDirection: 'column',
-    alignContent: 'center',
+    alignContent: 'center'
   }
 }));
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({ currentState }) => {
+export const NavigationBar: React.FC<INavigationBarProps> = ({
+  currentState
+}) => {
   const classes = useStyles();
 
   return (
     <List className={classes.list}>
-      <Divider />
       {currentState.specs.map(spec => (
         <SpecPreview
           key={spec.id}

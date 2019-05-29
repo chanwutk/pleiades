@@ -6,7 +6,6 @@ import { VegaLiteEditor } from './VegaLiteEditor';
 import { TooltipTable } from './TooltipTable';
 import Fab from '@material-ui/core/Fab';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { AppDispatch } from '../contexts';
@@ -31,13 +30,13 @@ const useStyles = makeStyles(theme => ({
       height: '75%',
       content: "''",
       bottom: 0,
-      alignSelf: 'center',
+      alignSelf: 'center'
     }
   },
   image: {
     overflow: 'hidden',
     height: sidebarWidth,
-    width: sidebarWidth - 2 * borderWidth,
+    width: sidebarWidth - 2 * borderWidth
   },
   preview: {
     position: 'relative',
@@ -47,13 +46,15 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     border: borderWidth,
-    borderColor: ((active: boolean) => active ? '#3caea3' : 'lightgrey') as any,
+    borderColor: ((active: boolean) =>
+      active ? '#3caea3' : 'lightgrey') as any,
     borderStyle: 'solid',
     '&:hover': {
-      borderColor: ((active: boolean) => active ? '#3caea3' : 'darkgrey') as any,
+      borderColor: ((active: boolean) =>
+        active ? '#3caea3' : 'darkgrey') as any
     },
     '&:active': {
-      borderColor: ((active: boolean) => 'grey') as any,
+      borderColor: ((active: boolean) => 'grey') as any
     }
   },
   center: {
@@ -76,7 +77,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, operand1Id, active }) => {
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({
+  spec,
+  operand1Id,
+  active
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
