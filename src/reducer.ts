@@ -10,7 +10,7 @@ const newGlobalState = (
   return {
     current: getCurrent(oldState.current),
     undoStack: R.prepend(oldState.current, oldState.undoStack),
-    redoStack: []
+    redoStack: [],
   };
 };
 
@@ -23,7 +23,7 @@ export const reducer: Reducer = (globalState, action) => {
           specs
         ),
         specCount: specCount + 1,
-        ...rest
+        ...rest,
       }));
 
     case 'modify-spec':
@@ -31,11 +31,10 @@ export const reducer: Reducer = (globalState, action) => {
         globalState,
         R.over(
           R.lensProp('specs'),
-          R.map(
-            (spec: IBaseSpec) =>
-              spec.id === action.id
-                ? { id: action.id, spec: action.json, alias: action.alias }
-                : spec
+          R.map((spec: IBaseSpec) =>
+            spec.id === action.id
+              ? { id: action.id, spec: action.json, alias: action.alias }
+              : spec
           )
         )
       );
@@ -47,9 +46,8 @@ export const reducer: Reducer = (globalState, action) => {
             R.lensProp('specs'),
             R.filter((spec: IBaseSpec) => spec.id !== action.id)
           ),
-          R.over(
-            R.lensProp('operand1Id'),
-            operand1Id => (operand1Id === action.id ? null : operand1Id)
+          R.over(R.lensProp('operand1Id'), operand1Id =>
+            operand1Id === action.id ? null : operand1Id
           )
         )
       );
@@ -59,7 +57,7 @@ export const reducer: Reducer = (globalState, action) => {
         return {
           redoStack: R.prepend(current, redoStack),
           current: undoStack[0],
-          undoStack: undoStack.slice(1)
+          undoStack: undoStack.slice(1),
         };
       } else {
         return globalState;
@@ -71,7 +69,7 @@ export const reducer: Reducer = (globalState, action) => {
         return {
           redoStack: redoStack.slice(1),
           current: redoStack[0],
-          undoStack: R.prepend(current, undoStack)
+          undoStack: R.prepend(current, undoStack),
         };
       } else {
         return globalState;
@@ -103,7 +101,10 @@ export const reducer: Reducer = (globalState, action) => {
               case 'layer':
                 const layer = new LayerView();
                 const operand1View = new UnitView(action.operand1);
-                if (layer.isCompatible(operand1View) && layer.isCompatible(action.operand2.view)) {
+                if (
+                  layer.isCompatible(operand1View) &&
+                  layer.isCompatible(action.operand2.view)
+                ) {
                   layer.append(action.operand2.view);
                   layer.append(operand1View);
                   action.operand2.view = layer;
@@ -135,8 +136,8 @@ export const initialState: IGlobalState = {
     specCount: 0,
     operand1Id: null,
     operand2: null,
-    result: null
+    result: null,
   },
   undoStack: [],
-  redoStack: []
+  redoStack: [],
 };

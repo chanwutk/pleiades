@@ -13,20 +13,20 @@ import { reducer, initialState } from './reducer';
 const useStyles = makeStyles(theme => ({
   root: {
     height: 600,
-    display: 'flex'
+    display: 'flex',
   },
   left: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     width: sidebarWidth,
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   right: {
     flexGrow: 1,
     display: 'flex',
-    flexDirection: 'column'
-  }
+    flexDirection: 'column',
+  },
 }));
 
 const App: React.FC = () => {
@@ -39,9 +39,7 @@ const App: React.FC = () => {
       <div className={classes.root}>
         <div className={classes.left}>
           <NewSpec />
-          <NavigationBar
-            currentState={state.current}
-          />
+          <NavigationBar currentState={state.current} />
         </div>
         <div className={classes.right}>
           <OperationBar
@@ -50,7 +48,10 @@ const App: React.FC = () => {
             operand2={state.current.operand2}
             result={state.current.result}
           />
-          <MainView result={state.current.result} operand2={state.current.operand2} />
+          <MainView
+            result={state.current.result}
+            operand2={state.current.operand2}
+          />
         </div>
       </div>
     </AppDispatch.Provider>
