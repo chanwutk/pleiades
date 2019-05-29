@@ -49,7 +49,7 @@ const examples = [
 const stringToSpec = (value: string) => {
   try {
     const json = JSON.parse(value);
-    if (!('data' in json) || !('url' in json.data)) {
+    if (!('data' in json) || !('url' in json.data || 'values' in json.data)) {
       return failure('data field must exist and must be url.');
     }
 
