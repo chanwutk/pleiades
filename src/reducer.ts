@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { UnitViewHolder, UnitView } from './SyntaxTree/View';
+import { assertNever } from './utils';
 
 const newGlobalState = (
   oldState: IGlobalState,
@@ -47,10 +48,7 @@ export const reducer: Reducer = (globalState, action) => {
           ),
           R.over(
             R.lensProp('operand1Id'),
-            () => {
-              const { current: { operand1Id } } = globalState;
-              return operand1Id === action.id ? null : operand1Id;
-            }
+            operand1Id => (operand1Id === action.id ? null : operand1Id)
           )
         )
       );
@@ -81,46 +79,38 @@ export const reducer: Reducer = (globalState, action) => {
     case 'select-operand1': {
       return newGlobalState(
         globalState,
-        R.over(R.lensProp('operand1Id'), R.always(action.id)),
+        R.over(R.lensProp('operand1Id'), R.always(action.id))
       );
     }
     case 'select-operand2': {
       return newGlobalState(
         globalState,
-        R.over(R.lensProp('operand2'), R.always(action.operand)),
+        R.over(R.lensProp('operand2'), R.always(action.operand))
       );
     }
     case 'operate': {
       return newGlobalState(
         globalState,
         R.pipe(
-          R.over(R.lensProp('result'), () => {
-            const operand1 = new UnitViewHolder(new UnitView(action.operand1));
-            const { current } = globalState;
-            const { result } = current;
-            current.result = R.clone(result);
+          R.over(R.lensProp('result'), result => {
             switch (action.operator) {
-              case 'place': {
-                return operand1;
-              }
-              case 'layer': {
+              case 'place':
+                return new UnitViewHolder(new UnitView(action.operand1));
+              case 'layer':
                 return result;
-              }
-              case 'concat': {
+              case 'concat':
                 return result;
-              }
-              case 'repeat': {
+              case 'repeat':
                 return result;
-              }
-              case 'facet': {
+              case 'facet':
                 return result;
-              }
-              default: return result;
+              default:
+                return assertNever(action.operator);
             }
           }),
           R.over(R.lensProp('operand1Id'), R.always(null)),
-          R.over(R.lensProp('operand2'), R.always(null)),
-        ),
+          R.over(R.lensProp('operand2'), R.always(null))
+        )
       );
     }
     default:

@@ -7,14 +7,19 @@ import Grid from '@material-ui/core/Grid';
 import { AppDispatch } from '../contexts';
 import { ViewHolder } from '../SyntaxTree/View';
 
-interface IModeBarProps {
+interface IOperationBarProps {
   specs: IBaseSpec[];
-  operand1Id: number | null;
+  operand1Id?: number;
   operand2: any;
-  result: ViewHolder | null;
+  result?: ViewHolder;
 }
 
-export const OperationBar: React.FC<IModeBarProps> = ({ specs, operand1Id, operand2, result }) => {
+export const OperationBar: React.FC<IOperationBarProps> = ({
+  specs,
+  operand1Id,
+  operand2,
+  result
+}) => {
   const dispatch = useContext(AppDispatch);
 
   const handleUndo = () => dispatch({ type: 'undo' });
@@ -23,7 +28,6 @@ export const OperationBar: React.FC<IModeBarProps> = ({ specs, operand1Id, opera
     specs.forEach(spec => {
       if (spec.id === operand1Id) {
         dispatch({ type: 'operate', operand1: spec.spec, operand2, operator });
-        return;
       }
     });
   };
@@ -32,7 +36,8 @@ export const OperationBar: React.FC<IModeBarProps> = ({ specs, operand1Id, opera
   const concatDisabled = operand1Id === null || operand2 === null;
   const repeatDisabled = operand1Id !== null || operand2 === null;
   const facetDisabled = operand1Id !== null || operand2 === null;
-  const placeDisabled = operand1Id === null || operand2 !== null || result !== null;
+  const placeDisabled =
+    operand1Id === null || operand2 !== null || result !== null;
 
   return (
     <Grid container justify="space-between">
