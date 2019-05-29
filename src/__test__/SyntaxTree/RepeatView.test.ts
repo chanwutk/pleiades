@@ -3,12 +3,12 @@ import { UnitView } from '../../SyntaxTree/View';
 import { jsonCopy } from '../../SyntaxTree/Utils';
 
 const spec = {
-  data: { url: "data/cars.json" },
-  mark: "point",
+  data: { url: 'data/cars.json' },
+  mark: 'point',
   encoding: {
-    x: { field: "Horsepower", type: "quantitative" },
-    y: { field: "Miles_per_Gallon", type: "quantitative" }
-  }
+    x: { field: 'Horsepower', type: 'quantitative' },
+    y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+  },
 };
 
 describe('RepeatView', () => {
@@ -16,31 +16,40 @@ describe('RepeatView', () => {
     const facet1 = new RepeatView(new UnitView(jsonCopy(spec)), {});
     expect(facet1.export()).toEqual({ repeat: {}, spec });
 
-    const facet2 = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x' });
+    const facet2 = new RepeatView(new UnitView(jsonCopy(spec)), {
+      rowChannel: 'x',
+    });
     expect(facet2.export()).toEqual({
       repeat: { row: [] },
       spec: {
-        data: { url: "data/cars.json" },
-        mark: "point",
+        data: { url: 'data/cars.json' },
+        mark: 'point',
         encoding: {
-          x: { field: { repeat: "row" }, type: "quantitative" },
-          y: { field: "Miles_per_Gallon", type: "quantitative" }
-        }
-      }
+          x: { field: { repeat: 'row' }, type: 'quantitative' },
+          y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+        },
+      },
     });
 
-    const facet3 = new RepeatView(new UnitView(jsonCopy(spec)), { columnChannel: 'y' });
+    const facet3 = new RepeatView(new UnitView(jsonCopy(spec)), {
+      columnChannel: 'y',
+    });
     expect(facet3.export()).toEqual({
       repeat: { column: [] },
       spec: {
-        data: { url: "data/cars.json" },
-        mark: "point",
+        data: { url: 'data/cars.json' },
+        mark: 'point',
         encoding: {
-          x: { field: "Horsepower", type: "quantitative" },
-          y: { field: { repeat: "column" }, type: "quantitative" }
-        }
-      }
+          x: { field: 'Horsepower', type: 'quantitative' },
+          y: { field: { repeat: 'column' }, type: 'quantitative' },
+        },
+      },
     });
+  });
+
+  it('correctly getType', () => {
+    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), {});
+    expect(repeat.getType()).toEqual('repeat');
   });
 
   it('is correctly addAxis', () => {
@@ -49,97 +58,128 @@ describe('RepeatView', () => {
     expect(facet.export()).toEqual({
       repeat: { row: [] },
       spec: {
-        data: { url: "data/cars.json" },
-        mark: "point",
+        data: { url: 'data/cars.json' },
+        mark: 'point',
         encoding: {
-          x: { field: { repeat: "row" }, type: "quantitative" },
-          y: { field: "Miles_per_Gallon", type: "quantitative" }
-        }
-      }
+          x: { field: { repeat: 'row' }, type: 'quantitative' },
+          y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+        },
+      },
     });
 
     facet.addAxis('y', 'column');
     expect(facet.export()).toEqual({
       repeat: { row: [], column: [] },
       spec: {
-        data: { url: "data/cars.json" },
-        mark: "point",
+        data: { url: 'data/cars.json' },
+        mark: 'point',
         encoding: {
-          x: { field: { repeat: "row" }, type: "quantitative" },
-          y: { field: { repeat: "column" }, type: "quantitative" }
-        }
-      }
+          x: { field: { repeat: 'row' }, type: 'quantitative' },
+          y: { field: { repeat: 'column' }, type: 'quantitative' },
+        },
+      },
     });
   });
 
   it('is correctly removeAxis', () => {
-    const facet = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
+    const facet = new RepeatView(new UnitView(jsonCopy(spec)), {
+      rowChannel: 'x',
+      columnChannel: 'y',
+    });
     facet.removeAxis('column');
     expect(facet.export()).toEqual({
       repeat: { row: [] },
       spec: {
-        data: { url: "data/cars.json" },
-        mark: "point",
+        data: { url: 'data/cars.json' },
+        mark: 'point',
         encoding: {
-          x: { field: { repeat: "row" }, type: "quantitative" },
-          y: { field: "Miles_per_Gallon", type: "quantitative" }
-        }
-      }
+          x: { field: { repeat: 'row' }, type: 'quantitative' },
+          y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+        },
+      },
     });
 
     facet.removeAxis('row');
     expect(facet.export()).toEqual({
       repeat: {},
       spec: {
-        data: { url: "data/cars.json" },
-        mark: "point",
+        data: { url: 'data/cars.json' },
+        mark: 'point',
         encoding: {
-          x: { field: "Horsepower", type: "quantitative" },
-          y: { field: "Miles_per_Gallon", type: "quantitative" }
-        }
-      }
+          x: { field: 'Horsepower', type: 'quantitative' },
+          y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+        },
+      },
     });
   });
 
   it('is correctly appended', () => {
-    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
+    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), {
+      rowChannel: 'x',
+      columnChannel: 'y',
+    });
 
     repeat.append('field1', 'row');
     expect(repeat.export().repeat).toEqual({ row: ['field1'], column: [] });
     repeat.append('field2', 'row');
-    expect(repeat.export().repeat).toEqual({ row: ['field1', 'field2'], column: [] });
+    expect(repeat.export().repeat).toEqual({
+      row: ['field1', 'field2'],
+      column: [],
+    });
 
     repeat.append('field3', 'column');
-    expect(repeat.export().repeat).toEqual({ row: ['field1', 'field2'], column: ['field3'] });
+    expect(repeat.export().repeat).toEqual({
+      row: ['field1', 'field2'],
+      column: ['field3'],
+    });
     repeat.append('field4', 'column');
-    expect(repeat.export().repeat).toEqual({ row: ['field1', 'field2'], column: ['field3', 'field4'] });
+    expect(repeat.export().repeat).toEqual({
+      row: ['field1', 'field2'],
+      column: ['field3', 'field4'],
+    });
   });
 
   it('is correctly prepended', () => {
-    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
+    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), {
+      rowChannel: 'x',
+      columnChannel: 'y',
+    });
 
     repeat.append('field1', 'row');
     repeat.prepend('field2', 'row');
-    expect(repeat.export().repeat).toEqual({ row: ['field2', 'field1'], column: [] });
+    expect(repeat.export().repeat).toEqual({
+      row: ['field2', 'field1'],
+      column: [],
+    });
 
     repeat.append('field3', 'column');
     repeat.prepend('field4', 'column');
-    expect(repeat.export().repeat).toEqual({ row: ['field2', 'field1'], column: ['field4', 'field3'] });
+    expect(repeat.export().repeat).toEqual({
+      row: ['field2', 'field1'],
+      column: ['field4', 'field3'],
+    });
   });
 
   it('correctly removes view', () => {
-    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x' });
+    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), {
+      rowChannel: 'x',
+    });
     repeat.append('field1', 'row');
     repeat.append('field2', 'row');
     repeat.append('field3', 'row');
     repeat.append('field4', 'row');
 
     repeat.remove(2, 'row');
-    expect(repeat.export().repeat).toEqual({ row: ['field1', 'field2', 'field4'] });
+    expect(repeat.export().repeat).toEqual({
+      row: ['field1', 'field2', 'field4'],
+    });
   });
 
   it('is correctly rearranged', () => {
-    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), { rowChannel: 'x', columnChannel: 'y' });
+    const repeat = new RepeatView(new UnitView(jsonCopy(spec)), {
+      rowChannel: 'x',
+      columnChannel: 'y',
+    });
     repeat.append('field1', 'row');
     repeat.append('field2', 'row');
     repeat.append('field3', 'row');
@@ -153,7 +193,7 @@ describe('RepeatView', () => {
     repeat.rearrange(3, 1, 'column');
     expect(repeat.export().repeat).toEqual({
       row: ['field1', 'field3', 'field4', 'field2'],
-      column: ['field1', 'field4', 'field2', 'field3']
+      column: ['field1', 'field4', 'field2', 'field3'],
     });
   });
 
@@ -162,4 +202,3 @@ describe('RepeatView', () => {
     expect(facet.isCompatible('field')).toBeTruthy();
   });
 });
-

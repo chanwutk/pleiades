@@ -1,11 +1,11 @@
 import { View, CompositeView, ViewHolder } from './View';
 
-
-export class FacetView implements CompositeView<null> {
+export class FacetView extends CompositeView<null> {
   private view: ViewHolder;
   private facet: FacetInfo;
 
   public constructor(view: View, facet: FacetInfo) {
+    super('facet');
     this.facet = facet;
     this.view = new ViewHolder(view);
   }
@@ -13,7 +13,7 @@ export class FacetView implements CompositeView<null> {
   public export() {
     return {
       facet: this.facet.export(),
-      spec: this.view.export()
+      spec: this.view.export(),
     };
   }
 
@@ -45,22 +45,18 @@ export class FacetView implements CompositeView<null> {
       this.facet.swapAxis();
     }
   }
-
-  public getType() {
-    return 'facet';
-  }
 }
 
 /**
  * This class contains information for facet
  */
 export class FacetInfo {
-  row: {} | undefined
-  column: {} | undefined
+  row: {} | undefined;
+  column: {} | undefined;
 
-  constructor(info: { row?: {}, column?: {} }) {
+  constructor(info: { row?: {}; column?: {} }) {
     this.row = info.row;
-    this.column = info.column
+    this.column = info.column;
   }
 
   public export() {

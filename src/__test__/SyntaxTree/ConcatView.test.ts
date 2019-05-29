@@ -3,38 +3,38 @@ import { UnitView } from '../../SyntaxTree/View';
 import { jsonCopy } from '../../SyntaxTree/Utils';
 
 const spec1 = {
-  data: { url: "data/cars.json" },
-  mark: "point",
+  data: { url: 'data/cars.json' },
+  mark: 'point',
   encoding: {
-    x: { field: "Horsepower", type: "quantitative" },
-    y: { field: "Miles_per_Gallon", type: "quantitative" }
-  }
+    x: { field: 'Horsepower', type: 'quantitative' },
+    y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+  },
 };
 
 const spec2 = {
-  data: { url: "data/movies.json" },
-  mark: "bar",
+  data: { url: 'data/movies.json' },
+  mark: 'bar',
   encoding: {
     x: {
       bin: true,
-      field: "IMDB_Rating",
-      type: "quantitative"
+      field: 'IMDB_Rating',
+      type: 'quantitative',
     },
     y: {
-      aggregate: "count",
-      type: "quantitative"
-    }
-  }
-}
+      aggregate: 'count',
+      type: 'quantitative',
+    },
+  },
+};
 
 const spec3 = {
-  data: { url: "data/stocks.csv" },
+  data: { url: 'data/stocks.csv' },
   transform: [{ filter: "datum.symbol==='GOOG'" }],
-  mark: "line",
+  mark: 'line',
   encoding: {
-    x: { field: "date", type: "temporal" },
-    y: { field: "price", type: "quantitative" }
-  }
+    x: { field: 'date', type: 'temporal' },
+    y: { field: 'price', type: 'quantitative' },
+  },
 };
 
 describe('ConcatView', () => {
@@ -44,6 +44,11 @@ describe('ConcatView', () => {
 
     const vconcat = new ConcatView('v');
     expect(vconcat.export()).toEqual({ vconcat: [] });
+  });
+
+  it('correctly getType', () => {
+    const concat = new ConcatView('h');
+    expect(concat.getType()).toEqual('concat');
   });
 
   it('is correctly appended', () => {
@@ -92,4 +97,3 @@ describe('ConcatView', () => {
     expect(concat.isCompatible(new UnitView(jsonCopy(spec2)))).toBeTruthy();
   });
 });
-

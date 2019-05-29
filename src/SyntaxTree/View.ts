@@ -1,12 +1,29 @@
 import { jsonCopy } from './Utils';
-export interface View {
+
+let idCounter = 0;
+
+export abstract class View {
+  private id: number;
+  private type: string;
+
+  constructor(type) {
+    this.id = idCounter++;
+    this.type = type;
+  }
+
+  public getType() {
+    return this.type;
+  }
+
+  public getId() {
+    return this.id;
+  }
+
   /**
    * export Vega-Lite spec in vl.json format
    * @returns exported Vega-Lite spec
    */
-  export: () => object;
-
-  getType: () => string;
+  abstract export(): object;
 }
 
 export class ViewHolder {
@@ -42,7 +59,7 @@ export class UnitViewHolder extends ViewHolder {
  */
 type ViewIndocator = View | string | null;
 
-export interface CompositeView<V extends ViewIndocator> extends View {
+export abstract class CompositeView<V extends ViewIndocator> extends View {
   /**
    * Move subview at the position `from` to position `to`.
    * For example: in composite view with 4 subviews [0, 1, 2, 3], calling
@@ -51,28 +68,28 @@ export interface CompositeView<V extends ViewIndocator> extends View {
    * @param {number} to the index of the view to be moved to.
    * @param {any} option an extra option for rearrangement.
    */
-  rearrange: (from: number, to: number, option: any) => void;
+  abstract rearrange(from: number, to: number, option: any): void;
 
   /**
-   * Append another view with a ViewIdicator `elm`
+   * Append another view with a ViewIdicator `viewIndicator`
    * @param {V} viewIndicator the ViewIndocator to be appended.
    * @param {any} option an extra option for appending.
    */
-  append: (viewIndicator: V, option: any) => void;
+  abstract append(viewIndicator: V, option: any): void;
 
   /**
-   * Prepend another view with a ViewIdicator `elm`
+   * Prepend another view with a ViewIdicator `viewIndicator`
    * @param {V} viewIndicator the ViewIndocator to be prepended.
    * @param {any} option an extra option for appending.
    */
-  prepend: (viewIndicator: V, option: any) => void;
+  abstract prepend(viewIndicator: V, option: any): void;
 
   /**
    * Remove a view from composite view
    * @param {number} the index of the view to be removed
    * @param {any} option an extra option for removing
    */
-  remove: (index: number, option: any) => void;
+  abstract remove(index: number, option: any): void;
 
   /**
    * Check if `viewIndicator` is competible with the current view
@@ -80,10 +97,10 @@ export interface CompositeView<V extends ViewIndocator> extends View {
    * @returns true if `viewIndicator` is competible with the current view
    *          false otherwise.
    */
-  isCompatible: (viewIndicator: V) => boolean;
+  abstract isCompatible(viewIndicator: V): boolean;
 }
 
-export class UnitView implements View {
+export class UnitView extends View {
   private spec: {};
 
   /**
@@ -91,6 +108,7 @@ export class UnitView implements View {
    * @param {object} spec Vega-Lite spec
    */
   public constructor(spec: {}) {
+    super('unit');
     this.spec = jsonCopy(spec);
   }
 
@@ -100,9 +118,5 @@ export class UnitView implements View {
 
   public export() {
     return jsonCopy(this.spec);
-  }
-
-  public getType() {
-    return 'unit';
   }
 }

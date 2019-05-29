@@ -1,11 +1,12 @@
 import { View, CompositeView, ViewHolder } from './View';
 import { moveElement } from './Utils';
 
-export class RepeatView implements CompositeView<string> {
+export class RepeatView extends CompositeView<string> {
   private repeatInfo: RepeatInfo;
   private view: ViewHolder;
 
   public constructor(view: View, info: ChannelInfo) {
+    super('repeat');
     this.repeatInfo = new RepeatInfo([], [], info);
     this.view = new ViewHolder(view);
   }
@@ -13,7 +14,7 @@ export class RepeatView implements CompositeView<string> {
   public export() {
     return {
       repeat: this.repeatInfo.export(),
-      spec: applyRepeat(this.view.export(), this.repeatInfo)
+      spec: applyRepeat(this.view.export(), this.repeatInfo),
     };
   }
 
@@ -60,15 +61,11 @@ export class RepeatView implements CompositeView<string> {
       moveElement(this.repeatInfo[option], from, to);
     }
   }
-
-  public getType() {
-    return 'repeat';
-  }
 }
 
 interface ChannelInfo {
   rowChannel?: string;
-  columnChannel?: string
+  columnChannel?: string;
 }
 
 /**
@@ -86,7 +83,6 @@ class RepeatInfo {
     this.rowChannel = info.rowChannel;
     this.columnChannel = info.columnChannel;
   }
-
 
   /**
    * Add an orient to repeat `channel`
@@ -111,7 +107,7 @@ class RepeatInfo {
   public export() {
     return {
       ...(this.isRepeating('row') ? { row: this.row } : {}),
-      ...(this.isRepeating('column') ? { column: this.column } : {})
+      ...(this.isRepeating('column') ? { column: this.column } : {}),
     };
   }
 
@@ -155,11 +151,13 @@ function applyRepeat(spec: any, repeat: RepeatInfo) {
     if (spec[type]) {
       nestedType = type;
     }
-  })
+  });
 
   const { [nestedType || '$invalid-vl-field$']: nestedSpecs, ...output } = spec;
   if (nestedType) {
-    output[nestedType] = nestedSpecs.map((nestedSpec: any) => applyRepeat(nestedSpec, repeat));
+    output[nestedType] = nestedSpecs.map((nestedSpec: any) =>
+      applyRepeat(nestedSpec, repeat)
+    );
   }
 
   if (output.encoding) {

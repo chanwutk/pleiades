@@ -1,10 +1,11 @@
-import { View, CompositeView, ViewHolder, UnitView, UnitViewHolder } from './View';
+import { CompositeView, ViewHolder, UnitView, UnitViewHolder } from './View';
 import { moveElement } from './Utils';
 
-export class LayerView implements CompositeView<UnitView> {
+export class LayerView extends CompositeView<UnitView> {
   private layer: ViewHolder[];
 
   public constructor() {
+    super('layer');
     this.layer = [];
   }
 
@@ -26,18 +27,16 @@ export class LayerView implements CompositeView<UnitView> {
 
   public isCompatible(view: UnitView): boolean {
     const spec = view.export();
-    return !spec['spec']
-      && !spec['layer']
-      && !spec['concat']
-      && !spec['hconcat']
-      && !spec['vconcat'];
+    return (
+      !spec['spec'] &&
+      !spec['layer'] &&
+      !spec['concat'] &&
+      !spec['hconcat'] &&
+      !spec['vconcat']
+    );
   }
 
   public rearrange(from: number, to: number) {
     moveElement(this.layer, from, to);
-  }
-
-  public getType() {
-    return 'layer';
   }
 }

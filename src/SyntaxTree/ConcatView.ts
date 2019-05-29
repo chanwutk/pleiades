@@ -1,11 +1,12 @@
 import { View, CompositeView, ViewHolder } from './View';
 import { moveElement } from './Utils';
 
-export class ConcatView implements CompositeView<View> {
+export class ConcatView extends CompositeView<View> {
   private concat: ViewHolder[];
   private orient: 'h' | 'v';
 
   public constructor(orient: 'h' | 'v') {
+    super('concat');
     this.concat = [];
     this.orient = orient;
   }
@@ -33,9 +34,5 @@ export class ConcatView implements CompositeView<View> {
 
   public rearrange(from: number, to: number) {
     moveElement(this.concat, from, to);
-  }
-
-  public getType() {
-    return 'concat';
   }
 }
