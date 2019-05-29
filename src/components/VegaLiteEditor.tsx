@@ -18,15 +18,17 @@ export interface IVegaLiteEditorProps {
 
 const examples = [
   {
+    $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
     data: { url: 'https://vega.github.io/editor/data/cars.json' },
     mark: 'point',
     encoding: {
       x: { field: 'Horsepower', type: 'quantitative' },
-      y: { field: 'Miles_per_Gallon', type: 'quantitative' }
-    }
+      y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+    },
   },
 
   {
+    $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
     data: { url: 'https://vega.github.io/editor/data/population.json' },
     transform: [{ filter: 'datum.year == 2000' }],
     mark: 'bar',
@@ -34,16 +36,16 @@ const examples = [
       y: {
         field: 'age',
         type: 'ordinal',
-        scale: { rangeStep: 17 }
+        scale: { rangeStep: 17 },
       },
       x: {
         aggregate: 'sum',
         field: 'people',
         type: 'quantitative',
-        axis: { title: 'population' }
-      }
-    }
-  }
+        axis: { title: 'population' },
+      },
+    },
+  },
 ];
 
 const stringToSpec = (value: string) => {
@@ -69,7 +71,7 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
   setValue,
   alias,
   setAlias,
-  onSuccess
+  onSuccess,
 }) => {
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -95,6 +97,8 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
   };
 
   const handleChange = (txt: string) => {
+    // NOTE: need to setValue before setErrorMsg
+    setValue(txt);
     const result = stringToSpec(txt);
     switch (result.tag) {
       case 'success':
@@ -104,7 +108,6 @@ export const VegaLiteEditor: React.FC<IVegaLiteEditorProps> = ({
         setErrorMsg(result.value);
         break;
     }
-    setValue(txt);
   };
 
   const extras = examples.map((example, i) => (
