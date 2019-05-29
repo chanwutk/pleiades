@@ -30,13 +30,13 @@ const useStyles = makeStyles(theme => ({
       height: '75%',
       content: "''",
       bottom: 0,
-      alignSelf: 'center'
-    }
+      alignSelf: 'center',
+    },
   },
   image: {
     overflow: 'hidden',
     height: sidebarWidth,
-    width: sidebarWidth - 2 * borderWidth
+    width: sidebarWidth - 2 * borderWidth,
   },
   preview: {
     position: 'relative',
@@ -51,16 +51,16 @@ const useStyles = makeStyles(theme => ({
     borderStyle: 'solid',
     '&:hover': {
       borderColor: ((active: boolean) =>
-        active ? '#3caea3' : 'darkgrey') as any
+        active ? '#3caea3' : 'darkgrey') as any,
     },
     '&:active': {
-      borderColor: ((active: boolean) => 'grey') as any
-    }
+      borderColor: ((active: boolean) => 'grey') as any,
+    },
   },
   center: {
     position: 'absolute',
     left: '50%',
-    transform: 'translate(-50%, 0)'
+    transform: 'translate(-50%, 0)',
   },
   top: {
     position: 'absolute',
@@ -68,23 +68,24 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     '& button': {
       marginRight: theme.spacing(1),
-      marginTop: theme.spacing(1)
-    }
+      marginTop: theme.spacing(1),
+    },
   },
   bottom: {
     bottom: 10,
-    color: 'white'
-  }
+    color: 'white',
+  },
 }));
 
 export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   spec,
   operand1Id,
-  active
+  active,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleModify = () => {
     setCurrentSpec(stringify(spec.spec));
@@ -93,6 +94,9 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   };
 
   const dispatch = useContext(AppDispatch);
+
+  const handleDeleteMouseEnter = () => setIsDeleting(true);
+  const handleDeleteMouseLeave = () => setIsDeleting(false);
 
   const handleDelete = () => {
     dispatch({ type: 'delete-spec', id: spec.id });
@@ -103,8 +107,10 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
   };
 
   const handleToggleActive = () => {
-    const { id } = spec;
-    dispatch({ type: 'select-operand1', id: id === operand1Id ? null : id });
+    if (!isDeleting) {
+      const { id } = spec;
+      dispatch({ type: 'select-operand1', id: id === operand1Id ? null : id });
+    }
   };
 
   const classes = useStyles(active);
@@ -119,7 +125,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
         <TooltipTable
           table={[
             ['Data URL', spec.spec.data.url],
-            ['Mark Type', spec.spec.mark]
+            ['Mark Type', spec.spec.mark],
           ]}
         >
           <div className={classes.wrapper}>
@@ -137,7 +143,13 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
           <Fab size="small" color="primary" onClick={handleModify}>
             <Edit />
           </Fab>
-          <Fab size="small" color="secondary" onClick={handleDelete}>
+          <Fab
+            size="small"
+            color="secondary"
+            onClick={handleDelete}
+            onMouseEnter={handleDeleteMouseEnter}
+            onMouseLeave={handleDeleteMouseLeave}
+          >
             <Delete />
           </Fab>
         </div>
