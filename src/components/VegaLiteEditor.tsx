@@ -58,13 +58,7 @@ const stringToSpec = (value: string) => {
     vl.compile(json);
     return success(json);
   } catch (e) {
-    if (e instanceof SyntaxError) {
-      return failure(e.message);
-    } else if (e.message === 'Invalid spec') {
-      return failure(e.message);
-    } else {
-      throw e;
-    }
+    return failure(e.message);
   }
 };
 
