@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import { hot } from 'react-hot-loader';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -39,10 +39,13 @@ const App: React.FC = () => {
       <div className={classes.root}>
         <div className={classes.left}>
           <NewSpec />
-          <NavigationBar state={state} />
+          <NavigationBar
+            specs={state.current.specs}
+            mode={state.current.mode}
+          />
         </div>
         <div className={classes.right}>
-          <ModeBar state={state} />
+          <ModeBar mode={state.current.mode} />
           <MainView view={state.current.mainViewElements} />
         </div>
       </div>

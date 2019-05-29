@@ -7,19 +7,19 @@ import Grid from '@material-ui/core/Grid';
 import { AppDispatch } from '../contexts';
 
 interface IModeBarProps {
-  state: IGlobalState;
+  mode: Mode;
 }
 
-export const ModeBar: React.FC<IModeBarProps> = ({ state }) => {
+export const ModeBar: React.FC<IModeBarProps> = ({ mode }) => {
   const dispatch = useContext(AppDispatch);
 
   const handleUndo = () => dispatch({ type: 'undo' });
   const handleRedo = () => dispatch({ type: 'redo' });
   const handleSelectMode = (selectingMode: Mode) => {
     dispatch({ type: 'select-mode', mode: selectingMode });
-  }
+  };
 
-  const disabled = state.current.mode !== null;
+  const disabled = mode !== null;
 
   return (
     <Grid container justify="space-between">
