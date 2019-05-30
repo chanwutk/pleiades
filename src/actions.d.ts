@@ -2,13 +2,13 @@ type View = import('./SyntaxTree/View').View;
 
 interface IAddSpecAction {
   type: 'add-spec';
-  json: any;
+  json: IRawSpec;
   alias: string;
 }
 
 interface IModifySpecAction {
   type: 'modify-spec';
-  json: any;
+  json: IRawSpec;
   alias: string;
   id: number;
 }
@@ -28,7 +28,7 @@ interface IRedoAction {
 
 interface ISelectOperandAction {
   type: 'select-operand';
-  operand: number | null;
+  operand: number;
 }
 
 interface IOperateAction {

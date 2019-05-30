@@ -41,7 +41,7 @@ export const OperationBar: React.FC<IOperationBarProps> = ({
   const facetDisabled =
     mainViewOperands.length !== 1 || navBarOperands.length > 0;
   const placeDisabled =
-    !!tree || mainViewOperands.length > 0 || navBarOperands.length !== 1;
+    tree !== null || mainViewOperands.length > 0 || navBarOperands.length !== 1;
 
   return (
     <Grid container justify="space-between">

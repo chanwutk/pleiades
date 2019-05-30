@@ -97,7 +97,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active }) => {
     dispatch({ type: 'delete-spec', id: spec.id });
   };
 
-  const handleSuccess = (alias: string, json: any) => {
+  const handleSuccess = (alias: string, json: IRawSpec) => {
     dispatch({ type: 'modify-spec', json, alias, id: spec.id });
   };
 

@@ -17,7 +17,7 @@ export const NewSpec: React.FC = () => {
 
   const dispatch = useContext(AppDispatch);
 
-  const handleSuccess = (alias: string, json: any) => {
+  const handleSuccess = (alias: string, json: IRawSpec) => {
     dispatch({ type: 'add-spec', json, alias });
   };
 
