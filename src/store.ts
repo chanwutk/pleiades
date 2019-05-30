@@ -45,11 +45,10 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
         globalState,
         R.over(
           R.lensProp('specs'),
-          R.map(
-            (spec: IBaseSpec) =>
-              spec.id === action.id
-                ? { id: action.id, spec: action.json, alias: action.alias }
-                : spec
+          R.map((spec: IBaseSpec) =>
+            spec.id === action.id
+              ? { id: action.id, spec: action.json, alias: action.alias }
+              : spec
           )
         )
       );

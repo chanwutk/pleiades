@@ -31,33 +31,3 @@ export function moveElement(arr: Array<any>, from: number, to: number) {
 export function jsonCopy(obj: {}) {
   return JSON.parse(JSON.stringify(obj));
 }
-
-// export function isFacetSpec(spec: any): boolean {
-//   return !!spec && spec['facet'] !== undefined;
-// }
-
-// export function isLayerSpec(spec: any): boolean {
-//   return !!spec && spec['layer'] !== undefined;
-// }
-
-// export function isRepeatSpec(spec: any): boolean {
-//   return !!spec && spec['repeat'] !== undefined;
-// }
-
-// export function isConcatSpec(spec: any): boolean {
-//   return !!spec && spec['concat'] !== undefined;
-// }
-
-// export function isVConcatSpec(spec: any): boolean {
-//   return !!spec && spec['vconcat'] !== undefined;
-// }
-
-// export function isHConcatSpec(spec: any): boolean {
-//   return !!spec && spec['hconcat'] !== undefined;
-// }
-
-// export function parse(spec: any): View {
-//   if (isLayerSpec(spec)) {
-//     return new LayerView(spec);
-//   }
-// }
