@@ -16,13 +16,21 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  emptyView: {
+    color: 'darkgrey',
+    fontSize: 20,
+  },
 }));
 
 export const MainView: React.FC<IMainViewProps> = ({ tree, operands }) => {
   const classes = useStyles();
   return (
     <div className={classes.main}>
-      {tree ? render(tree, operands) : 'Empty View'}
+      {tree ? (
+        render(tree, operands)
+      ) : (
+        <div className={classes.emptyView}>Empty View</div>
+      )}
     </div>
   );
 };
