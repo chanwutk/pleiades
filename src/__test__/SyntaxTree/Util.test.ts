@@ -21,7 +21,11 @@ describe('moveElement', () => {
 
   it('throws an error when index is out of bound', () => {
     const arr = [0, 1, 2];
-    expect(() => moveElement(arr, -1, 1)).toThrow(`from (=-1) or to (=1) is out of arr bound (=[0,2])`);
-    expect(() => moveElement(arr, 1, 3)).toThrow(`from (=1) or to (=3) is out of arr bound (=[0,2])`);
+    expect(() => moveElement(arr, -1, 1)).toThrow(
+      `from (=-1) or to (=1) is out of arr bound (=[0,2])`
+    );
+    expect(() => moveElement(arr, 1, 3)).toThrow(
+      `from (=1) or to (=3) is out of arr bound (=[0,2])`
+    );
   });
 });
