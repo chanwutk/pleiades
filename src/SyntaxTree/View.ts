@@ -92,18 +92,24 @@ export class UnitView extends View {
    */
   public constructor(spec: IRawSpec) {
     super('unit');
-    this.spec = jsonCopy(spec);
+    this.spec = spec;
   }
 
-  public edit(spec: {}) {
-    this.spec = jsonCopy(spec);
+  public edit(spec: IRawSpec) {
+    this.spec = spec;
   }
 
   public export() {
-    return jsonCopy(this.spec);
+    return this.spec;
   }
 
   public clone() {
+    const cloned = new UnitView(this.spec);
+    cloned.id = this.id;
+    return cloned;
+  }
+
+  public deepClone() {
     const cloned = new UnitView(jsonCopy(this.spec));
     cloned.id = this.id;
     return cloned;

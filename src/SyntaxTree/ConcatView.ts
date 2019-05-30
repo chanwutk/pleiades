@@ -39,9 +39,14 @@ export class ConcatView extends CompositeView<View> {
   public clone() {
     const cloned = new ConcatView(this.orient);
     cloned.id = this.id;
-    for (const view of this.concat) {
-      cloned.concat.push(view.clone());
-    }
+    cloned.concat = [...this.concat];
+    return cloned;
+  }
+
+  public deepClone() {
+    const cloned = new ConcatView(this.orient);
+    cloned.id = this.id;
+    cloned.concat = this.concat.map(view => view.clone());
     return cloned;
   }
 

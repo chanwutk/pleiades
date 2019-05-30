@@ -63,6 +63,12 @@ export class RepeatView extends CompositeView<string> {
   }
 
   public clone() {
+    const cloned = new RepeatView(this.view, this.repeatInfo.getChannelInfo());
+    cloned.id = this.id;
+    return cloned;
+  }
+
+  public deepClone() {
     const cloned = new RepeatView(
       this.view.clone(),
       this.repeatInfo.getChannelInfo()
