@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PlaylistAdd from '@material-ui/icons/PlaylistAdd';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { AppDispatch } from '../contexts';
 import { VegaLiteEditor } from './VegaLiteEditor';
 
 const useStyles = makeStyles(theme => ({
@@ -15,7 +15,7 @@ export const NewSpec: React.FC = () => {
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
 
-  const dispatch = useContext(AppDispatch);
+  const dispatch = useDispatch();
 
   const handleSuccess = (alias: string, json: IRawSpec) => {
     dispatch({ type: 'add-spec', json, alias });

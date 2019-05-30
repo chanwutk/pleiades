@@ -1,11 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { render } from './views/Renderer';
-
-export interface IMainViewProps {
-  tree: View | null;
-  operands: number[];
-}
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -22,12 +18,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const MainView: React.FC<IMainViewProps> = ({ tree, operands }) => {
+export const MainView: React.FC = () => {
   const classes = useStyles();
+  const tree = useSelector((state: IGlobalState) => state.current.tree);
   return (
     <div className={classes.main}>
       {tree ? (
-        render(tree, operands)
+        render(tree)
       ) : (
         <div className={classes.emptyView}>Empty View</div>
       )}

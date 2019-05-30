@@ -35,5 +35,3 @@ interface IGlobalState {
   redoStack: IState[];
   current: IState;
 }
-
-type Reducer = React.Reducer<IGlobalState, Action>;

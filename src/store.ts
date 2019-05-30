@@ -1,3 +1,4 @@
+import { createStore } from 'redux';
 import * as R from 'ramda';
 import { UnitView } from './SyntaxTree/View';
 import { assertNever } from './utils';
@@ -16,7 +17,18 @@ const newGlobalState = (
   };
 };
 
-export const reducer: Reducer = (globalState, action) => {
+const initialState: IGlobalState = {
+  current: {
+    specs: [],
+    lastSpecId: -1,
+    operands: [],
+    tree: null,
+  },
+  undoStack: [],
+  redoStack: [],
+};
+
+const reducer = (globalState = initialState, action: Action): IGlobalState => {
   switch (action.type) {
     case 'add-spec':
       return newGlobalState(globalState, ({ specs, lastSpecId, ...rest }) => ({
@@ -33,10 +45,11 @@ export const reducer: Reducer = (globalState, action) => {
         globalState,
         R.over(
           R.lensProp('specs'),
-          R.map((spec: IBaseSpec) =>
-            spec.id === action.id
-              ? { id: action.id, spec: action.json, alias: action.alias }
-              : spec
+          R.map(
+            (spec: IBaseSpec) =>
+              spec.id === action.id
+                ? { id: action.id, spec: action.json, alias: action.alias }
+                : spec
           )
         )
       );
@@ -163,20 +176,11 @@ export const reducer: Reducer = (globalState, action) => {
       );
     }
     default:
-      throw new Error('impossible');
+      return globalState;
   }
 };
 
 // NOTE: invariants: navbar has negative id
 // and view has positive id
 
-export const initialState: IGlobalState = {
-  current: {
-    specs: [],
-    lastSpecId: -1,
-    operands: [],
-    tree: null,
-  },
-  undoStack: [],
-  redoStack: [],
-};
+export const store = createStore<IGlobalState, Action, {}, {}>(reducer);

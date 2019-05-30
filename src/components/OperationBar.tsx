@@ -1,25 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Undo from '@material-ui/icons/Undo';
 import Redo from '@material-ui/icons/Redo';
 import Grid from '@material-ui/core/Grid';
 
-import { AppDispatch } from '../contexts';
-
-interface IOperationBarProps {
-  operands: number[];
-  tree: View | null;
-  undoDisabled: boolean;
-  redoDisabled: boolean;
-}
-
-export const OperationBar: React.FC<IOperationBarProps> = ({
-  operands,
-  tree,
-  undoDisabled,
-  redoDisabled,
-}) => {
-  const dispatch = useContext(AppDispatch);
+export const OperationBar: React.FC = () => {
+  const dispatch = useDispatch();
+  const operands = useSelector((state: IGlobalState) => state.current.operands);
+  const tree = useSelector((state: IGlobalState) => state.current.tree);
+  const undoDisabled = useSelector(
+    (state: IGlobalState) => state.undoStack.length === 0
+  );
+  const redoDisabled = useSelector(
+    (state: IGlobalState) => state.redoStack.length === 0
+  );
 
   const handleUndo = () => dispatch({ type: 'undo' });
   const handleRedo = () => dispatch({ type: 'redo' });

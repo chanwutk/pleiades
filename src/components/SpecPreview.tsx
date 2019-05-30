@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import stringify from 'json-stringify-pretty-compact';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
@@ -8,13 +9,11 @@ import Fab from '@material-ui/core/Fab';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { AppDispatch } from '../contexts';
 import { sidebarWidth, borderWidth } from '../variables';
 import { VegaLite } from './VegaLite';
 
 export interface ISpecPreviewProps {
   spec: IBaseSpec;
-  active: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -76,19 +75,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active }) => {
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const active = useSelector((state: IGlobalState) =>
+    state.current.operands.includes(spec.id)
+  );
 
   const handleModify = () => {
     setCurrentSpec(stringify(spec.spec));
     setCurrentAlias(spec.alias);
     setShowModal(true);
   };
-
-  const dispatch = useContext(AppDispatch);
 
   const handleDeleteMouseEnter = () => setIsDeleting(true);
   const handleDeleteMouseLeave = () => setIsDeleting(false);

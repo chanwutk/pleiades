@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import { borderWidth } from '../../variables';
-import { AppDispatch } from '../../contexts';
 
 export const useStyles = makeStyles(_ => ({
   main: {
@@ -27,24 +27,26 @@ export const useStyles = makeStyles(_ => ({
 
 export interface IViewComponentProps {
   view: View;
-  operands: number[];
 }
 
 export const makeViewComponent = (
   View: React.FC<IViewComponentProps>
-): React.FC<IViewComponentProps> => ({ view, operands }) => {
-  const dispatch = useContext(AppDispatch);
+): React.FC<IViewComponentProps> => ({ view }) => {
   const thisId = view.getId();
+  const dispatch = useDispatch();
+  const isOperandIncluded = useSelector((state: IGlobalState) =>
+    state.current.operands.includes(thisId)
+  );
   const handleToggleActive = () => {
     dispatch({
       type: 'select-operand',
       operand: thisId,
     });
   };
-  const classes = useStyles(operands.includes(thisId));
+  const classes = useStyles(isOperandIncluded);
   return (
     <div className={classes.main} onClick={handleToggleActive}>
-      <View view={view} operands={operands} />
+      <View view={view} />
     </div>
   );
 };

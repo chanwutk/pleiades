@@ -1,12 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { SpecPreview } from './SpecPreview';
-
-export interface INavigationBarProps {
-  currentState: IState;
-}
 
 const useStyles = makeStyles(_ => ({
   list: {
@@ -21,19 +18,14 @@ const useStyles = makeStyles(_ => ({
   },
 }));
 
-export const NavigationBar: React.FC<INavigationBarProps> = ({
-  currentState,
-}) => {
+export const NavigationBar: React.FC = () => {
   const classes = useStyles();
+  const specs = useSelector((state: IGlobalState) => state.current.specs);
 
   return (
     <List className={classes.list}>
-      {currentState.specs.map(spec => (
-        <SpecPreview
-          key={spec.id}
-          spec={spec}
-          active={currentState.operands.includes(spec.id)}
-        />
+      {specs.map(spec => (
+        <SpecPreview key={spec.id} spec={spec} />
       ))}
     </List>
   );

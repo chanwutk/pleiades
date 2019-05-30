@@ -3,7 +3,7 @@ import { UnitComponent } from './UnitComponent';
 import { LayerComponent } from './LayerComponent';
 import { ConcatComponent } from './ConcatComponent';
 
-export const render = (view: View, operands: number[]) => {
+export const render = (view: View) => {
   const getRenderer = () => {
     switch (view.getType()) {
       case 'unit':
@@ -17,5 +17,5 @@ export const render = (view: View, operands: number[]) => {
     }
   };
   const Renderer = getRenderer();
-  return <Renderer view={view} operands={operands} />;
+  return <Renderer view={view} />;
 };
