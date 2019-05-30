@@ -21,7 +21,7 @@ interface IState {
   specCount: number;
   operand1Id: number | null;
   operand2Id: number | null;
-  result: ViewHolder | null;
+  tree: ViewHolder | null;
 }
 
 type Operator = 'layer' | 'concat' | 'repeat' | 'facet' | 'place';

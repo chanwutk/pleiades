@@ -46,10 +46,10 @@ const App: React.FC = () => {
             specs={state.current.specs}
             operand1Id={state.current.operand1Id}
             operand2Id={state.current.operand2Id}
-            result={state.current.result}
+            tree={state.current.tree}
           />
           <MainView
-            result={state.current.result}
+            tree={state.current.tree}
             operand2Id={state.current.operand2Id}
           />
         </div>

@@ -11,7 +11,6 @@ export const UnitComponent: React.FC<IViewComponentProps> = ({
   const thisId = view.view.getId();
 
   const handleToggleActive = () => {
-    const thisId = view.view.getId();
     dispatch({
       type: 'select-operand2-id',
       operandId: thisId === operand2Id ? null : thisId,

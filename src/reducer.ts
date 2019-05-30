@@ -91,12 +91,12 @@ export const reducer: Reducer = (globalState, action) => {
       return newGlobalState(
         globalState,
         R.pipe(
-          R.over(R.lensProp('result'), (result: ViewHolder) => {
+          R.over(R.lensProp('tree'), (oldTree: ViewHolder) => {
             if (action.operator === 'place') {
               return new ViewHolder(new UnitView(action.operand1));
             }
 
-            const newTree = result.clone();
+            const newTree = oldTree.clone();
             const operand2ViewHolder = newTree.findView(
               action.operand2Id === null ? -1 : action.operand2Id
             );
@@ -153,7 +153,7 @@ export const initialState: IGlobalState = {
     specCount: 0,
     operand1Id: null,
     operand2Id: null,
-    result: null,
+    tree: null,
   },
   undoStack: [],
   redoStack: [],

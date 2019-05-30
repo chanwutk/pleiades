@@ -5,7 +5,7 @@ import { UnitComponent } from './views/UnitComponent';
 import { LayerComponent } from './views/LayerComponent';
 
 export interface IMainViewProps {
-  result: ViewHolder;
+  tree: ViewHolder;
   operand2Id: number | null;
 }
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const MainView: React.FC<IMainViewProps> = ({ result, operand2Id }) => {
+export const MainView: React.FC<IMainViewProps> = ({ tree, operand2Id }) => {
   const classes = useStyles();
 
   const makeViewComponent = (viewHolder: ViewHolder) => {
@@ -40,7 +40,7 @@ export const MainView: React.FC<IMainViewProps> = ({ result, operand2Id }) => {
 
   return (
     <div className={classes.main}>
-      {result ? makeViewComponent(result) : 'Empty View'}
+      {tree ? makeViewComponent(tree) : 'Empty View'}
     </div>
   );
 };

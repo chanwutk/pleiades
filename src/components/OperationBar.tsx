@@ -11,14 +11,14 @@ interface IOperationBarProps {
   specs: IBaseSpec[];
   operand1Id: number | null;
   operand2Id: number | null;
-  result: ViewHolder | null;
+  tree: ViewHolder | null;
 }
 
 export const OperationBar: React.FC<IOperationBarProps> = ({
   specs,
   operand1Id,
   operand2Id,
-  result,
+  tree,
 }) => {
   const dispatch = useContext(AppDispatch);
 
@@ -42,7 +42,7 @@ export const OperationBar: React.FC<IOperationBarProps> = ({
   const repeatDisabled = operand1Id !== null || operand2Id === null;
   const facetDisabled = operand1Id !== null || operand2Id === null;
   const placeDisabled =
-    operand1Id === null || operand2Id !== null || result !== null;
+    operand1Id === null || operand2Id !== null || tree !== null;
 
   return (
     <Grid container justify="space-between">
