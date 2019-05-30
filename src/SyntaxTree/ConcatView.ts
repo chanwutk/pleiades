@@ -44,4 +44,14 @@ export class ConcatView extends CompositeView<View> {
     );
     return cloned;
   }
+
+  public findView(id: number) {
+    this.concat.forEach((viewHolder: ViewHolder) => {
+      const result = viewHolder.findView(id);
+      if (result !== null) {
+        return result;
+      }
+    });
+    return null;
+  }
 }

@@ -29,15 +29,15 @@ interface ISelectOperand1Action {
   id: number | null;
 }
 
-interface ISelectOperand2Action {
-  type: 'select-operand2';
-  operand: any;
+interface ISelectOperand2IdAction {
+  type: 'select-operand2-id';
+  operandId: number | null;
 }
 
 interface IOperateAction {
   type: 'operate';
   operand1: any;
-  operand2: any;
+  operand2Id: number | null;
   operator: Operator;
 }
 
@@ -48,5 +48,5 @@ type Action =
   | IUndoAction
   | IRedoAction
   | ISelectOperand1Action
-  | ISelectOperand2Action
+  | ISelectOperand2IdAction
   | IOperateAction;

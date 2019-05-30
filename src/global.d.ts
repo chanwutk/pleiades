@@ -20,7 +20,7 @@ interface IState {
   specs: IBaseSpec[];
   specCount: number;
   operand1Id: number | null;
-  operand2: any;
+  operand2Id: number | null;
   result: ViewHolder | null;
 }
 

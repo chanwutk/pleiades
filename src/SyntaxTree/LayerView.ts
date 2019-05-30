@@ -1,6 +1,5 @@
-import { CompositeView, ViewHolder, UnitView, UnitViewHolder } from './View';
+import { CompositeView, ViewHolder, UnitView } from './View';
 import { moveElement } from './Utils';
-import { clone } from '@babel/types';
 
 export class LayerView extends CompositeView<UnitView> {
   private layer: ViewHolder[];
@@ -15,11 +14,11 @@ export class LayerView extends CompositeView<UnitView> {
   }
 
   public append(view: UnitView) {
-    this.layer.push(new UnitViewHolder(view));
+    this.layer.push(new ViewHolder(view));
   }
 
   public prepend(view: UnitView) {
-    this.layer.unshift(new UnitViewHolder(view));
+    this.layer.unshift(new ViewHolder(view));
   }
 
   public remove(index: number) {
@@ -48,5 +47,15 @@ export class LayerView extends CompositeView<UnitView> {
       cloned.layer.push(viewHolder.clone());
     });
     return cloned;
+  }
+
+  public findView(id: number) {
+    this.layer.forEach((viewHolder: ViewHolder) => {
+      const result = viewHolder.findView(id);
+      if (result !== null) {
+        return result;
+      }
+    });
+    return null;
   }
 }

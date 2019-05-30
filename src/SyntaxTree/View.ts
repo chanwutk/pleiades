@@ -26,6 +26,8 @@ export abstract class View {
   abstract export(): object;
 
   abstract clone(): View;
+
+  abstract findView(id: number): ViewHolder | null;
 }
 
 export class ViewHolder {
@@ -46,15 +48,9 @@ export class ViewHolder {
   clone() {
     return new ViewHolder(this.view.clone());
   }
-}
 
-export class UnitViewHolder extends ViewHolder {
-  constructor(view: UnitView) {
-    super(view);
-  }
-
-  clone() {
-    return new UnitViewHolder(this.view.clone() as UnitView);
+  findView(id: number): ViewHolder | null {
+    return this.view.getId() === id ? this : this.view.findView(id);
   }
 }
 
@@ -134,5 +130,9 @@ export class UnitView extends View {
     const cloned = new UnitView(jsonCopy(this.spec));
     cloned.id = this.id;
     return cloned;
+  }
+
+  public findView(_id: number) {
+    return null;
   }
 }

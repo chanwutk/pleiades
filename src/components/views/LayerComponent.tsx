@@ -3,19 +3,24 @@ import { IViewComponentProps, useStyles } from './ViewComponent';
 import { VegaLite } from '../VegaLite';
 import { AppDispatch } from '../../contexts';
 
-export const LayerComponent: React.FC<IViewComponentProps> = ({ view, operand2 }) => {
+export const LayerComponent: React.FC<IViewComponentProps> = ({
+  view,
+  operand2Id,
+}) => {
   const dispatch = useContext(AppDispatch);
+  const thisId = view.view.getId();
 
   const handleToggleActive = () => {
-    dispatch({ type: 'select-operand2', operand: view === operand2 ? null : view });
+    dispatch({
+      type: 'select-operand2-id',
+      operandId: thisId === operand2Id ? null : thisId,
+    });
   };
 
-  const classes = useStyles(view === operand2);
+  const classes = useStyles(thisId === operand2Id);
   return (
     <div className={classes.main} onClick={handleToggleActive}>
-      <VegaLite
-        spec={view.export()}
-      />
+      <VegaLite spec={view.export()} />
     </div>
   );
 };

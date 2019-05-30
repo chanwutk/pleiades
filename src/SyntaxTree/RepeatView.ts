@@ -70,6 +70,10 @@ export class RepeatView extends CompositeView<string> {
     cloned.id = this.id;
     return cloned;
   }
+
+  public findView(id: number) {
+    return this.view.findView(id);
+  }
 }
 
 interface ChannelInfo {

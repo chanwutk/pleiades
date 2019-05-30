@@ -52,6 +52,10 @@ export class FacetView extends CompositeView<null> {
     cloned.id = this.id;
     return cloned;
   }
+
+  public findView(id: number) {
+    return this.view.findView(id);
+  }
 }
 
 /**

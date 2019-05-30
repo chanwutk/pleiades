@@ -11,19 +11,19 @@ export const useStyles = makeStyles(theme => ({
     borderStyle: 'solid',
     '&:hover': {
       borderColor: ((active: boolean) =>
-        active ? '#3caea3' : 'darkgrey') as any
+        active ? '#3caea3' : 'darkgrey') as any,
     },
     '&:active': {
-      borderColor: ((active: boolean) => 'grey') as any
+      borderColor: ((active: boolean) => 'grey') as any,
     },
     backgroundColor: 'white',
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  }
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 export interface IViewComponentProps {
   view: ViewHolder;
-  operand2: ViewHolder;
+  operand2Id: number | null;
 }

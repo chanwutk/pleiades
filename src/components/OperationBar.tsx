@@ -10,14 +10,14 @@ import { ViewHolder } from '../SyntaxTree/View';
 interface IOperationBarProps {
   specs: IBaseSpec[];
   operand1Id: number | null;
-  operand2: any;
+  operand2Id: number | null;
   result: ViewHolder | null;
 }
 
 export const OperationBar: React.FC<IOperationBarProps> = ({
   specs,
   operand1Id,
-  operand2,
+  operand2Id,
   result,
 }) => {
   const dispatch = useContext(AppDispatch);
@@ -27,17 +27,22 @@ export const OperationBar: React.FC<IOperationBarProps> = ({
   const operate = (operator: Operator) => {
     specs.forEach(spec => {
       if (spec.id === operand1Id) {
-        dispatch({ type: 'operate', operand1: spec.spec, operand2, operator });
+        dispatch({
+          type: 'operate',
+          operand1: spec.spec,
+          operand2Id,
+          operator,
+        });
       }
     });
   };
 
-  const layerDisabled = operand1Id === null || operand2 === null;
-  const concatDisabled = operand1Id === null || operand2 === null;
-  const repeatDisabled = operand1Id !== null || operand2 === null;
-  const facetDisabled = operand1Id !== null || operand2 === null;
+  const layerDisabled = operand1Id === null || operand2Id === null;
+  const concatDisabled = operand1Id === null || operand2Id === null;
+  const repeatDisabled = operand1Id !== null || operand2Id === null;
+  const facetDisabled = operand1Id !== null || operand2Id === null;
   const placeDisabled =
-    operand1Id === null || operand2 !== null || result !== null;
+    operand1Id === null || operand2Id !== null || result !== null;
 
   return (
     <Grid container justify="space-between">

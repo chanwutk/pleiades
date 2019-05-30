@@ -6,7 +6,7 @@ import { LayerComponent } from './views/LayerComponent';
 
 export interface IMainViewProps {
   result: ViewHolder;
-  operand2: ViewHolder;
+  operand2Id: number | null;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -20,16 +20,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const MainView: React.FC<IMainViewProps> = ({ result, operand2 }) => {
+export const MainView: React.FC<IMainViewProps> = ({ result, operand2Id }) => {
   const classes = useStyles();
 
   const makeViewComponent = (viewHolder: ViewHolder) => {
     switch (viewHolder.view.getType()) {
       case 'unit': {
-        return <UnitComponent view={viewHolder} operand2={operand2} />;
+        return <UnitComponent view={viewHolder} operand2Id={operand2Id} />;
       }
       case 'layer': {
-        return <LayerComponent view={viewHolder} operand2={operand2} />;
+        return <LayerComponent view={viewHolder} operand2Id={operand2Id} />;
       }
       default:
         throw new Error(

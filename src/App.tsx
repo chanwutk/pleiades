@@ -45,12 +45,12 @@ const App: React.FC = () => {
           <OperationBar
             specs={state.current.specs}
             operand1Id={state.current.operand1Id}
-            operand2={state.current.operand2}
+            operand2Id={state.current.operand2Id}
             result={state.current.result}
           />
           <MainView
             result={state.current.result}
-            operand2={state.current.operand2}
+            operand2Id={state.current.operand2Id}
           />
         </div>
       </div>

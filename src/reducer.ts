@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { UnitViewHolder, UnitView } from './SyntaxTree/View';
+import { UnitView, ViewHolder } from './SyntaxTree/View';
 import { assertNever } from './utils';
 import { LayerView } from './SyntaxTree/LayerView';
 
@@ -81,44 +81,61 @@ export const reducer: Reducer = (globalState, action) => {
         R.over(R.lensProp('operand1Id'), R.always(action.id))
       );
     }
-    case 'select-operand2': {
+    case 'select-operand2-id': {
       return newGlobalState(
         globalState,
-        R.over(R.lensProp('operand2'), R.always(action.operand))
+        R.over(R.lensProp('operand2Id'), R.always(action.operandId))
       );
     }
     case 'operate': {
       return newGlobalState(
         globalState,
         R.pipe(
-          R.over(R.lensProp('result'), result => {
-            // There is still a cloning issue that make undo crash
-            // need more discussion on this.
-            globalState.current.result = R.clone(result);
+          R.over(R.lensProp('result'), (result: ViewHolder) => {
+            if (action.operator === 'place') {
+              return new ViewHolder(new UnitView(action.operand1));
+            }
+
+            const newTree = result.clone();
+            const operand2ViewHolder = newTree.findView(
+              action.operand2Id === null ? -1 : action.operand2Id
+            );
+
+            if (!operand2ViewHolder) {
+              throw new Error('focusing node is null expecting ViewHolder');
+            }
+
             switch (action.operator) {
-              case 'place':
-                return new UnitViewHolder(new UnitView(action.operand1));
               case 'layer':
-                const layer = new LayerView();
                 const operand1View = new UnitView(action.operand1);
                 if (
-                  layer.isCompatible(operand1View) &&
-                  layer.isCompatible(action.operand2.view)
+                  operand2ViewHolder.view instanceof LayerView &&
+                  operand2ViewHolder.view.isCompatible(operand1View)
                 ) {
-                  layer.append(action.operand2.view);
-                  layer.append(operand1View);
-                  action.operand2.view = layer;
+                  operand2ViewHolder.view.append(operand1View);
+                } else {
+                  const layer = new LayerView();
+                  if (
+                    layer.isCompatible(operand1View) &&
+                    operand2ViewHolder.view instanceof UnitView &&
+                    layer.isCompatible(operand2ViewHolder.view)
+                  ) {
+                    layer.append(operand2ViewHolder.view);
+                    layer.append(operand1View);
+                    operand2ViewHolder.view = layer;
+                  }
                 }
-                return result;
+                break;
               case 'concat':
-                return result;
+                break;
               case 'repeat':
-                return result;
+                break;
               case 'facet':
-                return result;
+                break;
               default:
                 return assertNever(action.operator);
             }
+            return newTree;
           }),
           R.over(R.lensProp('operand1Id'), R.always(null)),
           R.over(R.lensProp('operand2'), R.always(null))
@@ -135,7 +152,7 @@ export const initialState: IGlobalState = {
     specs: [],
     specCount: 0,
     operand1Id: null,
-    operand2: null,
+    operand2Id: null,
     result: null,
   },
   undoStack: [],
