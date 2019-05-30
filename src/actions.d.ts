@@ -1,3 +1,5 @@
+type View = import('./SyntaxTree/View').View;
+
 interface IAddSpecAction {
   type: 'add-spec';
   json: any;
@@ -24,20 +26,14 @@ interface IRedoAction {
   type: 'redo';
 }
 
-interface ISelectOperand1Action {
-  type: 'select-operand1';
-  id: number | null;
-}
-
-interface ISelectOperand2IdAction {
-  type: 'select-operand2-id';
-  operandId: number | null;
+interface ISelectOperandAction {
+  type: 'select-operand';
+  operand: number | null;
 }
 
 interface IOperateAction {
   type: 'operate';
-  operand1: any;
-  operand2Id: number | null;
+  operands: number[];
   operator: Operator;
 }
 
@@ -47,6 +43,7 @@ type Action =
   | IDeleteSpecAction
   | IUndoAction
   | IRedoAction
-  | ISelectOperand1Action
-  | ISelectOperand2IdAction
+  | ISelectOperandAction
   | IOperateAction;
+
+type ViewType = 'unit' | 'layer' | 'concat' | 'repeat' | 'facet';

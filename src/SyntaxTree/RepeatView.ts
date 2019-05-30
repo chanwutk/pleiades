@@ -1,14 +1,14 @@
-import { View, CompositeView, ViewHolder } from './View';
+import { View, CompositeView } from './View';
 import { moveElement } from './Utils';
 
 export class RepeatView extends CompositeView<string> {
   private repeatInfo: RepeatInfo;
-  private view: ViewHolder;
+  private view: View;
 
   public constructor(view: View, info: ChannelInfo) {
     super('repeat');
     this.repeatInfo = new RepeatInfo([], [], info);
-    this.view = new ViewHolder(view);
+    this.view = view;
   }
 
   public export() {
@@ -64,7 +64,7 @@ export class RepeatView extends CompositeView<string> {
 
   public clone() {
     const cloned = new RepeatView(
-      this.view.view.clone(),
+      this.view.clone(),
       this.repeatInfo.getChannelInfo()
     );
     cloned.id = this.id;
@@ -72,6 +72,7 @@ export class RepeatView extends CompositeView<string> {
   }
 
   public findView(id: number) {
+    if (id === this.id) return this;
     return this.view.findView(id);
   }
 }
@@ -87,8 +88,8 @@ interface ChannelInfo {
 class RepeatInfo {
   public row: string[];
   public column: string[];
-  public rowChannel: string | undefined;
-  public columnChannel: string | undefined;
+  public rowChannel?: string;
+  public columnChannel?: string;
 
   public constructor(row: string[], column: string[], info: ChannelInfo) {
     this.row = info.rowChannel ? row : [];

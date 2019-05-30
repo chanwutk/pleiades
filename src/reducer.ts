@@ -1,7 +1,9 @@
 import * as R from 'ramda';
-import { UnitView, ViewHolder } from './SyntaxTree/View';
+import { UnitView } from './SyntaxTree/View';
 import { assertNever } from './utils';
 import { LayerView } from './SyntaxTree/LayerView';
+import { View } from './SyntaxTree/View';
+import { ConcatView } from './SyntaxTree/ConcatView';
 
 const newGlobalState = (
   oldState: IGlobalState,
@@ -17,12 +19,12 @@ const newGlobalState = (
 export const reducer: Reducer = (globalState, action) => {
   switch (action.type) {
     case 'add-spec':
-      return newGlobalState(globalState, ({ specs, specCount, ...rest }) => ({
+      return newGlobalState(globalState, ({ specs, lastSpecId, ...rest }) => ({
         specs: R.append(
-          { id: specCount, spec: action.json, alias: action.alias },
+          { id: lastSpecId, spec: action.json, alias: action.alias },
           specs
         ),
-        specCount: specCount + 1,
+        lastSpecId: lastSpecId - 1,
         ...rest,
       }));
 
@@ -31,10 +33,11 @@ export const reducer: Reducer = (globalState, action) => {
         globalState,
         R.over(
           R.lensProp('specs'),
-          R.map((spec: IBaseSpec) =>
-            spec.id === action.id
-              ? { id: action.id, spec: action.json, alias: action.alias }
-              : spec
+          R.map(
+            (spec: IBaseSpec) =>
+              spec.id === action.id
+                ? { id: action.id, spec: action.json, alias: action.alias }
+                : spec
           )
         )
       );
@@ -46,8 +49,8 @@ export const reducer: Reducer = (globalState, action) => {
             R.lensProp('specs'),
             R.filter((spec: IBaseSpec) => spec.id !== action.id)
           ),
-          R.over(R.lensProp('operand1Id'), operand1Id =>
-            operand1Id === action.id ? null : operand1Id
+          R.over(R.lensProp('operands'), (operands: number[]) =>
+            operands.filter(id => id !== action.id)
           )
         )
       );
@@ -75,59 +78,78 @@ export const reducer: Reducer = (globalState, action) => {
         return globalState;
       }
     }
-    case 'select-operand1': {
+    case 'select-operand': {
       return newGlobalState(
         globalState,
-        R.over(R.lensProp('operand1Id'), R.always(action.id))
-      );
-    }
-    case 'select-operand2-id': {
-      return newGlobalState(
-        globalState,
-        R.over(R.lensProp('operand2Id'), R.always(action.operandId))
+        R.over(R.lensProp('operands'), operands => {
+          if (operands.includes(action.operand)) {
+            return R.without([action.operand], operands);
+          } else {
+            return R.append(action.operand, operands);
+          }
+        })
       );
     }
     case 'operate': {
       return newGlobalState(
         globalState,
         R.pipe(
-          R.over(R.lensProp('tree'), (oldTree: ViewHolder) => {
+          R.over(R.lensProp('tree'), (tree: View) => {
+            const findInNav = (id: number) =>
+              globalState.current.specs.find(spec => spec.id === id)!.spec;
+
+            const left = action.operands.filter(id => id < 0);
+            const right = action.operands.filter(id => id > 0);
+
             if (action.operator === 'place') {
-              return new ViewHolder(new UnitView(action.operand1));
+              return new UnitView(findInNav(left[0]));
             }
 
-            const newTree = oldTree.clone();
-            const operand2ViewHolder = newTree.findView(
-              action.operand2Id === null ? -1 : action.operand2Id
-            );
-
-            if (!operand2ViewHolder) {
-              throw new Error('focusing node is null expecting ViewHolder');
-            }
+            let rightView = tree.findView(right[0])!.clone();
 
             switch (action.operator) {
-              case 'layer':
-                const operand1View = new UnitView(action.operand1);
+              case 'layer': {
+                const leftView = new UnitView(findInNav(left[0]));
                 if (
-                  operand2ViewHolder.view instanceof LayerView &&
-                  operand2ViewHolder.view.isCompatible(operand1View)
+                  rightView instanceof LayerView &&
+                  rightView.isCompatible(leftView)
                 ) {
-                  operand2ViewHolder.view.append(operand1View);
+                  rightView.append(leftView);
                 } else {
                   const layer = new LayerView();
                   if (
-                    layer.isCompatible(operand1View) &&
-                    operand2ViewHolder.view instanceof UnitView &&
-                    layer.isCompatible(operand2ViewHolder.view)
+                    layer.isCompatible(leftView) &&
+                    rightView instanceof UnitView &&
+                    layer.isCompatible(rightView)
                   ) {
-                    layer.append(operand2ViewHolder.view);
-                    layer.append(operand1View);
-                    operand2ViewHolder.view = layer;
+                    layer.append(rightView);
+                    layer.append(leftView);
+                    rightView = layer;
                   }
                 }
                 break;
-              case 'concat':
+              }
+              case 'concat': {
+                const leftView = new UnitView(findInNav(left[0]));
+                if (
+                  rightView instanceof ConcatView &&
+                  rightView.isCompatible(leftView)
+                ) {
+                  rightView.append(leftView);
+                } else {
+                  const concat = new ConcatView('h');
+                  if (
+                    concat.isCompatible(leftView) &&
+                    rightView instanceof UnitView &&
+                    concat.isCompatible(rightView)
+                  ) {
+                    concat.append(rightView);
+                    concat.append(leftView);
+                    rightView = concat;
+                  }
+                }
                 break;
+              }
               case 'repeat':
                 break;
               case 'facet':
@@ -135,10 +157,9 @@ export const reducer: Reducer = (globalState, action) => {
               default:
                 return assertNever(action.operator);
             }
-            return newTree;
+            return rightView;
           }),
-          R.over(R.lensProp('operand1Id'), R.always(null)),
-          R.over(R.lensProp('operand2'), R.always(null))
+          R.over(R.lensProp('operands'), R.always([]))
         )
       );
     }
@@ -147,12 +168,14 @@ export const reducer: Reducer = (globalState, action) => {
   }
 };
 
+// NOTE: invariants: navbar has negative id
+// and view has positive id
+
 export const initialState: IGlobalState = {
   current: {
     specs: [],
-    specCount: 0,
-    operand1Id: null,
-    operand2Id: null,
+    lastSpecId: -1,
+    operands: [],
     tree: null,
   },
   undoStack: [],

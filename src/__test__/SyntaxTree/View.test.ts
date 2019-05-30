@@ -1,4 +1,4 @@
-import { ViewHolder, UnitView } from '../../SyntaxTree/View';
+import { UnitView } from '../../SyntaxTree/View';
 
 const spec = {
   data: { url: 'data/cars.json' },
@@ -34,14 +34,5 @@ describe('View', () => {
     const view1 = new UnitView(spec);
     const view2 = new UnitView(spec);
     expect(view1.getId()).not.toEqual(view2.getId());
-  });
-});
-
-describe('ViewHolder', () => {
-  it('correctly exports from View', () => {
-    const view = new UnitView(spec);
-    const holder = new ViewHolder(view);
-
-    expect(holder.export()).toEqual(view.export());
   });
 });

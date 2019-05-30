@@ -1,8 +1,8 @@
-import { View, CompositeView, ViewHolder } from './View';
+import { View, CompositeView } from './View';
 import { moveElement } from './Utils';
 
 export class ConcatView extends CompositeView<View> {
-  private concat: ViewHolder[];
+  private concat: View[];
   private orient: 'h' | 'v';
 
   public constructor(orient: 'h' | 'v') {
@@ -16,11 +16,11 @@ export class ConcatView extends CompositeView<View> {
   }
 
   public append(view: View) {
-    this.concat.push(new ViewHolder(view));
+    this.concat.push(view);
   }
 
   public prepend(view: View) {
-    this.concat.unshift(new ViewHolder(view));
+    this.concat.unshift(view);
   }
 
   public remove(index: number) {
@@ -39,19 +39,20 @@ export class ConcatView extends CompositeView<View> {
   public clone() {
     const cloned = new ConcatView(this.orient);
     cloned.id = this.id;
-    this.concat.forEach((viewHolder: ViewHolder) =>
-      cloned.concat.push(viewHolder.clone())
-    );
+    for (const view of this.concat) {
+      cloned.concat.push(view.clone());
+    }
     return cloned;
   }
 
   public findView(id: number) {
-    this.concat.forEach((viewHolder: ViewHolder) => {
-      const result = viewHolder.findView(id);
+    if (id === this.id) return this;
+    for (const view of this.concat) {
+      const result = view.findView(id);
       if (result !== null) {
         return result;
       }
-    });
+    }
     return null;
   }
 }

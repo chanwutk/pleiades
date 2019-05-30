@@ -10,18 +10,22 @@ interface IFailure<T> {
 
 type Either<S, T> = ISuccess<S> | IFailure<T>;
 
+interface IRawSpec {
+  data: any;
+  mark: string;
+}
+
 interface IBaseSpec {
-  spec: any;
+  spec: IRawSpec;
   alias: string;
   id: number;
 }
 
 interface IState {
   specs: IBaseSpec[];
-  specCount: number;
-  operand1Id: number | null;
-  operand2Id: number | null;
-  tree: ViewHolder | null;
+  lastSpecId: number;
+  operands: number[];
+  tree: View | null;
 }
 
 type Operator = 'layer' | 'concat' | 'repeat' | 'facet' | 'place';

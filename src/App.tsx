@@ -43,14 +43,14 @@ const App: React.FC = () => {
         </div>
         <div className={classes.right}>
           <OperationBar
-            specs={state.current.specs}
-            operand1Id={state.current.operand1Id}
-            operand2Id={state.current.operand2Id}
+            operands={state.current.operands}
             tree={state.current.tree}
+            undoDisabled={state.undoStack.length === 0}
+            redoDisabled={state.redoStack.length === 0}
           />
           <MainView
             tree={state.current.tree}
-            operand2Id={state.current.operand2Id}
+            operands={state.current.operands}
           />
         </div>
       </div>

@@ -13,7 +13,7 @@ export interface IVegaLiteEditorProps {
   setValue: (txt: string) => void;
   alias: string;
   setAlias: (txt: string) => void;
-  onSuccess: (alias: string, json: any) => void;
+  onSuccess: (alias: string, json: IRawSpec) => void;
 }
 
 const examples = [

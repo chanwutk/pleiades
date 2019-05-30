@@ -14,7 +14,6 @@ import { VegaLite } from './VegaLite';
 
 export interface ISpecPreviewProps {
   spec: IBaseSpec;
-  operand1Id: number | null;
   active: boolean;
 }
 
@@ -54,7 +53,7 @@ const useStyles = makeStyles(theme => ({
         active ? '#3caea3' : 'darkgrey') as any,
     },
     '&:active': {
-      borderColor: ((active: boolean) => 'grey') as any,
+      borderColor: 'grey',
     },
   },
   center: {
@@ -77,11 +76,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const SpecPreview: React.FC<ISpecPreviewProps> = ({
-  spec,
-  operand1Id,
-  active,
-}) => {
+export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec, active }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentSpec, setCurrentSpec] = useState('');
   const [currentAlias, setCurrentAlias] = useState('');
@@ -108,8 +103,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({
 
   const handleToggleActive = () => {
     if (!isDeleting) {
-      const { id } = spec;
-      dispatch({ type: 'select-operand1', id: id === operand1Id ? null : id });
+      dispatch({ type: 'select-operand', operand: spec.id });
     }
   };
 

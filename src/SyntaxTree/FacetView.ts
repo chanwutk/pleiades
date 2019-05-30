@@ -1,14 +1,14 @@
-import { View, CompositeView, ViewHolder } from './View';
+import { View, CompositeView } from './View';
 import { jsonCopy } from './Utils';
 
 export class FacetView extends CompositeView<null> {
-  private view: ViewHolder;
+  private view: View;
   private facet: FacetInfo;
 
   public constructor(view: View, facet: FacetInfo) {
     super('facet');
     this.facet = facet;
-    this.view = new ViewHolder(view);
+    this.view = view;
   }
 
   public export() {
@@ -48,12 +48,13 @@ export class FacetView extends CompositeView<null> {
   }
 
   public clone() {
-    const cloned = new FacetView(this.view.view.clone(), this.facet.clone());
+    const cloned = new FacetView(this.view.clone(), this.facet.clone());
     cloned.id = this.id;
     return cloned;
   }
 
   public findView(id: number) {
+    if (id === this.id) return this;
     return this.view.findView(id);
   }
 }
@@ -62,8 +63,8 @@ export class FacetView extends CompositeView<null> {
  * This class contains information for facet
  */
 export class FacetInfo {
-  row: {} | undefined;
-  column: {} | undefined;
+  row?: {};
+  column?: {};
 
   constructor(info: { row?: {}; column?: {} }) {
     this.row = info.row;

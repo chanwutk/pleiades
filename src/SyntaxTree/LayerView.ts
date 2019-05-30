@@ -1,8 +1,8 @@
-import { CompositeView, ViewHolder, UnitView } from './View';
+import { CompositeView, UnitView } from './View';
 import { moveElement } from './Utils';
 
 export class LayerView extends CompositeView<UnitView> {
-  private layer: ViewHolder[];
+  private layer: View[];
 
   public constructor() {
     super('layer');
@@ -14,11 +14,11 @@ export class LayerView extends CompositeView<UnitView> {
   }
 
   public append(view: UnitView) {
-    this.layer.push(new ViewHolder(view));
+    this.layer.push(view);
   }
 
   public prepend(view: UnitView) {
-    this.layer.unshift(new ViewHolder(view));
+    this.layer.unshift(view);
   }
 
   public remove(index: number) {
@@ -43,19 +43,18 @@ export class LayerView extends CompositeView<UnitView> {
   public clone() {
     const cloned = new LayerView();
     cloned.id = this.id;
-    this.layer.forEach((viewHolder: ViewHolder) => {
-      cloned.layer.push(viewHolder.clone());
-    });
+    cloned.layer = this.layer.map(view => view.clone());
     return cloned;
   }
 
   public findView(id: number) {
-    this.layer.forEach((viewHolder: ViewHolder) => {
-      const result = viewHolder.findView(id);
+    if (id === this.id) return this;
+    for (const view of this.layer) {
+      const result = view.findView(id);
       if (result !== null) {
         return result;
       }
-    });
+    }
     return null;
   }
 }

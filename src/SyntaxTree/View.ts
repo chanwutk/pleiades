@@ -1,12 +1,13 @@
 import { jsonCopy } from './Utils';
 
-let idCounter = 0;
+let idCounter = 1;
 
 export abstract class View {
   protected id: number;
-  private type: string;
+  private type: ViewType;
 
-  constructor(type) {
+  constructor(type: ViewType) {
+    // NOTE: if possible, get rid of this mutation, but if not, that's fine
     this.id = idCounter++;
     this.type = type;
   }
@@ -27,31 +28,7 @@ export abstract class View {
 
   abstract clone(): View;
 
-  abstract findView(id: number): ViewHolder | null;
-}
-
-export class ViewHolder {
-  view: View;
-
-  constructor(view: View) {
-    this.view = view;
-  }
-
-  /**
-   * export Vega-Lite spec of the holding view in vl.json format
-   * @returns exported Vega-Lite spec
-   */
-  export() {
-    return this.view.export();
-  }
-
-  clone() {
-    return new ViewHolder(this.view.clone());
-  }
-
-  findView(id: number): ViewHolder | null {
-    return this.view.getId() === id ? this : this.view.findView(id);
-  }
+  abstract findView(id: number): View | null;
 }
 
 /**
@@ -63,9 +40,9 @@ export class ViewHolder {
  * it should not have a parameter. Thus, we use null.
  * TODO: explain this better!
  */
-type ViewIndocator = View | string | null;
+type ViewIndicator = View | string | null;
 
-export abstract class CompositeView<V extends ViewIndocator> extends View {
+export abstract class CompositeView<V extends ViewIndicator> extends View {
   /**
    * Move subview at the position `from` to position `to`.
    * For example: in composite view with 4 subviews [0, 1, 2, 3], calling
@@ -78,14 +55,14 @@ export abstract class CompositeView<V extends ViewIndocator> extends View {
 
   /**
    * Append another view with a ViewIdicator `viewIndicator`
-   * @param {V} viewIndicator the ViewIndocator to be appended.
+   * @param {V} viewIndicator the ViewIndicator to be appended.
    * @param {any} option an extra option for appending.
    */
   abstract append(viewIndicator: V, option: any): void;
 
   /**
    * Prepend another view with a ViewIdicator `viewIndicator`
-   * @param {V} viewIndicator the ViewIndocator to be prepended.
+   * @param {V} viewIndicator the ViewIndicator to be prepended.
    * @param {any} option an extra option for appending.
    */
   abstract prepend(viewIndicator: V, option: any): void;
@@ -107,13 +84,13 @@ export abstract class CompositeView<V extends ViewIndocator> extends View {
 }
 
 export class UnitView extends View {
-  private spec: {};
+  private spec: IRawSpec;
 
   /**
    * Construct a unit view with a valid Vega-Lite spec.
    * @param {object} spec Vega-Lite spec
    */
-  public constructor(spec: {}) {
+  public constructor(spec: IRawSpec) {
     super('unit');
     this.spec = jsonCopy(spec);
   }
@@ -132,7 +109,7 @@ export class UnitView extends View {
     return cloned;
   }
 
-  public findView(_id: number) {
-    return null;
+  public findView(id: number) {
+    return this.id === id ? this : null;
   }
 }

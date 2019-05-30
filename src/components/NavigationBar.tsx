@@ -32,8 +32,7 @@ export const NavigationBar: React.FC<INavigationBarProps> = ({
         <SpecPreview
           key={spec.id}
           spec={spec}
-          operand1Id={currentState.operand1Id}
-          active={spec.id === currentState.operand1Id}
+          active={currentState.operands.includes(spec.id)}
         />
       ))}
     </List>

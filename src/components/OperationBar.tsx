@@ -5,44 +5,43 @@ import Redo from '@material-ui/icons/Redo';
 import Grid from '@material-ui/core/Grid';
 
 import { AppDispatch } from '../contexts';
-import { ViewHolder } from '../SyntaxTree/View';
 
 interface IOperationBarProps {
-  specs: IBaseSpec[];
-  operand1Id: number | null;
-  operand2Id: number | null;
-  tree: ViewHolder | null;
+  operands: number[];
+  tree: View | null;
+  undoDisabled: boolean;
+  redoDisabled: boolean;
 }
 
 export const OperationBar: React.FC<IOperationBarProps> = ({
-  specs,
-  operand1Id,
-  operand2Id,
+  operands,
   tree,
+  undoDisabled,
+  redoDisabled,
 }) => {
   const dispatch = useContext(AppDispatch);
 
   const handleUndo = () => dispatch({ type: 'undo' });
   const handleRedo = () => dispatch({ type: 'redo' });
   const operate = (operator: Operator) => {
-    specs.forEach(spec => {
-      if (spec.id === operand1Id) {
-        dispatch({
-          type: 'operate',
-          operand1: spec.spec,
-          operand2Id,
-          operator,
-        });
-      }
-    });
+    // make sure that disabled functions properly, and we won't need to
+    // write a check here
+    dispatch({ type: 'operate', operands, operator });
   };
 
-  const layerDisabled = operand1Id === null || operand2Id === null;
-  const concatDisabled = operand1Id === null || operand2Id === null;
-  const repeatDisabled = operand1Id !== null || operand2Id === null;
-  const facetDisabled = operand1Id !== null || operand2Id === null;
+  const navBarOperands = operands.filter(x => x < 0);
+  const mainViewOperands = operands.filter(x => x > 0);
+
+  const layerDisabled =
+    mainViewOperands.length !== 1 || navBarOperands.length !== 1;
+  const concatDisabled =
+    mainViewOperands.length !== 1 || navBarOperands.length !== 1;
+  const repeatDisabled =
+    mainViewOperands.length !== 1 || navBarOperands.length > 0;
+  const facetDisabled =
+    mainViewOperands.length !== 1 || navBarOperands.length > 0;
   const placeDisabled =
-    operand1Id === null || operand2Id !== null || tree !== null;
+    !!tree || mainViewOperands.length > 0 || navBarOperands.length !== 1;
 
   return (
     <Grid container justify="space-between">
@@ -64,10 +63,10 @@ export const OperationBar: React.FC<IOperationBarProps> = ({
         </Button>
       </Grid>
       <Grid item>
-        <Button onClick={handleUndo}>
+        <Button onClick={handleUndo} disabled={undoDisabled}>
           <Undo /> &nbsp; Undo
         </Button>
-        <Button onClick={handleRedo}>
+        <Button onClick={handleRedo} disabled={redoDisabled}>
           <Redo /> &nbsp; Redo
         </Button>
       </Grid>
