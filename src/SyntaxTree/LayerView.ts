@@ -2,7 +2,7 @@ import { CompositeView, UnitView } from './View';
 import { moveElement, findViewInArray, replaceViewInArray } from './Utils';
 
 export class LayerView extends CompositeView<UnitView> {
-  private layer: View[];
+  private layer: UnitView[];
 
   public constructor() {
     super('layer');
@@ -60,5 +60,9 @@ export class LayerView extends CompositeView<UnitView> {
 
   public replaceChild(view: View, id: number) {
     return replaceViewInArray(view, this.layer, id);
+  }
+
+  public getEncoding() {
+    return this.layer.map(l => l.getEncoding());
   }
 }

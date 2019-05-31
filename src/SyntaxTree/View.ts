@@ -131,4 +131,8 @@ export class UnitView extends View {
   public replaceChild(_view: View, _id: number): boolean {
     throw new Error('UnitView cannot replace child');
   }
+
+  public getEncoding() {
+    return this.spec['encoding'];
+  }
 }
