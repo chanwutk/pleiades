@@ -15,18 +15,30 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  DialogContentText,
 } from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
+import makeStyles from '@material-ui/styles/makeStyles';
 
 export interface IPopupFacetOptionProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const useStyles = makeStyles(() => ({
+  typeSelector: {
+    minWidth: 60,
+  },
+  checkBox: {
+    top: 10,
+  },
+}));
+
 export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
   isOpen,
   onClose,
 }) => {
+  const classes = useStyles();
   const [checkRow, setCheckRow] = useState(false);
   const [checkColumn, setCheckColumn] = useState(false);
   const [rowField, setRowField] = useState('');
@@ -37,23 +49,43 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
   const operands = useSelector((state: IGlobalState) => state.current.operands);
   const operate = operateFactory(useDispatch(), operands);
 
+  const handleEntering = () => {
+    setCheckRow(false);
+    setCheckColumn(false);
+    setRowField('');
+    setRowType('');
+    setColumnField('');
+    setColumnType('');
+  };
+
+  const operateDisabled = () =>
+    !(checkRow && rowField !== '' && rowType !== '') &&
+    !(checkColumn && columnField !== '' && columnType !== '');
+
   return (
     <Dialog
       open={isOpen}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+      onEntering={handleEntering}
+      aria-labelledby="facet-dialog-title"
     >
-      <DialogTitle id="alert-dialog-title">
-        {'Choose Face Fields & Encoding Channels'}
-        <IconButton onClick={() => onClose}>
+      <DialogTitle id="facet-dialog-title">
+        <>Facet</>
+        <IconButton
+          onClick={onClose}
+          style={{ right: 10, top: 7, position: 'absolute' }}
+        >
           <Close />
         </IconButton>
       </DialogTitle>
       <DialogContent>
+        <DialogContentText>
+          Choose Field(s) and Encoding Channel(s) to facet.
+        </DialogContentText>
         <div>
           <Checkbox
             checked={checkRow}
             onChange={() => setCheckRow(!checkRow)}
+            className={classes.checkBox}
           />
           <TextField
             id="standard-name"
@@ -71,6 +103,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
                 name: 'type',
                 id: 'row-type',
               }}
+              className={classes.typeSelector}
             >
               <MenuItem value={'nominal'}>Nominal</MenuItem>
               <MenuItem value={'ordinal'}>Ordinal</MenuItem>
@@ -83,6 +116,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
           <Checkbox
             checked={checkColumn}
             onChange={() => setCheckColumn(!checkColumn)}
+            className={classes.checkBox}
           />
           <TextField
             id="standard-name"
@@ -100,6 +134,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
                 name: 'type',
                 id: 'column-type',
               }}
+              className={classes.typeSelector}
             >
               <MenuItem value={'nominal'}>Nominal</MenuItem>
               <MenuItem value={'ordinal'}>Ordinal</MenuItem>
@@ -113,18 +148,27 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
         <Button
           // Replace this fake facet as interation to select orientation and fields
           onClick={() => {
+            console.log('columnField', columnField);
+            console.log('rowField', rowField);
+            console.log('columnType', columnType);
+            console.log('rowType', rowType);
             operate(
               'facet',
               new FacetInfo({
-                column: { field: 'Cylinders', type: 'ordinal' },
-                row: { field: 'Origin', type: 'nominal' },
+                ...(checkColumn
+                  ? { column: { field: columnField, type: columnType } }
+                  : {}),
+                ...(checkRow
+                  ? { row: { field: rowField, type: rowType } }
+                  : {}),
               })
             );
             onClose();
           }}
           autoFocus
+          disabled={operateDisabled()}
         >
-          Facet
+          Operate
         </Button>
       </DialogActions>
     </Dialog>

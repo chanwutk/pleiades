@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { RepeatInfo } from '../../SyntaxTree/RepeatView';
 import { operateFactory } from './Utils';
+import { IOperationProps } from '../OperationBar';
 
-export const RepeatButton: React.FC = () => {
+export const RepeatButton: React.FC<IOperationProps> = ({
+  navBarOperands,
+  mainViewOperands,
+}) => {
   const operands = useSelector((state: IGlobalState) => state.current.operands);
   const operate = operateFactory(useDispatch(), operands);
-
-  const navBarOperands = operands.filter(x => x < 0);
-  const mainViewOperands = operands.filter(x => x > 0);
 
   const repeatDisabled =
     mainViewOperands.length !== 1 || navBarOperands.length > 0;

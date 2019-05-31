@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { PopupFacetOption } from './PopupFacetOption';
+import { IOperationProps } from '../OperationBar';
 
-export const FacetButton: React.FC = () => {
+export const FacetButton: React.FC<IOperationProps> = ({
+  navBarOperands,
+  mainViewOperands,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const operands = useSelector((state: IGlobalState) => state.current.operands);
-
-  const navBarOperands = operands.filter(x => x < 0);
-  const mainViewOperands = operands.filter(x => x > 0);
-
   const facetDisabled =
     mainViewOperands.length !== 1 || navBarOperands.length > 0;
 
   return (
-    <Button onClick={() => setIsOpen(true)} disabled={facetDisabled}>
-      Facet
+    <>
+      <Button onClick={() => setIsOpen(true)} disabled={facetDisabled}>
+        Facet
+      </Button>
       <PopupFacetOption isOpen={isOpen} onClose={() => setIsOpen(false)} />
-    </Button>
+    </>
   );
 };

@@ -10,8 +10,14 @@ import { RepeatButton } from './operations/RepeatButton';
 import { FacetButton } from './operations/FacetButton';
 import { PlaceButton } from './operations/PlaceButton';
 
+export interface IOperationProps {
+  navBarOperands: number[];
+  mainViewOperands: number[];
+}
+
 export const OperationBar: React.FC = () => {
   const dispatch = useDispatch();
+  const operands = useSelector((state: IGlobalState) => state.current.operands);
   const undoDisabled = useSelector(
     (state: IGlobalState) => state.undoStack.length === 0
   );
@@ -22,14 +28,32 @@ export const OperationBar: React.FC = () => {
   const handleUndo = () => dispatch({ type: 'undo' });
   const handleRedo = () => dispatch({ type: 'redo' });
 
+  const navBarOperands = operands.filter(x => x < 0);
+  const mainViewOperands = operands.filter(x => x > 0);
+
   return (
     <Grid container justify="space-between">
       <Grid item>
-        <LayerButton />
-        <ConcatButton />
-        <RepeatButton />
-        <FacetButton />
-        <PlaceButton />
+        <LayerButton
+          navBarOperands={navBarOperands}
+          mainViewOperands={mainViewOperands}
+        />
+        <ConcatButton
+          navBarOperands={navBarOperands}
+          mainViewOperands={mainViewOperands}
+        />
+        <RepeatButton
+          navBarOperands={navBarOperands}
+          mainViewOperands={mainViewOperands}
+        />
+        <FacetButton
+          navBarOperands={navBarOperands}
+          mainViewOperands={mainViewOperands}
+        />
+        <PlaceButton
+          navBarOperands={navBarOperands}
+          mainViewOperands={mainViewOperands}
+        />
       </Grid>
       <Grid item>
         <Button onClick={handleUndo} disabled={undoDisabled}>

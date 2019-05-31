@@ -7,6 +7,7 @@ import { LayerView } from '../../SyntaxTree/LayerView';
 import { makeStyles } from '@material-ui/core/styles';
 import { UnitView } from '../../SyntaxTree/View';
 import { operateFactory } from './Utils';
+import { IOperationProps } from '../OperationBar';
 
 const useStyles = makeStyles(() => ({
   buttonNormal: {},
@@ -22,15 +23,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const LayerButton: React.FC = () => {
+export const LayerButton: React.FC<IOperationProps> = ({
+  navBarOperands,
+  mainViewOperands,
+}) => {
   const classes = useStyles();
   const operands = useSelector((state: IGlobalState) => state.current.operands);
   const tree = useSelector((state: IGlobalState) => state.current.tree);
   const specs = useSelector((state: IGlobalState) => state.current.specs);
   const operate = operateFactory(useDispatch(), operands);
-
-  const navBarOperands = operands.filter(x => x < 0);
-  const mainViewOperands = operands.filter(x => x > 0);
 
   const layerDisabled = layerDisabledCheck(
     mainViewOperands,
@@ -53,11 +54,11 @@ export const LayerButton: React.FC = () => {
       className={layerWarn ? classes.buttonWarn : classes.buttonNormal}
     >
       {layerWarn ? (
-        <div style={{ height: 22 }}>
+        <>
           <ErrorOutlineOutlined className={classes.error} /> &nbsp;
-        </div>
+        </>
       ) : (
-        <div />
+        <></>
       )}
       Layer
     </Button>
