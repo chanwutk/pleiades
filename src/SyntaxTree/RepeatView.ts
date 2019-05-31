@@ -106,7 +106,6 @@ export class RepeatInfo {
 
   public constructor(row: string[], column: string[], info: ChannelInfo) {
     this.row = info.rowChannel ? row : [];
-    console.log(row, column, info);
     this.column = info.columnChannel ? column : [];
     this.rowChannel = info.rowChannel;
     this.columnChannel = info.columnChannel;
@@ -133,11 +132,6 @@ export class RepeatInfo {
   }
 
   public export() {
-    console.log(this.isRepeating('row'), this.isRepeating('column'));
-    console.log({
-      ...(this.isRepeating('row') ? { row: jsonCopy(this.row) } : {}),
-      ...(this.isRepeating('column') ? { column: jsonCopy(this.column) } : {}),
-    });
     return {
       ...(this.isRepeating('row') ? { row: jsonCopy(this.row) } : {}),
       ...(this.isRepeating('column') ? { column: jsonCopy(this.column) } : {}),
@@ -175,9 +169,7 @@ export class RepeatInfo {
   }
 
   public clone() {
-    return jsonCopy({
-      row: this.row,
-      column: this.column,
+    return new RepeatInfo(this.row, this.column, {
       ...(this.rowChannel ? { rowChannel: this.rowChannel } : {}),
       ...(this.columnChannel ? { columnChannel: this.columnChannel } : {}),
     });
