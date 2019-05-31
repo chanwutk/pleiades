@@ -5,6 +5,8 @@ import { assertNever } from './utils';
 import { LayerView } from './SyntaxTree/LayerView';
 import { View } from './SyntaxTree/View';
 import { ConcatView } from './SyntaxTree/ConcatView';
+import { RepeatView, RepeatInfo } from './SyntaxTree/RepeatView';
+import { FacetView, FacetInfo } from './SyntaxTree/FacetView';
 
 const newGlobalState = (
   oldState: IGlobalState,
@@ -160,8 +162,26 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
                 break;
               }
               case 'repeat':
+                const repeat = new RepeatView(
+                  view,
+                  action.extraOperand as RepeatInfo
+                );
+                if (parent) {
+                  parent.replaceChild(repeat, view.id);
+                } else {
+                  newTree = repeat;
+                }
                 break;
               case 'facet':
+                const facet = new FacetView(
+                  view,
+                  action.extraOperand as FacetInfo
+                );
+                if (parent) {
+                  parent.replaceChild(facet, view.id);
+                } else {
+                  newTree = facet;
+                }
                 break;
               default:
                 return assertNever(action.operator);

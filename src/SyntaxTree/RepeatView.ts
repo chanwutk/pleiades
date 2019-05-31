@@ -1,13 +1,13 @@
 import { View, CompositeView } from './View';
-import { moveElement, findViewInArray } from './Utils';
+import { moveElement, findViewInArray, jsonCopy } from './Utils';
 
 export class RepeatView extends CompositeView<string> {
   private repeatInfo: RepeatInfo;
   private view: View;
 
-  public constructor(view: View, info: ChannelInfo) {
+  public constructor(view: View, repeatInfo: RepeatInfo) {
     super('repeat');
-    this.repeatInfo = new RepeatInfo([], [], info);
+    this.repeatInfo = repeatInfo;
     this.view = view;
   }
 
@@ -63,7 +63,7 @@ export class RepeatView extends CompositeView<string> {
   }
 
   public clone() {
-    const cloned = new RepeatView(this.view, this.repeatInfo.getChannelInfo());
+    const cloned = new RepeatView(this.view, this.repeatInfo);
     cloned._id = this._id;
     return cloned;
   }
@@ -71,7 +71,7 @@ export class RepeatView extends CompositeView<string> {
   public deepClone() {
     const cloned = new RepeatView(
       this.view.deepClone(),
-      this.repeatInfo.getChannelInfo()
+      this.repeatInfo.clone()
     );
     cloned._id = this._id;
     return cloned;
@@ -98,7 +98,7 @@ interface ChannelInfo {
 /**
  * This class contains information for repeat
  */
-class RepeatInfo {
+export class RepeatInfo {
   public row: string[];
   public column: string[];
   public rowChannel?: string;
@@ -106,6 +106,7 @@ class RepeatInfo {
 
   public constructor(row: string[], column: string[], info: ChannelInfo) {
     this.row = info.rowChannel ? row : [];
+    console.log(row, column, info);
     this.column = info.columnChannel ? column : [];
     this.rowChannel = info.rowChannel;
     this.columnChannel = info.columnChannel;
@@ -119,7 +120,7 @@ class RepeatInfo {
   public repeat(orient: 'row' | 'column', channel: string) {
     if (!this.isRepeating(orient)) {
       this[orient] = [];
-      (<any>this)[`${orient}Channel`] = channel;
+      (this as any)[`${orient}Channel`] = channel;
     }
   }
 
@@ -128,13 +129,18 @@ class RepeatInfo {
    * @param orient orient to be checked if repeating
    */
   public isRepeating(orient: 'row' | 'column'): boolean {
-    return !!(<any>this)[`${orient}Channel`];
+    return !!(this as any)[`${orient}Channel`];
   }
 
   public export() {
+    console.log(this.isRepeating('row'), this.isRepeating('column'));
+    console.log({
+      ...(this.isRepeating('row') ? { row: jsonCopy(this.row) } : {}),
+      ...(this.isRepeating('column') ? { column: jsonCopy(this.column) } : {}),
+    });
     return {
-      ...(this.isRepeating('row') ? { row: this.row } : {}),
-      ...(this.isRepeating('column') ? { column: this.column } : {}),
+      ...(this.isRepeating('row') ? { row: jsonCopy(this.row) } : {}),
+      ...(this.isRepeating('column') ? { column: jsonCopy(this.column) } : {}),
     };
   }
 
@@ -149,7 +155,7 @@ class RepeatInfo {
    */
   public addAxis(channel: string, orient: 'row' | 'column') {
     this[orient] = [];
-    (<any>this)[`${orient}Channel`] = channel;
+    (this as any)[`${orient}Channel`] = channel;
   }
 
   /**
@@ -158,7 +164,7 @@ class RepeatInfo {
    */
   public removeAxis(orient: 'row' | 'column') {
     this[orient] = [];
-    (<any>this)[`${orient}Channel`] = undefined;
+    (this as any)[`${orient}Channel`] = undefined;
   }
 
   public getChannelInfo(): ChannelInfo {
@@ -166,6 +172,15 @@ class RepeatInfo {
       ...(this.rowChannel ? { rowChannel: this.rowChannel } : {}),
       ...(this.columnChannel ? { columnChannel: this.columnChannel } : {}),
     };
+  }
+
+  public clone() {
+    return jsonCopy({
+      row: this.row,
+      column: this.column,
+      ...(this.rowChannel ? { rowChannel: this.rowChannel } : {}),
+      ...(this.columnChannel ? { columnChannel: this.columnChannel } : {}),
+    });
   }
 }
 

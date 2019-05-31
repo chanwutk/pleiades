@@ -12,9 +12,12 @@ export class FacetView extends CompositeView<null> {
   }
 
   public export() {
+    // need a better way to extract data from composed specs
+    const { data, ...spec } = this.view.export() as { data };
     return {
+      data,
       facet: this.facet.export(),
-      spec: this.view.export(),
+      spec,
     };
   }
 

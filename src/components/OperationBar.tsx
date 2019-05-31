@@ -9,6 +9,8 @@ import { isUnitSpec } from 'vega-lite/build/src/spec';
 import { LayerView } from '../SyntaxTree/LayerView';
 import { makeStyles } from '@material-ui/core/styles';
 import { UnitView } from '../SyntaxTree/View';
+import { FacetInfo } from '../SyntaxTree/FacetView';
+import { RepeatInfo } from '../SyntaxTree/RepeatView';
 
 const useStyles = makeStyles(() => ({
   buttonNormal: {},
@@ -104,10 +106,18 @@ export const OperationBar: React.FC = () => {
 
   const handleUndo = () => dispatch({ type: 'undo' });
   const handleRedo = () => dispatch({ type: 'redo' });
-  const operate = (operator: Operator) => {
+  const operate = (
+    operator: Operator,
+    extraOperand?: RepeatInfo | FacetInfo
+  ) => {
     // make sure that disabled functions properly, and we won't need to
     // write a check here
-    dispatch({ type: 'operate', operands, operator });
+    dispatch({
+      type: 'operate',
+      operands,
+      operator,
+      ...(extraOperand ? { extraOperand } : {}),
+    });
   };
 
   const navBarOperands = operands.filter(x => x < 0);
@@ -156,10 +166,35 @@ export const OperationBar: React.FC = () => {
         <Button onClick={() => operate('concat')} disabled={concatDisabled}>
           Concat
         </Button>
-        <Button onClick={() => operate('repeat')} disabled={repeatDisabled}>
+        <Button
+          // Replace this fake repeat as interation to select channels and fields
+          onClick={() =>
+            operate(
+              'repeat',
+              new RepeatInfo(
+                ['Displacement', 'Horsepower', 'Miles_per_Gallon'],
+                ['Horsepower', 'Miles_per_Gallon'],
+                { rowChannel: 'x', columnChannel: 'y' }
+              )
+            )
+          }
+          disabled={repeatDisabled}
+        >
           Repeat
         </Button>
-        <Button onClick={() => operate('facet')} disabled={facetDisabled}>
+        <Button
+          // Replace this fake facet as interation to select orientation and fields
+          onClick={() =>
+            operate(
+              'facet',
+              new FacetInfo({
+                row: { field: 'Cylinders', type: 'ordinal' },
+                column: { field: 'Origin', type: 'nominal' },
+              })
+            )
+          }
+          disabled={facetDisabled}
+        >
           Facet
         </Button>
         <Button onClick={() => operate('place')} disabled={placeDisabled}>
