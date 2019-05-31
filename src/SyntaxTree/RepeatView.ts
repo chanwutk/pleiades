@@ -194,7 +194,10 @@ function applyRepeat(spec: any, repeat: RepeatInfo) {
     }
   });
 
-  const { [nestedType || '$invalid-vl-field$']: nestedSpecs, ...output } = spec;
+  const {
+    [nestedType || '$invalid-vl-field$']: nestedSpecs,
+    ...output
+  } = jsonCopy(spec);
   if (nestedType) {
     output[nestedType] = nestedSpecs.map((nestedSpec: any) =>
       applyRepeat(nestedSpec, repeat)

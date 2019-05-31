@@ -1,4 +1,5 @@
 import { UnitView } from '../../SyntaxTree/View';
+import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../../variables';
 
 const spec = {
   data: { url: 'data/cars.json' },
@@ -12,20 +13,33 @@ const spec = {
 describe('UnitView', () => {
   it('correctly exports', () => {
     const view = new UnitView(spec);
-    expect(view.export()).toEqual(spec);
+    expect(view.export()).toEqual({
+      ...spec,
+      width: defaultVegaLiteWidth,
+      height: defaultVegaLiteHeight,
+    });
   });
 
   it('correctly getType', () => {
     const view = new UnitView(spec);
-    expect(view.getType()).toEqual('unit');
+    expect(view.type).toEqual('unit');
   });
 
   it('correctly edits spec', () => {
-    const view = new UnitView({});
-    expect(view.export()).toEqual({});
+    const view = new UnitView({ mark: 'point', data: {} });
+    expect(view.export()).toEqual({
+      width: defaultVegaLiteWidth,
+      height: defaultVegaLiteHeight,
+      mark: 'point',
+      data: {},
+    });
 
     view.edit(spec);
-    expect(view.export()).toEqual(spec);
+    expect(view.export()).toEqual({
+      ...spec,
+      width: defaultVegaLiteWidth,
+      height: defaultVegaLiteHeight,
+    });
   });
 });
 
@@ -33,6 +47,6 @@ describe('View', () => {
   it('creates Views with unique ids', () => {
     const view1 = new UnitView(spec);
     const view2 = new UnitView(spec);
-    expect(view1.getId()).not.toEqual(view2.getId());
+    expect(view1.id).not.toEqual(view2.id);
   });
 });

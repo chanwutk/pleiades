@@ -1,6 +1,7 @@
 import { FacetView, FacetInfo } from '../../SyntaxTree/FacetView';
 import { UnitView } from '../../SyntaxTree/View';
 import { jsonCopy } from '../../SyntaxTree/Utils';
+import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../../variables';
 
 const spec = {
   data: { url: 'data/cars.json' },
@@ -20,7 +21,16 @@ describe('FacetView', () => {
       new UnitView(jsonCopy(spec)),
       new FacetInfo({ row })
     );
-    expect(facet.export()).toEqual({ facet: { row }, spec });
+    const { data, ...specWithoutData } = spec;
+    expect(facet.export()).toEqual({
+      data,
+      facet: { row },
+      spec: {
+        ...specWithoutData,
+        width: defaultVegaLiteWidth,
+        height: defaultVegaLiteHeight,
+      },
+    });
   });
 
   it('correctly getType', () => {
@@ -28,7 +38,7 @@ describe('FacetView', () => {
       new UnitView(jsonCopy(spec)),
       new FacetInfo({ row })
     );
-    expect(facet.getType()).toEqual('facet');
+    expect(facet.type).toEqual('facet');
   });
 
   it('is correctly appended', () => {
@@ -38,7 +48,16 @@ describe('FacetView', () => {
     );
 
     facet1.append(null, column);
-    expect(facet1.export()).toEqual({ facet: { row, column }, spec });
+    const { data, ...specWithoutData } = spec;
+    expect(facet1.export()).toEqual({
+      data,
+      facet: { row, column },
+      spec: {
+        ...specWithoutData,
+        width: defaultVegaLiteWidth,
+        height: defaultVegaLiteHeight,
+      },
+    });
 
     const facet2 = new FacetView(
       new UnitView(jsonCopy(spec)),
@@ -46,7 +65,15 @@ describe('FacetView', () => {
     );
 
     facet2.append(null, row);
-    expect(facet2.export()).toEqual({ facet: { row, column }, spec });
+    expect(facet2.export()).toEqual({
+      data,
+      facet: { row, column },
+      spec: {
+        ...specWithoutData,
+        width: defaultVegaLiteWidth,
+        height: defaultVegaLiteHeight,
+      },
+    });
   });
 
   it('does not support prepend', () => {
@@ -67,7 +94,16 @@ describe('FacetView', () => {
     );
 
     facet.remove(0, 'row');
-    expect(facet.export()).toEqual({ facet: { column }, spec });
+    const { data, ...specWithoutData } = spec;
+    expect(facet.export()).toEqual({
+      data,
+      facet: { column },
+      spec: {
+        ...specWithoutData,
+        width: defaultVegaLiteWidth,
+        height: defaultVegaLiteHeight,
+      },
+    });
   });
 
   it('is correctly rearranged', () => {
@@ -76,10 +112,16 @@ describe('FacetView', () => {
       new FacetInfo({ row, column })
     );
 
+    const { data, ...spec2 } = spec;
     facet.rearrange();
     expect(facet.export()).toEqual({
+      data,
       facet: { row: column, column: row },
-      spec,
+      spec: {
+        ...spec2,
+        width: defaultVegaLiteWidth,
+        height: defaultVegaLiteHeight,
+      },
     });
   });
 
