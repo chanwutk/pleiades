@@ -24,7 +24,7 @@ export const TooltipTable: React.FC<ITooltipTableProps> = ({
             <td className={classes.keyColumn}>
               <strong>{key}</strong>:
             </td>
-            <td>{typeof val === 'string' ? val : (val as any).type}</td>
+            <td>{val}</td>
           </tr>
         ))}
       </tbody>
