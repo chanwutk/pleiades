@@ -50,7 +50,7 @@ export class LayerView extends CompositeView<UnitView> {
   public deepClone() {
     const cloned = new LayerView();
     cloned.id = this.id;
-    cloned.layer = this.layer.map(view => view.clone());
+    cloned.layer = this.layer.map(view => view.deepClone());
     return cloned;
   }
 

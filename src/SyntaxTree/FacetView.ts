@@ -54,7 +54,7 @@ export class FacetView extends CompositeView<null> {
   }
 
   public deepClone() {
-    const cloned = new FacetView(this.view.clone(), this.facet.clone());
+    const cloned = new FacetView(this.view.deepClone(), this.facet.clone());
     cloned.id = this.id;
     return cloned;
   }

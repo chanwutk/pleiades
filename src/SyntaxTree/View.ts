@@ -28,6 +28,8 @@ export abstract class View {
 
   abstract clone(): View;
 
+  abstract deepClone(): View;
+
   abstract findView(id: number): View | null;
 }
 
