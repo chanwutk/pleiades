@@ -5,7 +5,7 @@ import { ConcatComponent } from './ConcatComponent';
 
 export const render = (view: View) => {
   const getRenderer = () => {
-    switch (view.getType()) {
+    switch (view.type) {
       case 'unit':
         return UnitComponent;
       case 'layer':
@@ -13,7 +13,7 @@ export const render = (view: View) => {
       case 'concat':
         return ConcatComponent;
       default:
-        throw new Error(`${view.getType()} view has not been implemented`);
+        throw new Error(`${view.type} view has not been implemented`);
     }
   };
   const Renderer = getRenderer();

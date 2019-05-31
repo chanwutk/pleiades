@@ -32,7 +32,7 @@ export interface IViewComponentProps {
 export const makeViewComponent = (
   View: React.FC<IViewComponentProps>
 ): React.FC<IViewComponentProps> => ({ view }) => {
-  const thisId = view.getId();
+  const thisId = view.id;
   const dispatch = useDispatch();
   const isOperandIncluded = useSelector((state: IGlobalState) =>
     state.current.operands.includes(thisId)

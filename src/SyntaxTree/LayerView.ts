@@ -42,20 +42,20 @@ export class LayerView extends CompositeView<UnitView> {
 
   public clone() {
     const cloned = new LayerView();
-    cloned.id = this.id;
+    cloned._id = this._id;
     cloned.layer = [...this.layer];
     return cloned;
   }
 
   public deepClone() {
     const cloned = new LayerView();
-    cloned.id = this.id;
+    cloned._id = this._id;
     cloned.layer = this.layer.map(view => view.deepClone());
     return cloned;
   }
 
   public findView(id: number) {
-    if (id === this.id) return this;
+    if (id === this._id) return this;
     for (const view of this.layer) {
       const result = view.findView(id);
       if (result !== null) {

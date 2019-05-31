@@ -3,22 +3,30 @@ import { jsonCopy } from './Utils';
 let idCounter = 1;
 
 export abstract class View {
-  protected id: number;
-  private type: ViewType;
+  protected _id: number;
+  private _type: ViewType;
 
   constructor(type: ViewType) {
     // NOTE: if possible, get rid of this mutation, but if not, that's fine
-    this.id = idCounter++;
-    this.type = type;
+    this._id = idCounter++;
+    this._type = type;
   }
 
-  public getType() {
-    return this.type;
+  public get type(): ViewType {
+    return this._type;
   }
 
-  public getId() {
-    return this.id;
+  public get id(): number {
+    return this._id;
   }
+
+  // public getType() {
+  //   return this._type;
+  // }
+
+  // public getId() {
+  //   return this._id;
+  // }
 
   /**
    * export Vega-Lite spec in vl.json format
@@ -107,17 +115,17 @@ export class UnitView extends View {
 
   public clone() {
     const cloned = new UnitView(this.spec);
-    cloned.id = this.id;
+    cloned._id = this._id;
     return cloned;
   }
 
   public deepClone() {
     const cloned = new UnitView(jsonCopy(this.spec));
-    cloned.id = this.id;
+    cloned._id = this._id;
     return cloned;
   }
 
   public findView(id: number) {
-    return this.id === id ? this : null;
+    return this._id === id ? this : null;
   }
 }

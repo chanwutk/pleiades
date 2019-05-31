@@ -38,20 +38,20 @@ export class ConcatView extends CompositeView<View> {
 
   public clone() {
     const cloned = new ConcatView(this.orient);
-    cloned.id = this.id;
+    cloned._id = this._id;
     cloned.concat = [...this.concat];
     return cloned;
   }
 
   public deepClone() {
     const cloned = new ConcatView(this.orient);
-    cloned.id = this.id;
+    cloned._id = this._id;
     cloned.concat = this.concat.map(view => view.deepClone());
     return cloned;
   }
 
   public findView(id: number) {
-    if (id === this.id) return this;
+    if (id === this._id) return this;
     for (const view of this.concat) {
       const result = view.findView(id);
       if (result !== null) {

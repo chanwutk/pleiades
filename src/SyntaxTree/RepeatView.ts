@@ -64,7 +64,7 @@ export class RepeatView extends CompositeView<string> {
 
   public clone() {
     const cloned = new RepeatView(this.view, this.repeatInfo.getChannelInfo());
-    cloned.id = this.id;
+    cloned._id = this._id;
     return cloned;
   }
 
@@ -73,12 +73,12 @@ export class RepeatView extends CompositeView<string> {
       this.view.deepClone(),
       this.repeatInfo.getChannelInfo()
     );
-    cloned.id = this.id;
+    cloned._id = this._id;
     return cloned;
   }
 
   public findView(id: number) {
-    if (id === this.id) return this;
+    if (id === this._id) return this;
     return this.view.findView(id);
   }
 }
