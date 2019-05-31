@@ -12,7 +12,7 @@ type Either<S, T> = ISuccess<S> | IFailure<T>;
 
 interface IRawSpec {
   data: any;
-  mark: string;
+  mark: string | { type: string };
   width?: number;
   height?: number;
 }

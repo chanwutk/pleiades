@@ -26,71 +26,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const errorWrapperStyle = {
-  height: 22,
-};
-
-const layerDisabledCheck = (
-  mainViewOperands: number[],
-  navBarOperands: number[],
-  specs: IBaseSpec[],
-  tree: View | null
-) => {
-  if (
-    mainViewOperands.length !== 1 ||
-    navBarOperands.length !== 1 ||
-    specs.filter(
-      spec => navBarOperands.includes(spec.id) && !isUnitSpec(spec.spec)
-    ).length !== 0
-  ) {
-    return true;
-  }
-
-  const mainViewOperand = tree!.findView(mainViewOperands[0]);
-  return (
-    mainViewOperand === null ||
-    (!(mainViewOperand.view instanceof LayerView) &&
-      !isUnitSpec(mainViewOperand.view.export()))
-  );
-};
-
-const layerWarnCheck = (
-  layerDisabled: boolean,
-  specs: IBaseSpec[],
-  navBarOperands: number[],
-  mainViewOperands: number[],
-  tree: View | null
-) => {
-  if (layerDisabled) {
-    return false;
-  }
-
-  const encodings = specs
-    .filter(spec => navBarOperands.includes(spec.id))
-    .map(spec => new UnitView(spec.spec).getEncoding());
-  const mainViewOperand = tree!.findView(mainViewOperands[0])!.view;
-  let mainViewEncodings: any[] = [];
-  if (mainViewOperand instanceof UnitView) {
-    mainViewEncodings = [mainViewOperand.getEncoding()];
-  } else if (mainViewOperand instanceof LayerView) {
-    mainViewEncodings = mainViewOperand.getEncoding();
-  }
-
-  const currentEncodingField = {};
-  for (const encoding of encodings.concat(mainViewEncodings)) {
-    for (const key of Object.keys(encoding)) {
-      if (
-        key in currentEncodingField &&
-        currentEncodingField[key] !== encoding[key].field
-      ) {
-        return true;
-      }
-      currentEncodingField[key] = encoding[key].field;
-    }
-  }
-  return false;
-};
-
 export const OperationBar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -155,7 +90,7 @@ export const OperationBar: React.FC = () => {
           className={layerWarn ? classes.buttonWarn : classes.buttonNormal}
         >
           {layerWarn ? (
-            <div style={errorWrapperStyle}>
+            <div style={{ height: 22 }}>
               <ErrorOutlineOutlined className={classes.error} /> &nbsp;
             </div>
           ) : (
@@ -172,8 +107,8 @@ export const OperationBar: React.FC = () => {
             operate(
               'repeat',
               new RepeatInfo(
-                ['Displacement', 'Horsepower', 'Miles_per_Gallon'],
                 ['Horsepower', 'Miles_per_Gallon'],
+                ['Displacement', 'Horsepower', 'Miles_per_Gallon'],
                 { rowChannel: 'x', columnChannel: 'y' }
               )
             )
@@ -188,8 +123,8 @@ export const OperationBar: React.FC = () => {
             operate(
               'facet',
               new FacetInfo({
-                row: { field: 'Cylinders', type: 'ordinal' },
-                column: { field: 'Origin', type: 'nominal' },
+                column: { field: 'Cylinders', type: 'ordinal' },
+                row: { field: 'Origin', type: 'nominal' },
               })
             )
           }
@@ -212,3 +147,68 @@ export const OperationBar: React.FC = () => {
     </Grid>
   );
 };
+
+function layerDisabledCheck(
+  mainViewOperands: number[],
+  navBarOperands: number[],
+  specs: IBaseSpec[],
+  tree: View | null
+): boolean {
+  if (
+    mainViewOperands.length !== 1 ||
+    navBarOperands.length !== 1 ||
+    specs.filter(
+      spec => navBarOperands.includes(spec.id) && !isUnitSpec(spec.spec)
+    ).length !== 0
+  ) {
+    return true;
+  }
+
+  const mainViewOperand = tree!.findView(mainViewOperands[0]);
+  return (
+    mainViewOperand === null ||
+    (!(mainViewOperand.view instanceof LayerView) &&
+      !isUnitSpec(mainViewOperand.view.export()))
+  );
+}
+
+function layerWarnCheck(
+  layerDisabled: boolean,
+  specs: IBaseSpec[],
+  navBarOperands: number[],
+  mainViewOperands: number[],
+  tree: View | null
+): boolean {
+  if (layerDisabled) {
+    return false;
+  }
+
+  const encodings: any[] = [];
+  for (const spec of specs) {
+    if (navBarOperands.includes(spec.id)) {
+      encodings.push(new UnitView(spec.spec).getEncoding());
+    }
+  }
+
+  const mainViewOperand = tree!.findView(mainViewOperands[0])!.view;
+  let mainViewEncodings: any[] = [];
+  if (mainViewOperand instanceof UnitView) {
+    mainViewEncodings = [mainViewOperand.getEncoding()];
+  } else if (mainViewOperand instanceof LayerView) {
+    mainViewEncodings = mainViewOperand.getEncoding();
+  }
+
+  const currentEncodingField = {};
+  for (const encoding of encodings.concat(mainViewEncodings)) {
+    for (const key of Object.keys(encoding)) {
+      if (
+        key in currentEncodingField &&
+        currentEncodingField[key] !== encoding[key].field
+      ) {
+        return true;
+      }
+      currentEncodingField[key] = encoding[key].field;
+    }
+  }
+  return false;
+}

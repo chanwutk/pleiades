@@ -26,6 +26,14 @@ const examples = [
       y: { field: 'Miles_per_Gallon', type: 'quantitative' },
     },
   },
+  {
+    $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+    data: { url: 'https://vega.github.io/editor/data/cars.json' },
+    mark: { type: 'errorband', extent: 'stdev' },
+    encoding: {
+      y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+    },
+  },
 
   {
     $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
