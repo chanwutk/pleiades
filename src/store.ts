@@ -116,37 +116,46 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
               return new UnitView(findInNav(left[0]));
             }
 
-            let rightView = tree.findView(right[0])!.clone();
+            let newTree = tree.deepClone();
+            const rightViewResult = newTree.findView(right[0]);
+            if (rightViewResult === null) {
+              throw new Error(
+                `Cannot find view in MainView with id=${right[0]}`
+              );
+            }
+
+            let { parent, view } = rightViewResult;
 
             switch (action.operator) {
               case 'layer': {
                 const leftView = new UnitView(findInNav(left[0]));
-                if (!(rightView instanceof LayerView)) {
+                const oldViewId = view.id;
+                if (view instanceof UnitView) {
                   const layer = new LayerView();
-                  layer.append(rightView as UnitView);
-                  rightView = layer;
+                  layer.append(view);
+                  view = layer;
                 }
-                (rightView as LayerView).append(leftView);
+                (view as LayerView).append(leftView);
+                if (parent) {
+                  parent.replaceChild(view, oldViewId);
+                } else {
+                  newTree = view;
+                }
                 break;
               }
               case 'concat': {
                 const leftView = new UnitView(findInNav(left[0]));
-                if (
-                  rightView instanceof ConcatView &&
-                  rightView.isCompatible(leftView)
-                ) {
-                  rightView.append(leftView);
-                } else {
+                const oldViewId = view.id;
+                if (!(view instanceof ConcatView)) {
                   const concat = new ConcatView('h');
-                  if (
-                    concat.isCompatible(leftView) &&
-                    rightView instanceof UnitView &&
-                    concat.isCompatible(rightView)
-                  ) {
-                    concat.append(rightView);
-                    concat.append(leftView);
-                    rightView = concat;
-                  }
+                  concat.append(view);
+                  view = concat;
+                }
+                (view as ConcatView).append(leftView);
+                if (parent) {
+                  parent.replaceChild(view, oldViewId);
+                } else {
+                  newTree = view;
                 }
                 break;
               }
@@ -157,7 +166,7 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
               default:
                 return assertNever(action.operator);
             }
-            return rightView;
+            return newTree;
           }),
           R.over(R.lensProp('operands'), R.always([]))
         )

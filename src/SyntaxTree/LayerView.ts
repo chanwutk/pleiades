@@ -1,5 +1,5 @@
 import { CompositeView, UnitView } from './View';
-import { moveElement } from './Utils';
+import { moveElement, findViewInArray, replaceViewInArray } from './Utils';
 
 export class LayerView extends CompositeView<UnitView> {
   private layer: View[];
@@ -55,13 +55,10 @@ export class LayerView extends CompositeView<UnitView> {
   }
 
   public findView(id: number) {
-    if (id === this._id) return this;
-    for (const view of this.layer) {
-      const result = view.findView(id);
-      if (result !== null) {
-        return result;
-      }
-    }
-    return null;
+    return findViewInArray(id, this.layer, this);
+  }
+
+  public replaceChild(view: View, id: number) {
+    return replaceViewInArray(view, this.layer, id);
   }
 }

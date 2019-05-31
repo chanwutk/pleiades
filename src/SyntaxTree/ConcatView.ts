@@ -1,5 +1,5 @@
 import { View, CompositeView } from './View';
-import { moveElement } from './Utils';
+import { moveElement, findViewInArray, replaceViewInArray } from './Utils';
 
 export class ConcatView extends CompositeView<View> {
   private concat: View[];
@@ -51,13 +51,10 @@ export class ConcatView extends CompositeView<View> {
   }
 
   public findView(id: number) {
-    if (id === this._id) return this;
-    for (const view of this.concat) {
-      const result = view.findView(id);
-      if (result !== null) {
-        return result;
-      }
-    }
-    return null;
+    return findViewInArray(id, this.concat, this);
+  }
+
+  public replaceChild(view: View, id: number) {
+    return replaceViewInArray(view, this.concat, id);
   }
 }

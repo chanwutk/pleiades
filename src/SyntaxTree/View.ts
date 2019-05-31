@@ -1,4 +1,5 @@
 import { jsonCopy } from './Utils';
+import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../variables';
 
 let idCounter = 1;
 
@@ -20,14 +21,6 @@ export abstract class View {
     return this._id;
   }
 
-  // public getType() {
-  //   return this._type;
-  // }
-
-  // public getId() {
-  //   return this._id;
-  // }
-
   /**
    * export Vega-Lite spec in vl.json format
    * @returns exported Vega-Lite spec
@@ -38,7 +31,9 @@ export abstract class View {
 
   abstract deepClone(): View;
 
-  abstract findView(id: number): View | null;
+  abstract findView(id: number): { parent: View | null; view: View } | null;
+
+  abstract replaceChild(view: View, id: number): boolean;
 }
 
 /**
@@ -110,7 +105,11 @@ export class UnitView extends View {
   }
 
   public export() {
-    return this.spec;
+    return {
+      width: defaultVegaLiteWidth,
+      height: defaultVegaLiteHeight,
+      ...this.spec,
+    };
   }
 
   public clone() {
@@ -126,6 +125,10 @@ export class UnitView extends View {
   }
 
   public findView(id: number) {
-    return this._id === id ? this : null;
+    return this._id === id ? { parent: null, view: this } : null;
+  }
+
+  public replaceChild(_view: View, _id: number): boolean {
+    throw new Error('UnitView cannot replace child');
   }
 }

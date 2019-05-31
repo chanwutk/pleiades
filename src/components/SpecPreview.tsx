@@ -129,6 +129,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec }) => {
             <div className={classes.image}>
               <VegaLite
                 spec={spec.spec}
+                // This size restriction makes the elements in visualized spec layed out incorrectly
                 width={sidebarWidth}
                 height={sidebarWidth}
               />

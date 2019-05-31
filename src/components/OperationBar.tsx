@@ -44,8 +44,8 @@ export const OperationBar: React.FC = () => {
     const mainViewOperand = (tree as View).findView(mainViewOperands[0]);
     return (
       mainViewOperand === null ||
-      (!((mainViewOperand as View) instanceof LayerView) &&
-        !isUnitSpec(mainViewOperand.export()))
+      (!(mainViewOperand.view instanceof LayerView) &&
+        !isUnitSpec(mainViewOperand.view.export()))
     );
   };
   const concatDisabled =

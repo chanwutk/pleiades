@@ -41,6 +41,33 @@ export function isUnitSpec(view: View) {
   );
 }
 
+export function findViewInArray(id: number, views: View[], currentView: View) {
+  if (id === currentView.id) return { parent: null, view: currentView };
+  for (const view of views) {
+    const result = view.findView(id);
+    if (result !== null) {
+      return result.parent !== null
+        ? result
+        : { ...result, parent: currentView };
+    }
+  }
+  return null;
+}
+
+export function replaceViewInArray(
+  view: View,
+  views: View[],
+  id: number
+): boolean {
+  for (let i = 0; i < views.length; i++) {
+    if (views[i].id === id) {
+      views[i] = view;
+      return true;
+    }
+  }
+  return false;
+}
+
 export function jsonCopy(obj: {}) {
   return JSON.parse(JSON.stringify(obj));
 }

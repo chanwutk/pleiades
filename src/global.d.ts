@@ -13,6 +13,8 @@ type Either<S, T> = ISuccess<S> | IFailure<T>;
 interface IRawSpec {
   data: any;
   mark: string;
+  width?: number;
+  height?: number;
 }
 
 interface IBaseSpec {

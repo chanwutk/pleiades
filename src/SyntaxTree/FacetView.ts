@@ -1,5 +1,5 @@
 import { View, CompositeView } from './View';
-import { jsonCopy } from './Utils';
+import { jsonCopy, findViewInArray } from './Utils';
 
 export class FacetView extends CompositeView<null> {
   private view: View;
@@ -60,8 +60,15 @@ export class FacetView extends CompositeView<null> {
   }
 
   public findView(id: number) {
-    if (id === this._id) return this;
-    return this.view.findView(id);
+    return findViewInArray(id, [this.view], this);
+  }
+
+  public replaceChild(view: View, id: number) {
+    if (this.view.id === id) {
+      this.view = view;
+      return true;
+    }
+    return false;
   }
 }
 

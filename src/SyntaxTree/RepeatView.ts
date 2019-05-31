@@ -1,5 +1,5 @@
 import { View, CompositeView } from './View';
-import { moveElement } from './Utils';
+import { moveElement, findViewInArray } from './Utils';
 
 export class RepeatView extends CompositeView<string> {
   private repeatInfo: RepeatInfo;
@@ -78,8 +78,15 @@ export class RepeatView extends CompositeView<string> {
   }
 
   public findView(id: number) {
-    if (id === this._id) return this;
-    return this.view.findView(id);
+    return findViewInArray(id, [this.view], this);
+  }
+
+  public replaceChild(view: View, id: number) {
+    if (this.view.id === id) {
+      this.view = view;
+      return true;
+    }
+    return false;
   }
 }
 
