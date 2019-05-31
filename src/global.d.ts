@@ -11,7 +11,7 @@ interface IFailure<T> {
 type Either<S, T> = ISuccess<S> | IFailure<T>;
 
 interface IRawSpec {
-  data: any;
+  data: { url: string };
   mark: string | { type: string };
   width?: number;
   height?: number;

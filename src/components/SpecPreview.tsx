@@ -110,7 +110,19 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec }) => {
     }
   };
 
+  const markToString = (mark: string | { type: string }) => {
+    if (typeof mark === 'string') {
+      return mark;
+    } else {
+      return mark.type;
+    }
+  };
+
   const classes = useStyles(active);
+  const table = [
+    ['Data URL', spec.spec.data.url],
+    ['Mark Type', markToString(spec.spec.mark)],
+  ];
 
   return (
     <>
@@ -119,12 +131,7 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec }) => {
         className={classes.preview}
         onClick={handleToggleActive}
       >
-        <TooltipTable
-          table={[
-            ['Data URL', spec.spec.data.url],
-            ['Mark Type', spec.spec.mark],
-          ]}
-        >
+        <TooltipTable table={table}>
           <div className={classes.wrapper}>
             <div className={classes.image}>
               <VegaLite
