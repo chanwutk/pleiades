@@ -121,23 +121,12 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
             switch (action.operator) {
               case 'layer': {
                 const leftView = new UnitView(findInNav(left[0]));
-                if (
-                  rightView instanceof LayerView &&
-                  rightView.isCompatible(leftView)
-                ) {
-                  rightView.append(leftView);
-                } else {
+                if (!(rightView instanceof LayerView)) {
                   const layer = new LayerView();
-                  if (
-                    layer.isCompatible(leftView) &&
-                    rightView instanceof UnitView &&
-                    layer.isCompatible(rightView)
-                  ) {
-                    layer.append(rightView);
-                    layer.append(leftView);
-                    rightView = layer;
-                  }
+                  layer.append(rightView as UnitView);
+                  rightView = layer;
                 }
+                (rightView as LayerView).append(leftView);
                 break;
               }
               case 'concat': {

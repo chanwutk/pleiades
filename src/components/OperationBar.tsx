@@ -4,11 +4,14 @@ import Button from '@material-ui/core/Button';
 import Undo from '@material-ui/icons/Undo';
 import Redo from '@material-ui/icons/Redo';
 import Grid from '@material-ui/core/Grid';
+import { isUnitSpec } from 'vega-lite/build/src/spec';
+import { LayerView } from '../SyntaxTree/LayerView';
 
 export const OperationBar: React.FC = () => {
   const dispatch = useDispatch();
   const operands = useSelector((state: IGlobalState) => state.current.operands);
   const tree = useSelector((state: IGlobalState) => state.current.tree);
+  const specs = useSelector((state: IGlobalState) => state.current.specs);
   const undoDisabled = useSelector(
     (state: IGlobalState) => state.undoStack.length === 0
   );
@@ -27,8 +30,24 @@ export const OperationBar: React.FC = () => {
   const navBarOperands = operands.filter(x => x < 0);
   const mainViewOperands = operands.filter(x => x > 0);
 
-  const layerDisabled =
-    mainViewOperands.length !== 1 || navBarOperands.length !== 1;
+  const layerDisabled = () => {
+    if (
+      mainViewOperands.length !== 1 ||
+      navBarOperands.length !== 1 ||
+      specs.filter(
+        spec => navBarOperands.includes(spec.id) && !isUnitSpec(spec.spec)
+      ).length !== 0
+    ) {
+      return true;
+    }
+
+    const mainViewOperand = (tree as View).findView(mainViewOperands[0]);
+    return (
+      mainViewOperand === null ||
+      (!((mainViewOperand as View) instanceof LayerView) &&
+        !isUnitSpec(mainViewOperand.export()))
+    );
+  };
   const concatDisabled =
     mainViewOperands.length !== 1 || navBarOperands.length !== 1;
   const repeatDisabled =
@@ -41,7 +60,7 @@ export const OperationBar: React.FC = () => {
   return (
     <Grid container justify="space-between">
       <Grid item>
-        <Button onClick={() => operate('layer')} disabled={layerDisabled}>
+        <Button onClick={() => operate('layer')} disabled={layerDisabled()}>
           Layer
         </Button>
         <Button onClick={() => operate('concat')} disabled={concatDisabled}>

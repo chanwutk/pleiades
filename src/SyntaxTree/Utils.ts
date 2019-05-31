@@ -1,3 +1,5 @@
+import { View } from './View';
+
 /**
  * Move an element that index `from` to the index `to` and shift the rest to the
  * index `from`.
@@ -26,6 +28,17 @@ export function moveElement(arr: Array<any>, from: number, to: number) {
     }
   }
   arr[to] = fromElm;
+}
+
+export function isUnitSpec(view: View) {
+  const spec = view.export();
+  return (
+    !spec['spec'] &&
+    !spec['layer'] &&
+    !spec['concat'] &&
+    !spec['hconcat'] &&
+    !spec['vconcat']
+  );
 }
 
 export function jsonCopy(obj: {}) {
