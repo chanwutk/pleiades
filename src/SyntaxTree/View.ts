@@ -1,5 +1,10 @@
 import { jsonCopy } from './Utils';
-import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../variables';
+import {
+  defaultVegaLiteWidth,
+  defaultVegaLiteHeight,
+  defaultVegaLiteShortWidth,
+  defaultVegaLiteShortHeight,
+} from '../variables';
 
 let idCounter = 1;
 
@@ -106,8 +111,14 @@ export class UnitView extends View {
 
   public export() {
     return {
-      width: defaultVegaLiteWidth,
-      height: defaultVegaLiteHeight,
+      width:
+        'x' in this.spec['encoding']
+          ? defaultVegaLiteWidth
+          : defaultVegaLiteShortWidth,
+      height:
+        'y' in this.spec['encoding']
+          ? defaultVegaLiteHeight
+          : defaultVegaLiteShortHeight,
       ...this.spec,
     };
   }
