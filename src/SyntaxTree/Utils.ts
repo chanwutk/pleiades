@@ -1,4 +1,15 @@
 import { View } from './View';
+import {
+  isUnitSpec,
+  isLayerSpec,
+  isRepeatSpec,
+  isFacetSpec,
+} from 'vega-lite/build/src/spec';
+import {
+  isConcatSpec,
+  isHConcatSpec,
+  isVConcatSpec,
+} from 'vega-lite/build/src/spec/concat';
 
 /**
  * Move an element that index `from` to the index `to` and shift the rest to the
@@ -30,15 +41,75 @@ export function moveElement(arr: Array<any>, from: number, to: number) {
   arr[to] = fromElm;
 }
 
-export function isUnitSpec(view: View) {
-  const spec = view.export();
-  return (
-    !spec['spec'] &&
-    !spec['layer'] &&
-    !spec['concat'] &&
-    !spec['hconcat'] &&
-    !spec['vconcat']
-  );
+export function getData(spec: IRawSpec): IRawData[] {
+  if (isUnitSpec(spec)) {
+    return spec.data ? [spec.data] : [];
+  }
+  if (isRepeatSpec(spec) || isFacetSpec(spec)) {
+    return [...getData(spec.spec), ...(spec.data ? [spec.data] : [])];
+  }
+
+  let specs: any[] = [];
+
+  if (isLayerSpec(spec)) {
+    specs = spec.layer;
+  } else if (isConcatSpec(spec)) {
+    specs = spec.concat;
+  } else if (isHConcatSpec(spec)) {
+    specs = spec.hconcat;
+  } else if (isVConcatSpec(spec)) {
+    specs = spec.vconcat;
+  }
+
+  return [
+    ...specs
+      .map(innerSpec => {
+        return getData(innerSpec);
+      })
+      .flat(),
+    ...(spec.data ? [spec.data] : []),
+  ];
+}
+
+export function extractData(spec: IRawSpec): { spec: {}; data: IRawData[] } {
+  return _extractData(jsonCopy(spec));
+}
+
+function _extractData(spec: IRawSpec): { spec: {}; data: IRawData[] } {
+  if (isUnitSpec(spec)) {
+    const { data, ...newSpec } = spec;
+    return { data: data ? [data] : [], spec: newSpec };
+  }
+  if (isRepeatSpec(spec) || isFacetSpec(spec)) {
+    const { data } = spec;
+    const { data: extractedData, spec: extractedSpec } = _extractData(
+      spec.spec
+    );
+    spec.spec = extractedSpec;
+    return { data: [...(data ? [data] : []), ...extractedData], spec };
+  }
+
+  let key: string = '';
+  if (isLayerSpec(spec)) {
+    key = 'layer';
+  } else if (isConcatSpec(spec)) {
+    key = 'concat';
+  } else if (isHConcatSpec(spec)) {
+    key = 'hconcat';
+  } else if (isVConcatSpec(spec)) {
+    key = 'vconcat';
+  }
+
+  const { data } = spec;
+  const outputData: IRawData[] = data ? [data] : [];
+  for (let i = 0; i < spec[key].length; i++) {
+    const { data: extractedData, spec: extractedSpec } = _extractData(
+      spec[key][i]
+    );
+    outputData.push(...extractedData);
+    spec[key][i] = extractedSpec;
+  }
+  return { data: outputData, spec };
 }
 
 export function findViewInArray(id: number, views: View[], currentView: View) {

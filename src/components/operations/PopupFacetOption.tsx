@@ -146,12 +146,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
       </DialogContent>
       <DialogActions>
         <Button
-          // Replace this fake facet as interation to select orientation and fields
           onClick={() => {
-            console.log('columnField', columnField);
-            console.log('rowField', rowField);
-            console.log('columnType', columnType);
-            console.log('rowType', rowType);
             operate(
               'facet',
               new FacetInfo({
