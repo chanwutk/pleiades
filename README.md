@@ -8,7 +8,7 @@
 
 ## Installation & Building
 
-First, make sure that you have [`yarn`](https://yarnpkg.com/en/docs/install) installed. Next, change the directory to the current directory and run `yarn install`.
+First, make sure that you have [`yarn`](https://yarnpkg.com/en/docs/install) installed. Next, change the directory to the current directory and run `yarn`.
 
 To build the project in the development mode, run `yarn start`. To build the project in the production mode, run `yarn build`. Use `yarn test` to run tests.
 
