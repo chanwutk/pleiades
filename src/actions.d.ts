@@ -35,7 +35,7 @@ interface IOperateAction {
   type: 'operate';
   operands: number[];
   operator: Operator;
-  extraOperand?: RepeatInfo | FacetInfo;
+  extra?: RepeatInfo | FacetInfo | string;
 }
 
 type Action =

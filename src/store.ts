@@ -137,7 +137,7 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
                   layer.append(view);
                   view = layer;
                 }
-                (view as LayerView).append(leftView);
+                (view as LayerView)[action.extra](leftView);
                 if (parent) {
                   parent.replaceChild(view, oldViewId);
                 } else {
@@ -162,10 +162,7 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
                 break;
               }
               case 'repeat':
-                const repeat = new RepeatView(
-                  view,
-                  action.extraOperand as RepeatInfo
-                );
+                const repeat = new RepeatView(view, action.extra as RepeatInfo);
                 if (parent) {
                   parent.replaceChild(repeat, view.id);
                 } else {
@@ -173,10 +170,7 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
                 }
                 break;
               case 'facet':
-                const facet = new FacetView(
-                  view,
-                  action.extraOperand as FacetInfo
-                );
+                const facet = new FacetView(view, action.extra as FacetInfo);
                 if (parent) {
                   parent.replaceChild(facet, view.id);
                 } else {

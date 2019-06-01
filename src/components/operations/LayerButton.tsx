@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { UnitView } from '../../SyntaxTree/View';
 import { operateFactory } from './Utils';
 import { IOperationProps } from '../OperationBar';
+import { Menu, MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   buttonNormal: {},
@@ -32,6 +33,7 @@ export const LayerButton: React.FC<IOperationProps> = ({
   const tree = useSelector((state: IGlobalState) => state.current.tree);
   const specs = useSelector((state: IGlobalState) => state.current.specs);
   const operate = operateFactory(useDispatch(), operands);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const layerDisabled = layerDisabledCheck(
     mainViewOperands,
@@ -47,21 +49,48 @@ export const LayerButton: React.FC<IOperationProps> = ({
     tree
   );
 
+  const handleClickLayer = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleSelectOption = (option: 'append' | 'prepend') => () => {
+    handleMenuClose();
+    operate('layer', option);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <Button
-      onClick={() => operate('layer')}
-      disabled={layerDisabled}
-      className={layerWarn ? classes.buttonWarn : classes.buttonNormal}
-    >
-      {layerWarn ? (
-        <>
-          <ErrorOutlineOutlined className={classes.error} /> &nbsp;
-        </>
-      ) : (
-        <></>
-      )}
-      Layer
-    </Button>
+    <>
+      <Button
+        // onClick={() => operate('layer')}
+        onClick={handleClickLayer}
+        disabled={layerDisabled}
+        className={layerWarn ? classes.buttonWarn : classes.buttonNormal}
+        aria-owns={anchorEl ? 'layer-menu' : undefined}
+        aria-haspopup="true"
+      >
+        {layerWarn ? (
+          <>
+            <ErrorOutlineOutlined className={classes.error} /> &nbsp;
+          </>
+        ) : (
+          <></>
+        )}
+        Layer
+      </Button>
+      <Menu
+        id="layer-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleSelectOption('prepend')}>Under</MenuItem>
+        <MenuItem onClick={handleSelectOption('append')}>Over</MenuItem>
+      </Menu>
+    </>
   );
 };
 
