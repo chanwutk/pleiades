@@ -59,8 +59,10 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
   };
 
   const operateDisabled = () =>
-    !(checkRow && rowField !== '' && rowType !== '') &&
-    !(checkColumn && columnField !== '' && columnType !== '');
+    (!(checkRow && rowField !== '' && rowType !== '') &&
+      !(checkColumn && columnField !== '' && columnType !== '')) ||
+    ((checkRow && (rowField === '' || rowType === '')) ||
+      (checkColumn && (columnField === '' || columnType === '')));
 
   return (
     <Dialog
@@ -79,7 +81,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Choose Field(s) and Encoding Channel(s) to facet.
+          Choose Field(s) and Type(s) to facet.
         </DialogContentText>
         <div>
           <Checkbox
@@ -88,7 +90,6 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
             className={classes.checkBox}
           />
           <TextField
-            id="standard-name"
             label="Row Field"
             value={rowField}
             onChange={event => setRowField(event.target.value)}
@@ -119,7 +120,6 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
             className={classes.checkBox}
           />
           <TextField
-            id="standard-name"
             label="Column Field"
             value={columnField}
             onChange={event => setColumnField(event.target.value)}
