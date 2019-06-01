@@ -1,7 +1,6 @@
 import { RepeatView, RepeatInfo } from '../../SyntaxTree/RepeatView';
 import { UnitView } from '../../SyntaxTree/View';
 import { jsonCopy } from '../../SyntaxTree/Utils';
-import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../../variables';
 
 const spec = {
   data: { url: 'data/cars.json' },
@@ -20,11 +19,7 @@ describe('RepeatView', () => {
     );
     expect(facet1.export()).toEqual({
       repeat: {},
-      spec: {
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-        ...spec,
-      },
+      spec,
     });
 
     const facet2 = new RepeatView(
@@ -36,8 +31,6 @@ describe('RepeatView', () => {
     expect(facet2.export()).toEqual({
       repeat: { row: [] },
       spec: {
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
         data: { url: 'data/cars.json' },
         mark: 'point',
         encoding: {
@@ -56,8 +49,6 @@ describe('RepeatView', () => {
     expect(facet3.export()).toEqual({
       repeat: { column: [] },
       spec: {
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
         data: { url: 'data/cars.json' },
         mark: 'point',
         encoding: {
@@ -85,8 +76,6 @@ describe('RepeatView', () => {
     expect(facet.export()).toEqual({
       repeat: { row: [] },
       spec: {
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
         data: { url: 'data/cars.json' },
         mark: 'point',
         encoding: {
@@ -100,8 +89,6 @@ describe('RepeatView', () => {
     expect(facet.export()).toEqual({
       repeat: { row: [], column: [] },
       spec: {
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
         data: { url: 'data/cars.json' },
         mark: 'point',
         encoding: {
@@ -124,8 +111,6 @@ describe('RepeatView', () => {
     expect(facet.export()).toEqual({
       repeat: { row: [] },
       spec: {
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
         data: { url: 'data/cars.json' },
         mark: 'point',
         encoding: {
@@ -139,8 +124,6 @@ describe('RepeatView', () => {
     expect(facet.export()).toEqual({
       repeat: {},
       spec: {
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
         data: { url: 'data/cars.json' },
         mark: 'point',
         encoding: {

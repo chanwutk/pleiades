@@ -1,7 +1,6 @@
 import { LayerView } from '../../SyntaxTree/LayerView';
 import { UnitView } from '../../SyntaxTree/View';
 import { jsonCopy } from '../../SyntaxTree/Utils';
-import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../../variables';
 
 const spec1 = {
   data: { url: 'data/cars.json' },
@@ -53,30 +52,20 @@ describe('LayerView', () => {
     const layer = new LayerView();
 
     layer.append(new UnitView(jsonCopy(spec1)));
-    expect(layer.export().layer).toEqual([
-      { ...spec1, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-    ]);
+    expect(layer.export().layer).toEqual([spec1]);
 
     layer.append(new UnitView(jsonCopy(spec2)));
-    expect(layer.export().layer).toEqual([
-      { ...spec1, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-      { ...spec2, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-    ]);
+    expect(layer.export().layer).toEqual([spec1, spec2]);
   });
 
   it('is correctly prepended', () => {
     const layer = new LayerView();
 
     layer.append(new UnitView(jsonCopy(spec1)));
-    expect(layer.export().layer).toEqual([
-      { ...spec1, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-    ]);
+    expect(layer.export().layer).toEqual([spec1]);
 
     layer.prepend(new UnitView(jsonCopy(spec2)));
-    expect(layer.export().layer).toEqual([
-      { ...spec2, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-      { ...spec1, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-    ]);
+    expect(layer.export().layer).toEqual([spec2, spec1]);
   });
 
   it('correctly removes view', () => {
@@ -87,10 +76,7 @@ describe('LayerView', () => {
     layer.append(new UnitView(jsonCopy(spec3)));
 
     layer.remove(1);
-    expect(layer.export().layer).toEqual([
-      { ...spec1, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-      { ...spec3, width: defaultVegaLiteWidth, height: defaultVegaLiteHeight },
-    ]);
+    expect(layer.export().layer).toEqual([spec1, spec3]);
   });
 
   it('is correctly rearranged', () => {
@@ -100,23 +86,7 @@ describe('LayerView', () => {
     layer.append(new UnitView(jsonCopy(spec2)));
     layer.append(new UnitView(jsonCopy(spec3)));
     layer.rearrange(0, 2);
-    expect(layer.export().layer).toEqual([
-      {
-        ...spec2,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
-      {
-        ...spec3,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
-      {
-        ...spec1,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
-    ]);
+    expect(layer.export().layer).toEqual([spec2, spec3, spec1]);
   });
 
   it('correctly checks for compatibility', () => {

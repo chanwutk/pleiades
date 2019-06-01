@@ -1,5 +1,4 @@
 import { UnitView } from '../../SyntaxTree/View';
-import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../../variables';
 
 const spec = {
   data: { url: 'data/cars.json' },
@@ -13,11 +12,7 @@ const spec = {
 describe('UnitView', () => {
   it('correctly exports', () => {
     const view = new UnitView(spec);
-    expect(view.export()).toEqual({
-      ...spec,
-      width: defaultVegaLiteWidth,
-      height: defaultVegaLiteHeight,
-    });
+    expect(view.export()).toEqual(spec);
   });
 
   it('correctly getType', () => {
@@ -26,20 +21,14 @@ describe('UnitView', () => {
   });
 
   it('correctly edits spec', () => {
-    const view = new UnitView({ mark: 'point', data: {} });
+    const view = new UnitView({ mark: 'point', data: { url: 'url' } });
     expect(view.export()).toEqual({
-      width: defaultVegaLiteWidth,
-      height: defaultVegaLiteHeight,
       mark: 'point',
-      data: {},
+      data: { url: 'url' },
     });
 
     view.edit(spec);
-    expect(view.export()).toEqual({
-      ...spec,
-      width: defaultVegaLiteWidth,
-      height: defaultVegaLiteHeight,
-    });
+    expect(view.export()).toEqual(spec);
   });
 });
 

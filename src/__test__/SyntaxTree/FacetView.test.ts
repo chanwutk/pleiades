@@ -1,7 +1,6 @@
 import { FacetView, FacetInfo } from '../../SyntaxTree/FacetView';
 import { UnitView } from '../../SyntaxTree/View';
 import { jsonCopy } from '../../SyntaxTree/Utils';
-import { defaultVegaLiteWidth, defaultVegaLiteHeight } from '../../variables';
 
 const spec = {
   data: { url: 'data/cars.json' },
@@ -25,11 +24,7 @@ describe('FacetView', () => {
     expect(facet.export()).toEqual({
       data,
       facet: { row },
-      spec: {
-        ...specWithoutData,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
+      spec: specWithoutData,
     });
   });
 
@@ -52,11 +47,7 @@ describe('FacetView', () => {
     expect(facet1.export()).toEqual({
       data,
       facet: { row, column },
-      spec: {
-        ...specWithoutData,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
+      spec: specWithoutData,
     });
 
     const facet2 = new FacetView(
@@ -68,11 +59,7 @@ describe('FacetView', () => {
     expect(facet2.export()).toEqual({
       data,
       facet: { row, column },
-      spec: {
-        ...specWithoutData,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
+      spec: specWithoutData,
     });
   });
 
@@ -98,11 +85,7 @@ describe('FacetView', () => {
     expect(facet.export()).toEqual({
       data,
       facet: { column },
-      spec: {
-        ...specWithoutData,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
+      spec: specWithoutData,
     });
   });
 
@@ -117,11 +100,7 @@ describe('FacetView', () => {
     expect(facet.export()).toEqual({
       data,
       facet: { row: column, column: row },
-      spec: {
-        ...spec2,
-        width: defaultVegaLiteWidth,
-        height: defaultVegaLiteHeight,
-      },
+      spec: spec2,
     });
   });
 
