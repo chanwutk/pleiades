@@ -1,5 +1,5 @@
 import { View, CompositeView } from './View';
-import { jsonCopy, findViewInArray } from './Utils';
+import { jsonCopy, findViewInArray, extractData } from './Utils';
 
 export class FacetView extends CompositeView<null> {
   private view: View;
@@ -13,11 +13,11 @@ export class FacetView extends CompositeView<null> {
 
   public export() {
     // need a better way to extract data from composed specs
-    const { data, ...spec } = this.view.export() as { data };
+    const { data, ...spec } = extractData(this.view.export() as IRawSpec);
     return {
-      data,
+      data: data[0],
       facet: this.facet.export(),
-      spec,
+      ...spec,
     };
   }
 

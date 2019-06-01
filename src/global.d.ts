@@ -10,8 +10,10 @@ interface IFailure<T> {
 
 type Either<S, T> = ISuccess<S> | IFailure<T>;
 
+type IRawData = { url: string } | { values: any[] };
+
 interface IRawSpec {
-  data: { url: string };
+  data: IRawData;
   mark: string | { type: string };
   width?: number;
   height?: number;

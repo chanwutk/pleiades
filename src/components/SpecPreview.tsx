@@ -118,9 +118,13 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec }) => {
     }
   };
 
+  const dataToString = (data: IRawData) => {
+    return 'url' in data ? data['url'] : 'Embeded data';
+  };
+
   const classes = useStyles(active);
   const table = [
-    ['Data URL', spec.spec.data.url],
+    ['Data URL', dataToString(spec.spec.data)],
     ['Mark Type', markToString(spec.spec.mark)],
   ];
 
