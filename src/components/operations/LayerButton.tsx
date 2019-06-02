@@ -86,6 +86,14 @@ export const LayerButton: React.FC<IOperationProps> = ({
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
       >
         <MenuItem onClick={handleSelectOption('prepend')}>Under</MenuItem>
         <MenuItem onClick={handleSelectOption('append')}>Over</MenuItem>

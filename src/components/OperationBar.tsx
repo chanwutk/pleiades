@@ -10,6 +10,7 @@ import { RepeatButton } from './operations/RepeatButton';
 import { FacetButton } from './operations/FacetButton';
 import { PlaceButton } from './operations/PlaceButton';
 import { makeStyles } from '@material-ui/core/styles';
+import { ExportButton } from './operations/ExportButton';
 
 export interface IOperationProps {
   navBarOperands: number[];
@@ -81,6 +82,8 @@ export const OperationBar: React.FC = () => {
         <Button onClick={handleRedo} disabled={redoDisabled}>
           <Redo /> &nbsp; Redo
         </Button>
+        &nbsp; &nbsp; &nbsp;
+        <ExportButton tree={tree} />
       </Grid>
     </Grid>
   );
