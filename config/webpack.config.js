@@ -488,6 +488,7 @@ module.exports = function(webpackEnv) {
           {
             inject: true,
             template: paths.appHtml,
+            filename: 'app.html'
           },
           isEnvProduction
             ? {
