@@ -12,7 +12,7 @@ import { store } from './store';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: 600,
+    height: 540,
     display: 'flex',
   },
   left: {
