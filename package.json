@@ -83,7 +83,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js && rm -rf docs && mv build docs",
+    "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "prettierbase": "prettier --write src/{,**/,**/**/}*",
     "publishsite": "yarn prettierbase && yarn build && git add -A && git commit -m 'format and build site' && git push"
