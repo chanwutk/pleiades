@@ -9,15 +9,32 @@ import { ConcatButton } from './operations/ConcatButton';
 import { RepeatButton } from './operations/RepeatButton';
 import { FacetButton } from './operations/FacetButton';
 import { PlaceButton } from './operations/PlaceButton';
+import { makeStyles } from '@material-ui/core/styles';
 
 export interface IOperationProps {
   navBarOperands: number[];
   mainViewOperands: number[];
+  tree?: View | null;
 }
+
+export const useWarningStyles = makeStyles(() => ({
+  buttonNormal: {},
+  buttonWarn: {
+    '&:hover': {
+      backgroundColor: '#ffd800',
+    },
+  },
+  error: {
+    width: 22,
+    height: 22,
+    color: '#ed1c1c',
+  },
+}));
 
 export const OperationBar: React.FC = () => {
   const dispatch = useDispatch();
   const operands = useSelector((state: IGlobalState) => state.current.operands);
+  const tree = useSelector((state: IGlobalState) => state.current.tree);
   const undoDisabled = useSelector(
     (state: IGlobalState) => state.undoStack.length === 0
   );
@@ -45,10 +62,12 @@ export const OperationBar: React.FC = () => {
         <RepeatButton
           navBarOperands={navBarOperands}
           mainViewOperands={mainViewOperands}
+          tree={tree}
         />
         <FacetButton
           navBarOperands={navBarOperands}
           mainViewOperands={mainViewOperands}
+          tree={tree}
         />
         <PlaceButton
           navBarOperands={navBarOperands}

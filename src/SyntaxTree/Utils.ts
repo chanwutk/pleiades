@@ -10,6 +10,7 @@ import {
   isHConcatSpec,
   isVConcatSpec,
 } from 'vega-lite/build/src/spec/concat';
+import * as R from 'ramda';
 
 /**
  * Move an element that index `from` to the index `to` and shift the rest to the
@@ -69,6 +70,18 @@ export function getData(spec: IRawSpec): IRawData[] {
       .flat(),
     ...(spec.data ? [spec.data] : []),
   ];
+}
+
+export function containsDifferentData(spec: IRawSpec): boolean {
+  const datasets = getData(spec);
+  if (datasets.length === 0) return true;
+  const check = datasets[0];
+  for (const dataset of datasets) {
+    if (!R.equals(dataset, check)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export function extractData(spec: IRawSpec): { spec: {}; data: IRawData[] } {
