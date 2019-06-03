@@ -9,6 +9,7 @@ import { UnitView } from '../../SyntaxTree/View';
 import { operateFactory } from './Utils';
 import { IOperationProps } from '../OperationBar';
 import { Menu, MenuItem } from '@material-ui/core';
+import { TooltipTable } from '../TooltipTable';
 
 const useStyles = makeStyles(() => ({
   buttonNormal: {},
@@ -64,23 +65,30 @@ export const LayerButton: React.FC<IOperationProps> = ({
 
   return (
     <>
-      <Button
-        // onClick={() => operate('layer')}
-        onClick={handleClickLayer}
-        disabled={layerDisabled}
-        className={layerWarn ? classes.buttonWarn : classes.buttonNormal}
-        aria-owns={anchorEl ? 'layer-menu' : undefined}
-        aria-haspopup="true"
-      >
-        {layerWarn ? (
-          <>
-            <ErrorOutlineOutlined className={classes.error} /> &nbsp;
-          </>
-        ) : (
-          <></>
-        )}
-        Layer
-      </Button>
+      {layerWarn ? (
+        <TooltipTable
+          table={[['Warning', 'Operands have different encoding(s)']]}
+        >
+          <Button
+            onClick={handleClickLayer}
+            className={classes.buttonWarn}
+            aria-owns={anchorEl ? 'layer-menu' : undefined}
+            aria-haspopup="true"
+          >
+            <ErrorOutlineOutlined className={classes.error} /> &nbsp; Layer
+          </Button>
+        </TooltipTable>
+      ) : (
+        <Button
+          onClick={handleClickLayer}
+          disabled={layerDisabled}
+          className={classes.buttonNormal}
+          aria-owns={anchorEl ? 'layer-menu' : undefined}
+          aria-haspopup="true"
+        >
+          Layer
+        </Button>
+      )}
       <Menu
         id="layer-menu"
         anchorEl={anchorEl}
@@ -153,15 +161,19 @@ function layerWarnCheck(
   }
 
   const currentEncodingField = {};
+  const currentEncodingType = {};
   for (const encoding of encodings.concat(mainViewEncodings)) {
     for (const key of Object.keys(encoding)) {
       if (
         key in currentEncodingField &&
-        currentEncodingField[key] !== encoding[key].field
+        (currentEncodingField[key] !== encoding[key].field ||
+          (encoding[key].type &&
+            currentEncodingType[key] !== encoding[key].type))
       ) {
         return true;
       }
       currentEncodingField[key] = encoding[key].field;
+      currentEncodingType[key] = encoding[key].type;
     }
   }
   return false;
