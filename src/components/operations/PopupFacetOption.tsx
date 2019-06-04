@@ -73,6 +73,47 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
     }
   };
 
+  const axisConfigFactory = (
+    check: boolean,
+    checkSetter: React.Dispatch<React.SetStateAction<boolean>>,
+    field: string,
+    fieldSetter: React.Dispatch<React.SetStateAction<string>>,
+    type: string,
+    typeSetter: React.Dispatch<React.SetStateAction<string>>,
+    axis: 'Row' | 'Column'
+  ) => (
+    <div>
+      <Checkbox
+        checked={check}
+        onChange={() => checkSetter(!check)}
+        className={classes.checkBox}
+      />
+      <TextField
+        label={`${axis} Field`}
+        value={field}
+        onChange={event => fieldSetter(event.target.value)}
+      />
+      &nbsp; &nbsp;
+      <FormControl>
+        <InputLabel htmlFor="row-type">Type</InputLabel>
+        <Select
+          value={type}
+          onChange={event => typeSetter(event.target.value as string)}
+          inputProps={{
+            name: 'type',
+            id: 'row-type',
+          }}
+          className={classes.typeSelector}
+        >
+          <MenuItem value={'nominal'}>Nominal</MenuItem>
+          <MenuItem value={'ordinal'}>Ordinal</MenuItem>
+          <MenuItem value={'quantitative'}>Quantitative</MenuItem>
+          <MenuItem value={'temporal'}>Temporal</MenuItem>
+        </Select>
+      </FormControl>
+    </div>
+  );
+
   const operateDisabled = () =>
     (!(checkRow && rowField !== '' && rowType !== '') &&
       !(checkColumn && columnField !== '' && columnType !== '')) ||
@@ -98,68 +139,24 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
         <DialogContentText>
           Choose Field(s) and Type(s) to facet.
         </DialogContentText>
-        <div>
-          <Checkbox
-            checked={checkRow}
-            onChange={() => setCheckRow(!checkRow)}
-            className={classes.checkBox}
-          />
-          <TextField
-            label="Row Field"
-            value={rowField}
-            onChange={event => setRowField(event.target.value)}
-            placeholder={'Ex: Origin'}
-          />
-          &nbsp; &nbsp;
-          <FormControl>
-            <InputLabel htmlFor="row-type">Type</InputLabel>
-            <Select
-              value={rowType}
-              onChange={event => setRowType(event.target.value as string)}
-              inputProps={{
-                name: 'type',
-                id: 'row-type',
-              }}
-              className={classes.typeSelector}
-            >
-              <MenuItem value={'nominal'}>Nominal</MenuItem>
-              <MenuItem value={'ordinal'}>Ordinal</MenuItem>
-              <MenuItem value={'quantitative'}>Quantitative</MenuItem>
-              <MenuItem value={'temporal'}>Temporal</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div>
-          <Checkbox
-            checked={checkColumn}
-            onChange={() => setCheckColumn(!checkColumn)}
-            className={classes.checkBox}
-          />
-          <TextField
-            label="Column Field"
-            value={columnField}
-            onChange={event => setColumnField(event.target.value)}
-            placeholder={'Ex: Cylinders'}
-          />
-          &nbsp; &nbsp;
-          <FormControl>
-            <InputLabel htmlFor="column-type">Type</InputLabel>
-            <Select
-              value={columnType}
-              onChange={event => setColumnType(event.target.value as string)}
-              inputProps={{
-                name: 'type',
-                id: 'column-type',
-              }}
-              className={classes.typeSelector}
-            >
-              <MenuItem value={'nominal'}>Nominal</MenuItem>
-              <MenuItem value={'ordinal'}>Ordinal</MenuItem>
-              <MenuItem value={'quantitative'}>Quantitative</MenuItem>
-              <MenuItem value={'temporal'}>Temporal</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+        {axisConfigFactory(
+          checkRow,
+          setCheckRow,
+          rowField,
+          setRowField,
+          rowType,
+          setRowType,
+          'Row'
+        )}
+        {axisConfigFactory(
+          checkColumn,
+          setCheckColumn,
+          columnField,
+          setColumnField,
+          columnType,
+          setColumnType,
+          'Column'
+        )}
       </DialogContent>
       <DialogActions>
         <Button
