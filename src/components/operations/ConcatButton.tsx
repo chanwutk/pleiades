@@ -15,7 +15,10 @@ export const ConcatButton: React.FC<IOperationProps> = ({
     mainViewOperands.length !== 1 || navBarOperands.length !== 1;
 
   return (
-    <Button onClick={() => operate('concat')} disabled={concatDisabled}>
+    <Button
+      onClick={() => operate('concat', { option: 'append', orient: 'h' })}
+      disabled={concatDisabled}
+    >
       Concat
     </Button>
   );

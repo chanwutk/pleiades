@@ -148,12 +148,17 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
               case 'concat': {
                 const leftView = new UnitView(findInNav(left[0]));
                 const oldViewId = view.id;
-                if (!(view instanceof ConcatView)) {
-                  const concat = new ConcatView('h');
+                const { orient, option } = action.extra;
+
+                if (
+                  !(view instanceof ConcatView) ||
+                  view.getOrient() !== orient
+                ) {
+                  const concat = new ConcatView(orient);
                   concat.append(view);
                   view = concat;
                 }
-                (view as ConcatView).append(leftView);
+                (view as ConcatView)[option](leftView);
                 if (parent) {
                   parent.replaceChild(view, oldViewId);
                 } else {
