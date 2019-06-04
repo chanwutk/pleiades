@@ -5,7 +5,10 @@ import { ConcatComponent } from './ConcatComponent';
 import { FacetComponent } from './FacetComponent';
 import { RepeatComponent } from './RepeatConponent';
 
-export const render = (view: View) => {
+export const render = (
+  view: View,
+  setIsHovering?: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const getRenderer = () => {
     switch (view.type) {
       case 'unit':
@@ -23,5 +26,5 @@ export const render = (view: View) => {
     }
   };
   const Renderer = getRenderer();
-  return <Renderer view={view} />;
+  return <Renderer view={view} setIsHovering={setIsHovering} />;
 };

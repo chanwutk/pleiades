@@ -3,7 +3,5 @@ import { IViewComponentProps, makeViewComponent } from './ViewComponent';
 import { VegaLite } from '../VegaLite';
 
 export const RepeatComponent: React.FC<IViewComponentProps> = makeViewComponent(
-  ({ view }) => {
-    return <VegaLite spec={view.export()} />;
-  }
+  ({ view }) => <VegaLite spec={view.export()} />
 );

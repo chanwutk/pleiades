@@ -57,4 +57,12 @@ export class ConcatView extends CompositeView<View> {
   public replaceChild(view: View, id: number) {
     return replaceViewInArray(view, this.concat, id);
   }
+
+  public getSubViews(): View[] {
+    return [...this.concat];
+  }
+
+  public getOrient() {
+    return this.orient;
+  }
 }
