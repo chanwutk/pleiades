@@ -98,7 +98,10 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
           if (operands.includes(action.operand)) {
             return R.without([action.operand], operands);
           } else {
-            return R.append(action.operand, operands);
+            return R.append(
+              action.operand,
+              operands.filter(operand => operand * action.operand < 0)
+            );
           }
         })
       );
