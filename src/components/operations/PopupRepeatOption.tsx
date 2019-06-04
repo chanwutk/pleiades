@@ -21,6 +21,7 @@ import { RepeatInfo } from '../../SyntaxTree/RepeatView';
 export interface IPopupRepeatOptionProps {
   isOpen: boolean;
   onClose: () => void;
+  currentRepeat?: RepeatInfo;
 }
 
 const useStyles = makeStyles(() => ({
@@ -55,6 +56,7 @@ const useStyles = makeStyles(() => ({
 export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
   isOpen,
   onClose,
+  currentRepeat,
 }) => {
   const classes = useStyles();
   const [checkRow, setCheckRow] = useState(false);
@@ -74,6 +76,19 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
     setRowChannel('');
     setColumnFields(['']);
     setColumnChannel('');
+
+    if (currentRepeat) {
+      if (currentRepeat.isRepeating('row')) {
+        setCheckRow(true);
+        setRowFields(currentRepeat.row);
+        setRowChannel(currentRepeat.rowChannel as string);
+      }
+      if (currentRepeat.isRepeating('column')) {
+        setCheckColumn(true);
+        setColumnFields(currentRepeat.column);
+        setColumnChannel(currentRepeat.columnChannel as string);
+      }
+    }
   };
 
   const operateDisabled = () =>

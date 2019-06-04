@@ -23,6 +23,7 @@ import makeStyles from '@material-ui/styles/makeStyles';
 export interface IPopupFacetOptionProps {
   isOpen: boolean;
   onClose: () => void;
+  currentFacet?: FacetInfo;
 }
 
 const useStyles = makeStyles(() => ({
@@ -37,6 +38,7 @@ const useStyles = makeStyles(() => ({
 export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
   isOpen,
   onClose,
+  currentFacet,
 }) => {
   const classes = useStyles();
   const [checkRow, setCheckRow] = useState(false);
@@ -56,6 +58,19 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
     setRowType('');
     setColumnField('');
     setColumnType('');
+
+    if (currentFacet) {
+      if (currentFacet['row']) {
+        setCheckRow(true);
+        setRowField(currentFacet['row']['field']);
+        setRowType(currentFacet['row']['type']);
+      }
+      if (currentFacet['column']) {
+        setCheckColumn(true);
+        setColumnField(currentFacet['column']['field']);
+        setColumnType(currentFacet['column']['type']);
+      }
+    }
   };
 
   const operateDisabled = () =>
