@@ -12,7 +12,7 @@ import { store } from './store';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: 540,
+    minHeight: 540,
     display: 'flex',
   },
   left: {

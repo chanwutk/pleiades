@@ -93,6 +93,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
             label="Row Field"
             value={rowField}
             onChange={event => setRowField(event.target.value)}
+            placeholder={'Ex: Origin'}
           />
           &nbsp; &nbsp;
           <FormControl>
@@ -123,6 +124,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
             label="Column Field"
             value={columnField}
             onChange={event => setColumnField(event.target.value)}
+            placeholder={'Ex: Cylinders'}
           />
           &nbsp; &nbsp;
           <FormControl>

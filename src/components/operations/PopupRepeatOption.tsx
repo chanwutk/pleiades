@@ -122,12 +122,14 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
               setRowFields,
               setDisplayRowFields
             )}
+            placeholder={'Ex: ["field1", "field2", "field3"]'}
           />
           &nbsp; &nbsp;
           <TextField
             label="Channel"
             value={rowChannel}
             onChange={event => setRowChannel(event.target.value)}
+            placeholder={'Ex: x'}
           />
         </div>
         <div>
@@ -143,12 +145,14 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
               setColumnFields,
               setDisplayColumnFields
             )}
+            placeholder={'Ex: ["field1", "field2", "field3"]'}
           />
           &nbsp; &nbsp;
           <TextField
             label="Channel"
             value={columnChannel}
             onChange={event => setColumnChannel(event.target.value)}
+            placeholder={'Ex: y'}
           />
         </div>
       </DialogContent>
