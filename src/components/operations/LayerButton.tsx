@@ -54,7 +54,7 @@ export const LayerButton: React.FC<IOperationProps> = ({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleSelectOption = (option: 'append' | 'prepend') => () => {
+  const handleSelectOption = (option: InsertOrder) => () => {
     handleMenuClose();
     operate('layer', option);
   };

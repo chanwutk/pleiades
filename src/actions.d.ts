@@ -31,11 +31,17 @@ interface ISelectOperandAction {
   operand: number;
 }
 
+type ExtraOperator =
+  | RepeatInfo
+  | FacetInfo
+  | InsertOrder
+  | { option: InsertOrder; orient: ConcatOrient };
+
 interface IOperateAction {
   type: 'operate';
   operands: number[];
   operator: Operator;
-  extra?: RepeatInfo | FacetInfo | string;
+  extra?: ExtraOperator;
 }
 
 type Action =

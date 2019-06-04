@@ -34,6 +34,10 @@ interface IState {
 
 type Operator = 'layer' | 'concat' | 'repeat' | 'facet' | 'place';
 
+type InsertOrder = 'append' | 'prepend';
+
+type ConcatOrient = 'h' | 'v';
+
 interface IGlobalState {
   undoStack: IState[];
   redoStack: IState[];
