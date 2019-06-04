@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, SetStateAction } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { operateFactory } from './Utils';
@@ -13,6 +13,8 @@ import {
   DialogContentText,
 } from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
+import Remove from '@material-ui/icons/Remove';
+import Add from '@material-ui/icons/Add';
 import makeStyles from '@material-ui/styles/makeStyles';
 import { RepeatInfo } from '../../SyntaxTree/RepeatView';
 
@@ -22,26 +24,33 @@ export interface IPopupRepeatOptionProps {
 }
 
 const useStyles = makeStyles(() => ({
-  channelSelector: {
-    minWidth: 60,
+  channel: {
+    width: 80,
+  },
+  fieldText: {
+    minWidth: 100,
+  },
+  fieldTexts: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: 200,
+  },
+  addAndRemove: {
+    top: 10,
+    width: 40,
+    height: 40,
   },
   checkBox: {
     top: 10,
+    width: 30,
+    height: 30,
+  },
+  axisConfig: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignContent: 'flex-start',
   },
 }));
-
-function isStringArray(array: any): array is string[] {
-  if (!Array.isArray(array)) {
-    return false;
-  }
-
-  for (const elm of array) {
-    if (typeof elm !== 'string') {
-      return false;
-    }
-  }
-  return true;
-}
 
 export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
   isOpen,
@@ -50,11 +59,9 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
   const classes = useStyles();
   const [checkRow, setCheckRow] = useState(false);
   const [checkColumn, setCheckColumn] = useState(false);
-  const [rowFields, setRowFields] = useState<string[]>([]);
-  const [displayRowFields, setDisplayRowFields] = useState('');
+  const [rowFields, setRowFields] = useState<string[]>(['']);
   const [rowChannel, setRowChannel] = useState('');
-  const [columnFields, setColumnFields] = useState<string[]>([]);
-  const [displayColumnFields, setDisplayColumnFields] = useState('');
+  const [columnFields, setColumnFields] = useState<string[]>(['']);
   const [columnChannel, setColumnChannel] = useState('');
 
   const operands = useSelector((state: IGlobalState) => state.current.operands);
@@ -63,11 +70,9 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
   const handleEntering = () => {
     setCheckRow(false);
     setCheckColumn(false);
-    setRowFields([]);
-    setDisplayRowFields('');
+    setRowFields(['']);
     setRowChannel('');
-    setColumnFields([]);
-    setDisplayColumnFields('');
+    setColumnFields(['']);
     setColumnChannel('');
   };
 
@@ -78,17 +83,68 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
       (checkColumn && (columnFields.length === 0 || columnChannel === '')));
 
   const handleTextChangeFactory = (
+    current: string[],
     setter: React.Dispatch<React.SetStateAction<string[]>>,
-    displaySetter: React.Dispatch<React.SetStateAction<string>>
+    index: number
   ) => event => {
-    displaySetter(event.target.value);
-    try {
-      const parsed = JSON.parse(event.target.value);
-      setter(isStringArray(parsed) ? parsed : []);
-    } catch (error) {
-      setter([]);
-    }
+    const newFields = [...current];
+    newFields[index] = event.target.value;
+    setter(newFields);
   };
+
+  const axisConfigFactory = (
+    check: boolean,
+    checkSetter: React.Dispatch<SetStateAction<boolean>>,
+    channel: string,
+    channelSetter: React.Dispatch<SetStateAction<string>>,
+    fields: string[],
+    fieldsSetter: React.Dispatch<SetStateAction<string[]>>,
+    axis: string
+  ) => (
+    <div className={classes.axisConfig}>
+      <Checkbox
+        checked={check}
+        onChange={() => checkSetter(!check)}
+        className={classes.checkBox}
+      />
+      <TextField
+        label="Channel"
+        value={channel}
+        onChange={event => channelSetter(event.target.value)}
+        className={classes.channel}
+      />
+      &nbsp; &nbsp;
+      <div className={classes.fieldTexts}>
+        {fields.map((field, index) => (
+          <TextField
+            label={`${axis} Field`}
+            value={field}
+            onChange={handleTextChangeFactory(fields, fieldsSetter, index)}
+            className={classes.fieldText}
+          />
+        ))}
+      </div>
+      &nbsp; &nbsp;
+      <IconButton
+        onClick={() => fieldsSetter([...fields, ''])}
+        className={classes.addAndRemove}
+      >
+        <Add />
+      </IconButton>
+      <IconButton
+        onClick={() => {
+          if (fields.length > 1) {
+            const newFields = [...fields];
+            newFields.splice(-1);
+            fieldsSetter(newFields);
+          }
+        }}
+        className={classes.addAndRemove}
+      >
+        <Remove />
+      </IconButton>
+    </div>
+  );
 
   return (
     <Dialog
@@ -109,52 +165,24 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
         <DialogContentText>
           Choose Field(s) and Encoding Channel(s) to repeat.
         </DialogContentText>
-        <div>
-          <Checkbox
-            checked={checkRow}
-            onChange={() => setCheckRow(!checkRow)}
-            className={classes.checkBox}
-          />
-          <TextField
-            label="Row Fields"
-            value={displayRowFields}
-            onChange={handleTextChangeFactory(
-              setRowFields,
-              setDisplayRowFields
-            )}
-            placeholder={'Ex: ["field1", "field2", "field3"]'}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            label="Channel"
-            value={rowChannel}
-            onChange={event => setRowChannel(event.target.value)}
-            placeholder={'Ex: x'}
-          />
-        </div>
-        <div>
-          <Checkbox
-            checked={checkColumn}
-            onChange={() => setCheckColumn(!checkColumn)}
-            className={classes.checkBox}
-          />
-          <TextField
-            label="Column Fields"
-            value={displayColumnFields}
-            onChange={handleTextChangeFactory(
-              setColumnFields,
-              setDisplayColumnFields
-            )}
-            placeholder={'Ex: ["field1", "field2", "field3"]'}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            label="Channel"
-            value={columnChannel}
-            onChange={event => setColumnChannel(event.target.value)}
-            placeholder={'Ex: y'}
-          />
-        </div>
+        {axisConfigFactory(
+          checkRow,
+          setCheckRow,
+          rowChannel,
+          setRowChannel,
+          rowFields,
+          setRowFields,
+          'Row'
+        )}
+        {axisConfigFactory(
+          checkColumn,
+          setCheckColumn,
+          columnChannel,
+          setColumnChannel,
+          columnFields,
+          setColumnFields,
+          'Column'
+        )}
       </DialogContent>
       <DialogActions>
         <Button
