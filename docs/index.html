@@ -67,18 +67,69 @@ p { margin: 0 0 10px 0; }
   </section>
 
    <section>
-    <em>[Add: a summary figure of your project. Be sure to include relevant captions, too.]</em>
+    <em>
+      Pleiades is a tool that helps Vega-Lite users with less experience in JSON to easily compose complicated multiple Vega-Lite views.
+      For example, concat view can contains repeat view that also contains concat of layer views; composing this visualization using
+      JSON can be verbose and hard to visualize since it requires multiple levels of nested view-compositions. Pleiades is a graphical
+      composing tool for Vega-Lite views. Users can easily compose views using concat, layer, repeat, and facet. It also provides suggestions
+      to users to prevent them from composing not-fully-compatible views. In the end, the users can export the composed view into Vega-Lite
+      JSON specification, to render normally with Vega-Lite compiler.
+    </em>
     <p><em>[Add: links to your paper and poster.]</em></p>
   </section>
 
   <section>
     <h2>Abstract</h2>
-    <em>[Add: a short description of your project, ideally within 150 words.]</em>
+    <p><em>
+      Since Vega-Lite is a high-level grammar, the grammar is easy to understand, so the range of users using the software can
+      be from computer science expert to coding beginner. Although users with less JSON experience can work with most
+      of the Vega-Lite easily, View Composition requires a good understanding of tree structure since View Composition can be
+      nested inside each other to create complex views. Beginner users can struggle using this feature.
+    </em></p>
+    <p><em>
+      This software provides a graphical user interface for users to compose Vega-Lite charts. The users can add charts that
+      they want to work with to the software, then they can compose them with layer, concat, repeat, and facet. They can also
+      compose composed chart with one of the four technique. The software also provide warnings when the users are trying to
+      compose charts that are incompatible with each other to avoid unexpected behaviors.
+    </em></p>
   </section>
 
   <section>
     <h2>Running Instructions</h2>
-    <em>[Add: running instructions for the software and other optional materials.]</em>
+    <em>
+      <ol>
+        <li>
+          To add Vega-Lite spec to the application to work with, you can click 'NEW SPEC'. Then, type or paste Vega-Lite spec into the editor.
+          Or, you can click examples to try adding example Vega-Lite specs. You can also set alias to each spec in the upper-left text box.
+          Then, click 'SAVE'.
+        </li>
+        <li>
+          To add the first Vege-Lite spec to the main view, you can click the spec; then click 'PLACE' in the operation bar (bar on the top).
+        </li>
+        <li>
+          To layer views, click a view in the main view, and a view in the side bar. Then, click 'LAYER'. A menu will shows up, and you can choose whether you
+          want the view in the side bar to be layered under or over the view in the main view.
+        </li>
+        <li>
+          To concat views, click a view in the main view, and a view in the side bar. Then, click 'CONCAT'. A menu will shows up, and you can choose the direction you
+          want the view in the side bar to be concatinated to the view in the main view.
+        </li>
+        <li>
+          To repeat a view, click a view in the main view. Then, click 'REPEAT'. A window will pops up, and you can choose to repeat row or column by
+          checking and filling array of field names (in format ["fieldname1", "fieldname2"]) and their encoding channels. Then click 'OPERATE'.
+        </li>
+        <li>
+          To facet a view, click a view in the main view. Then, click 'FACET'. A window will pops up, and you can choose to facet row or column by
+          checking and filling their field names and types. Then click 'OPERATE'.
+        </li>
+        <li>
+          You can always undo and redo every interaction by clicking 'UNDO' and 'REDO' buttons.
+        </li>
+        <li>
+          When finished composing views, you can click 'EXPORT' to download the resulting Vega-Lite spec.
+        </li>
+      </ol>
+    </em>
   </section>
 
   <section>
