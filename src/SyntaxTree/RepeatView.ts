@@ -96,6 +96,10 @@ export class RepeatView extends CompositeView<string> {
   public changeInfo(info: RepeatInfo) {
     this.repeatInfo = info;
   }
+
+  public getInfo() {
+    return this.repeatInfo.clone();
+  }
 }
 
 interface ChannelInfo {

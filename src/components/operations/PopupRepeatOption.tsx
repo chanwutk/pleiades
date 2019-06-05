@@ -67,7 +67,8 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
   const [columnChannel, setColumnChannel] = useState('');
 
   const operands = useSelector((state: IGlobalState) => state.current.operands);
-  const operate = operateFactory(useDispatch(), operands);
+  const dispatch = useDispatch();
+  const operate = operateFactory(dispatch, operands);
 
   const handleEntering = () => {
     setCheckRow(false);
@@ -200,21 +201,39 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
         )}
       </DialogContent>
       <DialogActions>
+        {currentRepeat ? (
+          <Button
+            onClick={() => {
+              dispatch({
+                type: 'decompose',
+                operand: operands[0],
+              });
+              onClose();
+            }}
+            color="secondary"
+          >
+            Decompose
+          </Button>
+        ) : (
+          <></>
+        )}
         <Button
           onClick={() => {
-            operate(
-              'repeat',
-              new RepeatInfo(rowFields, columnFields, {
-                rowChannel,
-                columnChannel,
-              })
-            );
+            const info = new RepeatInfo(rowFields, columnFields, {
+              rowChannel,
+              columnChannel,
+            });
+            if (currentRepeat) {
+              dispatch({ type: 'modify-info', operand: operands[0], info });
+            } else {
+              operate('repeat', info);
+            }
             onClose();
           }}
           autoFocus
           disabled={operateDisabled()}
         >
-          Operate
+          Repeat
         </Button>
       </DialogActions>
     </Dialog>

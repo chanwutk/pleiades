@@ -11,6 +11,7 @@ import { FacetButton } from './operations/FacetButton';
 import { PlaceButton } from './operations/PlaceButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { ExportButton } from './operations/ExportButton';
+import { EditButton } from './operations/EditButton';
 
 export interface IOperationProps {
   navBarOperands: number[];
@@ -76,6 +77,12 @@ export const OperationBar: React.FC = () => {
         />
       </Grid>
       <Grid item>
+        <EditButton
+          navBarOperands={navBarOperands}
+          mainViewOperands={mainViewOperands}
+          tree={tree}
+        />
+        &nbsp; &nbsp; &nbsp;
         <Button onClick={handleUndo} disabled={undoDisabled}>
           <Undo /> &nbsp; Undo
         </Button>

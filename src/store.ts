@@ -203,7 +203,11 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
             const { parent, view } = newTree.findView(action.operand)!;
             if (view instanceof RepeatView || view instanceof FacetView) {
               const [subView] = view.getSubViews();
-              parent!.replaceChild(subView, action.operand);
+              if (parent) {
+                parent.replaceChild(subView, action.operand);
+              } else {
+                newTree = subView;
+              }
             }
             return newTree;
           }),

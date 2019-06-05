@@ -81,6 +81,10 @@ export class FacetView extends CompositeView<null> {
   public changeInfo(info: FacetInfo) {
     this.facetInfo = info;
   }
+
+  public getInfo() {
+    return this.facetInfo.clone();
+  }
 }
 
 /**

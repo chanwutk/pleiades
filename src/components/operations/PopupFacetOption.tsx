@@ -49,7 +49,8 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
   const [columnType, setColumnType] = useState('');
 
   const operands = useSelector((state: IGlobalState) => state.current.operands);
-  const operate = operateFactory(useDispatch(), operands);
+  const dispatch = useDispatch();
+  const operate = operateFactory(dispatch, operands);
 
   const handleEntering = () => {
     setCheckRow(false);
@@ -58,6 +59,7 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
     setRowType('');
     setColumnField('');
     setColumnType('');
+    console.log(currentFacet);
 
     if (currentFacet) {
       if (currentFacet['row']) {
@@ -159,25 +161,41 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
         )}
       </DialogContent>
       <DialogActions>
+        {currentFacet ? (
+          <Button
+            onClick={() => {
+              dispatch({
+                type: 'decompose',
+                operand: operands[0],
+              });
+              onClose();
+            }}
+            color="secondary"
+          >
+            Decompose
+          </Button>
+        ) : (
+          <></>
+        )}
         <Button
           onClick={() => {
-            operate(
-              'facet',
-              new FacetInfo({
-                ...(checkColumn
-                  ? { column: { field: columnField, type: columnType } }
-                  : {}),
-                ...(checkRow
-                  ? { row: { field: rowField, type: rowType } }
-                  : {}),
-              })
-            );
+            const info = new FacetInfo({
+              ...(checkColumn
+                ? { column: { field: columnField, type: columnType } }
+                : {}),
+              ...(checkRow ? { row: { field: rowField, type: rowType } } : {}),
+            });
+            if (currentFacet) {
+              dispatch({ type: 'modify-info', operand: operands[0], info });
+            } else {
+              operate('facet', info);
+            }
             onClose();
           }}
           autoFocus
           disabled={operateDisabled()}
         >
-          Operate
+          Facet
         </Button>
       </DialogActions>
     </Dialog>
