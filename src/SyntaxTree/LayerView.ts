@@ -65,4 +65,8 @@ export class LayerView extends CompositeView<UnitView> {
   public getEncoding() {
     return this.layer.map(l => l.getEncoding());
   }
+
+  public getSubViews(): View[] {
+    return [...this.layer];
+  }
 }

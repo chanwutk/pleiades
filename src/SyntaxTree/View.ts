@@ -85,6 +85,8 @@ export abstract class CompositeView<V extends ViewIndicator> extends View {
    *          false otherwise.
    */
   abstract isCompatible(viewIndicator: V): boolean;
+
+  abstract getSubViews(): View[];
 }
 
 export class UnitView extends View {
