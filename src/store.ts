@@ -194,6 +194,43 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
         )
       );
     }
+    case 'decompose': {
+      return newGlobalState(
+        globalState,
+        R.pipe(
+          R.over(R.lensProp('tree'), tree => {
+            let newTree = (tree as View).deepClone();
+            const { parent, view } = newTree.findView(action.operand)!;
+            if (view instanceof RepeatView || view instanceof FacetView) {
+              const [subView] = view.getSubViews();
+              parent!.replaceChild(subView, action.operand);
+            }
+            return newTree;
+          }),
+          R.over(R.lensProp('operands'), R.always([]))
+        )
+      );
+    }
+    case 'modify-info': {
+      return newGlobalState(
+        globalState,
+        R.pipe(
+          R.over(R.lensProp('tree'), tree => {
+            let newTree = (tree as View).deepClone();
+            const { view } = newTree.findView(action.operand)!;
+            if (view instanceof ConcatView) {
+              view.changeOrientation(action.info as ConcatOrient);
+            } else if (view instanceof FacetView) {
+              view.changeInfo(action.info);
+            } else if (view instanceof RepeatView) {
+              view.changeInfo(action.info);
+            }
+            return newTree;
+          }),
+          R.over(R.lensProp('operands'), R.always([]))
+        )
+      );
+    }
     default:
       return globalState;
   }

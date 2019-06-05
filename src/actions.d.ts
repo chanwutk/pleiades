@@ -44,6 +44,17 @@ interface IOperateAction {
   extra?: ExtraOperator;
 }
 
+interface IDecomposeAction {
+  type: 'decompose';
+  operand: number;
+}
+
+interface IModifyInfoAction {
+  type: 'modify-info';
+  operand: number;
+  info: RepeatInfo | FacetInfo | ConcatOrient;
+}
+
 type Action =
   | IAddSpecAction
   | IModifySpecAction
@@ -51,6 +62,8 @@ type Action =
   | IUndoAction
   | IRedoAction
   | ISelectOperandAction
-  | IOperateAction;
+  | IOperateAction
+  | IModifyInfoAction
+  | IDecomposeAction;
 
 type ViewType = 'unit' | 'layer' | 'concat' | 'repeat' | 'facet';
