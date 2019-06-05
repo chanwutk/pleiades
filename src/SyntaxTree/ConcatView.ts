@@ -3,9 +3,9 @@ import { moveElement, findViewInArray, replaceViewInArray } from './Utils';
 
 export class ConcatView extends CompositeView<View> {
   private concat: View[];
-  private orient: 'h' | 'v';
+  private orient: ConcatOrient;
 
-  public constructor(orient: 'h' | 'v') {
+  public constructor(orient: ConcatOrient) {
     super('concat');
     this.concat = [];
     this.orient = orient;
@@ -64,5 +64,9 @@ export class ConcatView extends CompositeView<View> {
 
   public getOrient() {
     return this.orient;
+  }
+
+  public changeOrientation(orient: ConcatOrient) {
+    this.orient = orient;
   }
 }
