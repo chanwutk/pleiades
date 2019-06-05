@@ -1,4 +1,4 @@
-import { View, CompositeView } from './View';
+import { CompositeView } from './View';
 import { moveElement, findViewInArray, jsonCopy } from './Utils';
 
 export class RepeatView extends CompositeView<string> {
@@ -87,6 +87,14 @@ export class RepeatView extends CompositeView<string> {
       return true;
     }
     return false;
+  }
+
+  public getSubViews(): View[] {
+    return [this.view];
+  }
+
+  public changeInfo(info: RepeatInfo) {
+    this.repeatInfo = info;
   }
 }
 

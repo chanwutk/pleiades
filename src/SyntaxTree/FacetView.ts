@@ -3,11 +3,11 @@ import { jsonCopy, findViewInArray, extractData } from './Utils';
 
 export class FacetView extends CompositeView<null> {
   private view: View;
-  private facet: FacetInfo;
+  private facetInfo: FacetInfo;
 
-  public constructor(view: View, facet: FacetInfo) {
+  public constructor(view: View, facetInfo: FacetInfo) {
     super('facet');
-    this.facet = facet;
+    this.facetInfo = facetInfo;
     this.view = view;
   }
 
@@ -16,17 +16,17 @@ export class FacetView extends CompositeView<null> {
     const { data, ...spec } = extractData(this.view.export() as IRawSpec);
     return {
       data: data[0],
-      facet: this.facet.export(),
+      facet: this.facetInfo.export(),
       ...spec,
     };
   }
 
   public append(_: null, option: {}) {
     // add facet to an available axis
-    if (!this.facet['column']) {
-      this.facet.column = option;
-    } else if (!this.facet['row']) {
-      this.facet.row = option;
+    if (!this.facetInfo['column']) {
+      this.facetInfo.column = option;
+    } else if (!this.facetInfo['row']) {
+      this.facetInfo.row = option;
     }
   }
 
@@ -35,7 +35,7 @@ export class FacetView extends CompositeView<null> {
   }
 
   public remove(_: number, axis: 'row' | 'column') {
-    this.facet.remove(axis);
+    this.facetInfo.remove(axis);
   }
 
   public isCompatible(_: any): boolean {
@@ -45,19 +45,19 @@ export class FacetView extends CompositeView<null> {
 
   public rearrange() {
     // switch between row and column
-    if (this.facet['row'] && this.facet['column']) {
-      this.facet.swapAxis();
+    if (this.facetInfo['row'] && this.facetInfo['column']) {
+      this.facetInfo.swapAxis();
     }
   }
 
   public clone() {
-    const cloned = new FacetView(this.view, this.facet);
+    const cloned = new FacetView(this.view, this.facetInfo);
     cloned._id = this._id;
     return cloned;
   }
 
   public deepClone() {
-    const cloned = new FacetView(this.view.deepClone(), this.facet.clone());
+    const cloned = new FacetView(this.view.deepClone(), this.facetInfo.clone());
     cloned._id = this._id;
     return cloned;
   }
@@ -72,6 +72,14 @@ export class FacetView extends CompositeView<null> {
       return true;
     }
     return false;
+  }
+
+  public getSubViews(): View[] {
+    return [this.view];
+  }
+
+  public changeInfo(info: FacetInfo) {
+    this.facetInfo = info;
   }
 }
 
