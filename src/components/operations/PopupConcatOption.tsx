@@ -11,9 +11,12 @@ import {
   Switch,
 } from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
-// import makeStyles from '@material-ui/styles/makeStyles';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowForward from '@material-ui/icons/ArrowForward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import { ConcatView } from '../../SyntaxTree/ConcatView';
-import { VegaLite } from '../VegaLite';
+import { ViewPreview } from './ViewPreview';
 
 export interface IPopupConcatOptionProps {
   isOpen: boolean;
@@ -21,18 +24,17 @@ export interface IPopupConcatOptionProps {
   tree: View | null;
 }
 
-// const useStyles = makeStyles(() => ({}));
-
 export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
   isOpen,
   onClose,
   tree,
 }) => {
-  // const classes = useStyles();
-  const [subViewsOrder, setSubViewsOrder] = useState<number[]>([]);
+  const [subViewIdsOrder, setSubViewIdsOrder] = useState<number[]>([]);
   const [currentOrient, setCurrentOrient] = useState<ConcatOrient>('h');
-  const [subViewMap, setSubViewMap] = useState({});
-  const [selectedSubView, setSelectedSubView] = useState<number | null>(null);
+  const [subViewsMap, setSubViewsMap] = useState({});
+  const [selectedSubViewId, setSelectedSubViewId] = useState<number | null>(
+    null
+  );
 
   const operands = useSelector((state: IGlobalState) => state.current.operands);
   const dispatch = useDispatch();
@@ -40,20 +42,45 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
   const handleEntering = () => {
     const { view } = tree!.findView(operands[0])!;
     const subViews = (view as ConcatView).getSubViews();
-    const map = {};
+    const _subViewMap = {};
     subViews.forEach(subView => {
-      map[subView.id] = subView;
+      _subViewMap[subView.id] = subView;
     });
-    setSubViewMap(map);
-    setSubViewsOrder(subViews.map(subViews => subViews.id));
+    setSubViewsMap(_subViewMap);
+    setSubViewIdsOrder(subViews.map(subViews => subViews.id));
     setCurrentOrient((view as ConcatView).getOrient());
+    setSelectedSubViewId(null);
   };
 
   const handleOrientChange = event => {
     setCurrentOrient(event.target.checked ? 'h' : 'v');
   };
 
-  const operateDisabled = selectedSubView !== null;
+  const handleMoveFront = () => {
+    for (let i = 1; i < subViewIdsOrder.length; i++) {
+      if (subViewIdsOrder[i] === selectedSubViewId) {
+        const newOrder = [...subViewIdsOrder];
+        newOrder[i - 1] = subViewIdsOrder[i];
+        newOrder[i] = subViewIdsOrder[i - 1];
+        setSubViewIdsOrder(newOrder);
+        return;
+      }
+    }
+  };
+
+  const handleMoveBack = () => {
+    for (let i = 0; i < subViewIdsOrder.length - 1; i++) {
+      if (subViewIdsOrder[i] === selectedSubViewId) {
+        const newOrder = [...subViewIdsOrder];
+        newOrder[i + 1] = subViewIdsOrder[i];
+        newOrder[i] = subViewIdsOrder[i + 1];
+        setSubViewIdsOrder(newOrder);
+        return;
+      }
+    }
+  };
+
+  const operateDisabled = subViewIdsOrder.length === 0;
 
   return (
     <Dialog
@@ -72,7 +99,7 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Rearrange and remove sub views. Or change concat orientation.
+          Rearrange or remove sub views. Or change concat orientation.
         </DialogContentText>
         <div
           style={{
@@ -82,8 +109,12 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
             alignItems: 'center',
           }}
         >
-          {subViewsOrder.map(subView => (
-            <VegaLite spec={subViewMap[subView].export()} />
+          {subViewIdsOrder.map(subView => (
+            <ViewPreview
+              view={subViewsMap[subView] as View}
+              selectedSubViewId={selectedSubViewId}
+              setSelectedSubViewId={setSelectedSubViewId}
+            />
           ))}
         </div>
       </DialogContent>
@@ -106,15 +137,35 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
           {'h'}
         </div>
         <div>
+          <IconButton
+            disabled={
+              selectedSubViewId === null ||
+              selectedSubViewId === subViewIdsOrder[0]
+            }
+            onClick={handleMoveFront}
+          >
+            {currentOrient === 'h' ? <ArrowBack /> : <ArrowUpward />}
+          </IconButton>
+          <IconButton
+            disabled={
+              selectedSubViewId === null ||
+              selectedSubViewId === subViewIdsOrder[subViewIdsOrder.length - 1]
+            }
+            onClick={handleMoveBack}
+          >
+            {currentOrient === 'h' ? <ArrowForward /> : <ArrowDownward />}
+          </IconButton>
+        </div>
+        <div>
           <Button
             onClick={() => {
-              setSubViewsOrder(
-                subViewsOrder.filter(subView => subView !== selectedSubView)
+              setSubViewIdsOrder(
+                subViewIdsOrder.filter(subView => subView !== selectedSubViewId)
               );
-              setSelectedSubView(null);
+              setSelectedSubViewId(null);
             }}
             color="secondary"
-            disabled={selectedSubView === null}
+            disabled={selectedSubViewId === null || subViewIdsOrder.length <= 1}
           >
             Remove
           </Button>
@@ -123,7 +174,7 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
               dispatch({
                 type: 'rearrange-subview',
                 operand: operands[0],
-                order: subViewsOrder,
+                order: subViewIdsOrder,
                 orient: currentOrient,
               });
               onClose();
