@@ -77,19 +77,19 @@ export const OperationBar: React.FC = () => {
         />
       </Grid>
       <Grid item>
-        <EditButton
-          navBarOperands={navBarOperands}
-          mainViewOperands={mainViewOperands}
-          tree={tree}
-        />
-        &nbsp; &nbsp; &nbsp;
         <Button onClick={handleUndo} disabled={undoDisabled}>
           <Undo /> &nbsp; Undo
         </Button>
         <Button onClick={handleRedo} disabled={redoDisabled}>
           <Redo /> &nbsp; Redo
         </Button>
-        &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp;
+        <EditButton
+          navBarOperands={navBarOperands}
+          mainViewOperands={mainViewOperands}
+          tree={tree}
+        />
+        &nbsp; &nbsp;
         <ExportButton tree={tree} />
       </Grid>
     </Grid>

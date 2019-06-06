@@ -59,7 +59,6 @@ export const PopupFacetOption: React.FC<IPopupFacetOptionProps> = ({
     setRowType('');
     setColumnField('');
     setColumnType('');
-    console.log(currentFacet);
 
     if (currentFacet) {
       if (currentFacet['row']) {

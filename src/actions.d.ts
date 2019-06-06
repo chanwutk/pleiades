@@ -52,7 +52,14 @@ interface IDecomposeAction {
 interface IModifyInfoAction {
   type: 'modify-info';
   operand: number;
-  info: RepeatInfo | FacetInfo | ConcatOrient;
+  info: RepeatInfo | FacetInfo;
+}
+
+interface IRearrangeSubViewsAction {
+  type: 'rearrange-subview';
+  operand: number;
+  order: number[];
+  orient?: ConcatOrient;
 }
 
 type Action =
@@ -64,6 +71,7 @@ type Action =
   | ISelectOperandAction
   | IOperateAction
   | IModifyInfoAction
-  | IDecomposeAction;
+  | IDecomposeAction
+  | IRearrangeSubViewsAction;
 
 type ViewType = 'unit' | 'layer' | 'concat' | 'repeat' | 'facet';

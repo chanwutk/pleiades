@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import Launch from '@material-ui/icons/Launch';
+import Edit from '@material-ui/icons/Edit';
 import { IOperationProps } from '../OperationBar';
 import { PopupFacetOption } from './PopupFacetOption';
 import { PopupRepeatOption } from './PopupRepeatOption';
 import { RepeatView } from '../../SyntaxTree/RepeatView';
 import { FacetView } from '../../SyntaxTree/FacetView';
+import { PopupConcatOption } from './PopupConcatOption';
 
 export interface IEditButtonProps {}
 
@@ -15,14 +16,14 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
   tree,
 }) => {
   // const [isLayerPopupOpen, setIsLayerPopupOpen] = useState(false);
-  // const [isConcatPopupOpen, setIsConcatPopupOpen] = useState(false);
+  const [isConcatPopupOpen, setIsConcatPopupOpen] = useState(false);
   const [isRepeatPopupOpen, setIsRepeatPopupOpen] = useState(false);
   const [isFacetPopupOpen, setIsFacetPopupOpen] = useState(false);
   // const [isUnitPopupOpen, setIsUnitPopupOpen] = useState(false);
   const [currentView, setCurrentView] = useState<View | null>(null);
   const setters = {
     // layer: setIsLayerPopupOpen,
-    // concat: setIsConcatPopupOpen,
+    concat: setIsConcatPopupOpen,
     repeat: setIsRepeatPopupOpen,
     facet: setIsFacetPopupOpen,
     // unit: setIsUnitPopupOpen,
@@ -42,7 +43,7 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
   return (
     <>
       <Button disabled={exportDisabled} onClick={handleClick}>
-        <Launch /> &nbsp; Edit
+        <Edit /> &nbsp; Edit
       </Button>
       <PopupRepeatOption
         isOpen={isRepeatPopupOpen}
@@ -57,6 +58,11 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
         currentFacet={
           currentView instanceof FacetView ? currentView.getInfo() : undefined
         }
+      />
+      <PopupConcatOption
+        isOpen={isConcatPopupOpen}
+        onClose={() => setters.concat(false)}
+        tree={tree!}
       />
     </>
   );

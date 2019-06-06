@@ -222,12 +222,48 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
           R.over(R.lensProp('tree'), tree => {
             let newTree = (tree as View).deepClone();
             const { view } = newTree.findView(action.operand)!;
-            if (view instanceof ConcatView) {
-              view.changeOrientation(action.info as ConcatOrient);
-            } else if (view instanceof FacetView) {
+            if (view instanceof FacetView) {
               view.changeInfo(action.info);
             } else if (view instanceof RepeatView) {
               view.changeInfo(action.info);
+            }
+            return newTree;
+          }),
+          R.over(R.lensProp('operands'), R.always([]))
+        )
+      );
+    }
+    case 'rearrange-subview': {
+      return newGlobalState(
+        globalState,
+        R.pipe(
+          R.over(R.lensProp('tree'), tree => {
+            let newTree = (tree as View).deepClone();
+            const { parent, view } = newTree.findView(action.operand)!;
+            if (view instanceof ConcatView || view instanceof LayerView) {
+              const newView =
+                view instanceof LayerView
+                  ? new LayerView()
+                  : new ConcatView(action.orient ? action.orient : 'h');
+
+              const subViewMap = {};
+              view
+                .getSubViews()
+                .forEach(subView => (subViewMap[subView.id] = subView));
+
+              action.order.forEach(subViewId => {
+                if (subViewId in subViewMap) {
+                  newView.append(subViewMap[subViewId]);
+                } else {
+                  console.error('subViewId is not in subViewMap');
+                }
+              });
+
+              if (parent) {
+                parent.replaceChild(newView, action.operand);
+              } else {
+                newTree = newView;
+              }
             }
             return newTree;
           }),
