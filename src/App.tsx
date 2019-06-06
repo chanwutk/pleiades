@@ -9,10 +9,11 @@ import { OperationBar } from './components/OperationBar';
 import { sidebarWidth } from './variables';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { InnerViewNavigator } from './components/InnerSpecNevigator';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    minHeight: 540,
+    height: 540,
     display: 'flex',
   },
   left: {
@@ -22,10 +23,16 @@ const useStyles = makeStyles(theme => ({
     width: sidebarWidth,
     marginRight: theme.spacing(1),
   },
-  right: {
+  center: {
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
+  },
+  right: {
+    display: 'flex',
+    flexDirection: 'column',
+    minWidth: sidebarWidth * 2,
+    alignItems: 'center',
   },
 }));
 
@@ -39,9 +46,13 @@ const App: React.FC = () => {
           <NewSpec />
           <NavigationBar />
         </div>
-        <div className={classes.right}>
+        <div className={classes.center}>
           <OperationBar />
           <MainView />
+        </div>
+        &nbsp;
+        <div className={classes.right}>
+          <InnerViewNavigator />
         </div>
       </div>
     </Provider>
