@@ -8,18 +8,15 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  Switch,
 } from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import ArrowForward from '@material-ui/icons/ArrowForward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import { ConcatView } from '../../SyntaxTree/ConcatView';
 import { ViewPreview } from './ViewPreview';
+import { LayerView } from '../../SyntaxTree/LayerView';
 import makeStyles from '@material-ui/styles/makeStyles';
 
-export interface IPopupConcatOptionProps {
+export interface IPopupLayerOptionProps {
   isOpen: boolean;
   onClose: () => void;
   tree: View | null;
@@ -29,7 +26,7 @@ const useStyles = makeStyles(() => ({
   views: {
     display: 'flex',
     justifyContent: 'center',
-    flexDirection: (direction => (direction ? 'row' : 'column')) as any,
+    flexDirection: 'column',
     alignItems: 'center',
   },
   actions: {
@@ -40,37 +37,31 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
+export const PopupLayerOption: React.FC<IPopupLayerOptionProps> = ({
   isOpen,
   onClose,
   tree,
 }) => {
+  const classes = useStyles();
   const [subViewIdsOrder, setSubViewIdsOrder] = useState<number[]>([]);
-  const [currentOrient, setCurrentOrient] = useState<ConcatOrient>('h');
   const [subViewsMap, setSubViewsMap] = useState({});
   const [selectedSubViewId, setSelectedSubViewId] = useState<number | null>(
     null
   );
-  const classes = useStyles(currentOrient === 'h');
 
   const operands = useSelector((state: IGlobalState) => state.current.operands);
   const dispatch = useDispatch();
 
   const handleEntering = () => {
     const { view } = tree!.findView(operands[0])!;
-    const subViews = (view as ConcatView).getSubViews();
+    const subViews = (view as LayerView).getSubViews();
     const _subViewMap = {};
     subViews.forEach(subView => {
       _subViewMap[subView.id] = subView;
     });
     setSubViewsMap(_subViewMap);
     setSubViewIdsOrder(subViews.map(subViews => subViews.id));
-    setCurrentOrient((view as ConcatView).getOrient());
     setSelectedSubViewId(null);
-  };
-
-  const handleOrientChange = event => {
-    setCurrentOrient(event.target.checked ? 'h' : 'v');
   };
 
   const handleMoveFront = () => {
@@ -104,12 +95,11 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
     setSelectedSubViewId(null);
   };
 
-  const handleConcat = () => {
+  const handleLayer = () => {
     dispatch({
       type: 'rearrange-subview',
       operand: operands[0],
       order: subViewIdsOrder,
-      orient: currentOrient,
     });
     onClose();
   };
@@ -120,10 +110,10 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
     <Dialog
       open={isOpen}
       onEntering={handleEntering}
-      aria-labelledby="concat-dialog-title"
+      aria-labelledby="layer-dialog-title"
     >
-      <DialogTitle id="concat-dialog-title">
-        <>Concat</>
+      <DialogTitle id="layer-dialog-title">
+        <>Layer</>
         <IconButton
           onClick={onClose}
           style={{ right: 10, top: 7, position: 'absolute' }}
@@ -132,9 +122,7 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Rearrange or remove sub views. Or change concat orientation.
-        </DialogContentText>
+        <DialogContentText>Rearrange or remove sub views.</DialogContentText>
         <div className={classes.views}>
           {subViewIdsOrder.map(subView => (
             <ViewPreview
@@ -147,16 +135,6 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
       </DialogContent>
       <DialogActions className={classes.actions}>
         <div>
-          {'v'}
-          <Switch
-            checked={currentOrient === 'h'}
-            onChange={handleOrientChange}
-            color="default"
-            inputProps={{ 'aria-label': 'checkbox with default color' }}
-          />
-          {'h'}
-        </div>
-        <div>
           <IconButton
             disabled={
               selectedSubViewId === null ||
@@ -164,7 +142,7 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
             }
             onClick={handleMoveFront}
           >
-            {currentOrient === 'h' ? <ArrowBack /> : <ArrowUpward />}
+            <ArrowUpward />
           </IconButton>
           <IconButton
             disabled={
@@ -173,7 +151,7 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
             }
             onClick={handleMoveBack}
           >
-            {currentOrient === 'h' ? <ArrowForward /> : <ArrowDownward />}
+            <ArrowDownward />
           </IconButton>
         </div>
         <div>
@@ -184,8 +162,8 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
           >
             Remove
           </Button>
-          <Button onClick={handleConcat} autoFocus disabled={operateDisabled}>
-            Concat
+          <Button onClick={handleLayer} autoFocus disabled={operateDisabled}>
+            Layer
           </Button>
         </div>
       </DialogActions>

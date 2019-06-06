@@ -7,6 +7,7 @@ import { PopupRepeatOption } from './PopupRepeatOption';
 import { RepeatView } from '../../SyntaxTree/RepeatView';
 import { FacetView } from '../../SyntaxTree/FacetView';
 import { PopupConcatOption } from './PopupConcatOption';
+import { PopupLayerOption } from './PopupLayerOption';
 
 export interface IEditButtonProps {}
 
@@ -15,14 +16,14 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
   mainViewOperands,
   tree,
 }) => {
-  // const [isLayerPopupOpen, setIsLayerPopupOpen] = useState(false);
+  const [isLayerPopupOpen, setIsLayerPopupOpen] = useState(false);
   const [isConcatPopupOpen, setIsConcatPopupOpen] = useState(false);
   const [isRepeatPopupOpen, setIsRepeatPopupOpen] = useState(false);
   const [isFacetPopupOpen, setIsFacetPopupOpen] = useState(false);
   // const [isUnitPopupOpen, setIsUnitPopupOpen] = useState(false);
   const [currentView, setCurrentView] = useState<View | null>(null);
   const setters = {
-    // layer: setIsLayerPopupOpen,
+    layer: setIsLayerPopupOpen,
     concat: setIsConcatPopupOpen,
     repeat: setIsRepeatPopupOpen,
     facet: setIsFacetPopupOpen,
@@ -45,6 +46,16 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
       <Button disabled={exportDisabled} onClick={handleClick}>
         <Edit /> &nbsp; Edit
       </Button>
+      <PopupLayerOption
+        isOpen={isLayerPopupOpen}
+        onClose={() => setters.layer(false)}
+        tree={tree!}
+      />
+      <PopupConcatOption
+        isOpen={isConcatPopupOpen}
+        onClose={() => setters.concat(false)}
+        tree={tree!}
+      />
       <PopupRepeatOption
         isOpen={isRepeatPopupOpen}
         onClose={() => setters.repeat(false)}
@@ -58,11 +69,6 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
         currentFacet={
           currentView instanceof FacetView ? currentView.getInfo() : undefined
         }
-      />
-      <PopupConcatOption
-        isOpen={isConcatPopupOpen}
-        onClose={() => setters.concat(false)}
-        tree={tree!}
       />
     </>
   );
