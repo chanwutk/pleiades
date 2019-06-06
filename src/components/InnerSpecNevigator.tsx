@@ -52,7 +52,9 @@ export const InnerViewNavigator: React.FC = () => {
               : currentView
           )
         ) : (
-          <div className={classes.emptyView}>Empty View</div>
+          <div className={classes.emptyView}>
+            {toShowInner ? 'No View Selected' : 'Disabled'}
+          </div>
         )}
       </div>
     </>
