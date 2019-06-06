@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { FacetInfo } from '../../SyntaxTree/FacetView';
-import { operateFactory } from './Utils';
+import { operateFactory } from '../operations/Utils';
 import {
   Dialog,
   DialogTitle,

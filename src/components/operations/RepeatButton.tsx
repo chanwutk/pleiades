@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { IOperationProps, useWarningStyles } from '../OperationBar';
-import { PopupRepeatOption } from './PopupRepeatOption';
+import { PopupRepeatOption } from '../popups/PopupRepeatOption';
 import { containsDifferentData } from '../../SyntaxTree/Utils';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { TooltipTable } from '../TooltipTable';

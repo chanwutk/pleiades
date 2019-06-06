@@ -1,7 +1,7 @@
 import React, { useState, SetStateAction } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { operateFactory } from './Utils';
+import { operateFactory } from '../operations/Utils';
 import {
   Dialog,
   DialogTitle,

@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Edit from '@material-ui/icons/Edit';
 import { IOperationProps } from '../OperationBar';
-import { PopupFacetOption } from './PopupFacetOption';
-import { PopupRepeatOption } from './PopupRepeatOption';
+import { PopupFacetOption } from '../popups/PopupFacetOption';
+import { PopupRepeatOption } from '../popups/PopupRepeatOption';
 import { RepeatView } from '../../SyntaxTree/RepeatView';
 import { FacetView } from '../../SyntaxTree/FacetView';
-import { PopupConcatOption } from './PopupConcatOption';
-import { PopupLayerOption } from './PopupLayerOption';
+import { PopupConcatOption } from '../popups/PopupConcatOption';
+import { PopupLayerOption } from '../popups/PopupLayerOption';
 
 export interface IEditButtonProps {}
 
@@ -20,14 +20,14 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
   const [isConcatPopupOpen, setIsConcatPopupOpen] = useState(false);
   const [isRepeatPopupOpen, setIsRepeatPopupOpen] = useState(false);
   const [isFacetPopupOpen, setIsFacetPopupOpen] = useState(false);
-  // const [isUnitPopupOpen, setIsUnitPopupOpen] = useState(false);
+
   const [currentView, setCurrentView] = useState<View | null>(null);
   const setters = {
     layer: setIsLayerPopupOpen,
     concat: setIsConcatPopupOpen,
     repeat: setIsRepeatPopupOpen,
     facet: setIsFacetPopupOpen,
-    // unit: setIsUnitPopupOpen,
+    unit: () => {alert('Edit is currently not working for unit spec')},
   };
 
   const exportDisabled =

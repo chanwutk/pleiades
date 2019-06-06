@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { PopupFacetOption } from './PopupFacetOption';
+import { PopupFacetOption } from '../popups/PopupFacetOption';
 import { IOperationProps, useWarningStyles } from '../OperationBar';
 import { containsDifferentData } from '../../SyntaxTree/Utils';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
