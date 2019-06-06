@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import * as R from 'ramda';
-import { UnitView } from './SyntaxTree/View';
+import { UnitView, CompositeView } from './SyntaxTree/View';
 import { assertNever } from './utils';
 import { LayerView } from './SyntaxTree/LayerView';
 import { View } from './SyntaxTree/View';
@@ -201,7 +201,7 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
           R.over(R.lensProp('tree'), tree => {
             let newTree = (tree as View).deepClone();
             const { parent, view } = newTree.findView(action.operand)!;
-            if (view instanceof RepeatView || view instanceof FacetView) {
+            if (view instanceof CompositeView) {
               const [subView] = view.getSubViews();
               if (parent) {
                 parent.replaceChild(subView, action.operand);

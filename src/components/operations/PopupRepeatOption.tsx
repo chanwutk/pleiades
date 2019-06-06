@@ -162,6 +162,27 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
     </div>
   );
 
+  const handleRepeat = () => {
+    const info = new RepeatInfo(rowFields, columnFields, {
+      rowChannel,
+      columnChannel,
+    });
+    if (currentRepeat) {
+      dispatch({ type: 'modify-info', operand: operands[0], info });
+    } else {
+      operate('repeat', info);
+    }
+    onClose();
+  };
+
+  const handleDecompose = () => {
+    dispatch({
+      type: 'decompose',
+      operand: operands[0],
+    });
+    onClose();
+  };
+
   return (
     <Dialog
       open={isOpen}
@@ -202,37 +223,13 @@ export const PopupRepeatOption: React.FC<IPopupRepeatOptionProps> = ({
       </DialogContent>
       <DialogActions>
         {currentRepeat ? (
-          <Button
-            onClick={() => {
-              dispatch({
-                type: 'decompose',
-                operand: operands[0],
-              });
-              onClose();
-            }}
-            color="secondary"
-          >
+          <Button onClick={handleDecompose} color="secondary">
             Decompose
           </Button>
         ) : (
           <></>
         )}
-        <Button
-          onClick={() => {
-            const info = new RepeatInfo(rowFields, columnFields, {
-              rowChannel,
-              columnChannel,
-            });
-            if (currentRepeat) {
-              dispatch({ type: 'modify-info', operand: operands[0], info });
-            } else {
-              operate('repeat', info);
-            }
-            onClose();
-          }}
-          autoFocus
-          disabled={operateDisabled()}
-        >
+        <Button onClick={handleRepeat} autoFocus disabled={operateDisabled()}>
           Repeat
         </Button>
       </DialogActions>
