@@ -27,7 +27,9 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
     concat: setIsConcatPopupOpen,
     repeat: setIsRepeatPopupOpen,
     facet: setIsFacetPopupOpen,
-    unit: () => {alert('Edit is currently not working for unit spec')},
+    unit: () => {
+      alert('Edit is currently not working for unit spec');
+    },
   };
 
   const exportDisabled =
