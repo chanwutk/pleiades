@@ -1,0 +1,220 @@
+\documentclass[journal]{vgtc}                % final (journal style)
+%\documentclass[review,journal]{vgtc}         % review (journal style)
+%\documentclass[widereview]{vgtc}             % wide-spaced review
+%\documentclass[preprint,journal]{vgtc}       % preprint (journal style)
+%\documentclass[electronic,journal]{vgtc}     % electronic version, journal
+
+%% Uncomment one of the lines above depending on where your paper is
+%% in the conference process. ``review'' and ``widereview'' are for review
+%% submission, ``preprint'' is for pre-publication, and the final version
+%% doesn't use a specific qualifier. Further, ``electronic'' includes
+%% hyperreferences for more convenient online viewing.
+
+%% Please use one of the ``review'' options in combination with the
+%% assigned online id (see below) ONLY if your paper uses a double blind
+%% review process. Some conferences, like IEEE Vis and InfoVis, have NOT
+%% in the past.
+
+%% Please note that the use of figures other than the optional teaser is not permitted on the first page
+%% of the journal version.  Figures should begin on the second page and be
+%% in CMYK or Grey scale format, otherwise, colour shifting may occur
+%% during the printing process.  Papers submitted with figures other than the optional teaser on the
+%% first page will be refused.
+
+%% These three lines bring in essential packages: ``mathptmx'' for Type 1
+%% typefaces, ``graphicx'' for inclusion of EPS figures. and ``times''
+%% for proper handling of the times font family.
+
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{times}
+
+%% We encourage the use of mathptmx for consistent usage of times font
+%% throughout the proceedings. However, if you encounter conflicts
+%% with other math-related packages, you may want to disable it.
+
+%% This turns references into clickable hyperlinks.
+\usepackage[bookmarks,backref=true,linkcolor=black]{hyperref} %,colorlinks
+\hypersetup{
+  pdfauthor = {},
+  pdftitle = {},
+  pdfsubject = {},
+  pdfkeywords = {},
+  colorlinks=true,
+  linkcolor= black,
+  citecolor= black,
+  pageanchor=true,
+  urlcolor = black,
+  plainpages = false,
+  linktocpage
+}
+
+%% If you are submitting a paper to a conference for review with a double
+%% blind reviewing process, please replace the value ``0'' below with your
+%% OnlineID. Otherwise, you may safely leave it at ``0''.
+\onlineid{0}
+
+%% declare the category of your paper, only shown in review mode
+\vgtccategory{Research}
+
+%% allow for this line if you want the electronic option to work properly
+\vgtcinsertpkg
+
+%% In preprint mode you may define your own headline.
+%\preprinttext{To appear in an IEEE VGTC sponsored conference.}
+
+%% Paper title.
+
+\title{Pleiades: Interactive Composing Tools for Vega-Lite Charts}
+
+%% This is how authors are specified in the journal style
+
+%% indicate IEEE Member or Student Member in form indicated below
+\author{Chanwut Kittivorawong, Manesh Jhawar, Sorawee Porncharoenwase}
+\authorfooter{
+%% insert punctuation at end of each item
+\item
+ Chanwut Kittivorawong is an undergraduate Computer Science student at the University of Washington. E-mail: chanwutk@cs.washington.edu.
+\item
+ Manesh Jhawar is an undergraduate Computer Science student at the University of Washington. E-mail: mj06@uw.edu.
+\item
+ Sorawee Porncharoenwase is a graduate Computer Science student at the University of Washington. E-mail: sorawee@cs.washington.edu.
+}
+
+%other entries to be set up for journal
+%\shortauthortitle{Firstauthor \MakeLowercase{\textit{et al.}}: Paper Title}
+
+%% Abstract section.
+\abstract{
+[...need better abstract here...]
+
+Since Vega-Lite is a high-level grammar, the grammar is easy to understand,
+so the range of users using the software can be from computer science expert to coding
+beginner. Although users with less JSON experience can work with most of the Vega-Lite
+easily, View Composition requires a good understanding of tree structure since View
+Composition can be nested inside each other to create complex views. Beginner users
+can struggle using this feature.
+
+This software provides a graphical user interface for users to compose Vega-Lite charts.
+The users can add charts that they want to work with to the software, then they can compose
+them with layer, concat, repeat, and facet. They can also compose composed chart with one
+of the four technique. The software also provide warnings when the users are trying to
+compose charts that are incompatible with each other to avoid unexpected behaviors.
+} % end of abstract
+
+%% Keywords that describe your work. Will show as 'Index Terms' in journal
+%% please capitalize first letter and insert punctuation after last keyword
+\keywords{Data Visualization, interactive system, Vega-Lite}
+
+%% ACM Computing Classification System (CCS). 
+%% See <http://www.acm.org/class/1998/> for details.
+%% The ``\CCScat'' command takes four arguments.
+
+\CCScatlist{ % not used in journal version
+ \CCScat{K.6.1}{Management of Computing and Information Systems}%
+{Project and People Management}{Life Cycle};
+ \CCScat{K.7.m}{The Computing Profession}{Miscellaneous}{Ethics}
+}
+
+%% Uncomment below to include a teaser figure.
+%   \teaser{
+%  \centering
+%  \includegraphics[width=16cm]{screenshot.png}
+%   \caption{add some picture?}
+%   }
+
+%% Uncomment below to disable the manuscript note
+%\renewcommand{\manuscriptnotetxt}{}
+
+%% Copyright space is enabled by default as required by guidelines.
+%% It is disabled by the 'review' option or via the following command:
+% \nocopyrightspace
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% START OF THE PAPER %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% The ``\maketitle'' command must be the first command after the
+%% ``\begin{document}'' command. It prepares and prints the title block.
+
+%% the only exception to this rule is the \firstsection command
+\firstsection{Introduction}
+
+\maketitle
+
+... intro here
+
+% how to cite
+facilisi~\cite{notes2002}
+
+\section{Related Work}
+
+Pleiades is built as a tool to help Vega-Lite users easily create multiple views
+visualization by providing a Graphical User Interface to perform View Composition.
+
+\subsection{Vega-Lite: A Grammar of Interactive Graphics}
+
+...about Vega-Lite relating to this project...
+% how to do foot note
+\footnote{how to do foot note}.
+
+\section{Methods}
+\subsection{User Interface}
+
+To work with Pleiades, users can add Vega-Lite specs that they are working with
+to the left sidebar by clicking "NEW SPEC", then type in the Vega-Lite spec, and
+save.
+
+To create view composition, users can select view(s) as operand(s) and then apply
+an operation. It will output the composed view in the main view area. Users are
+allowed to select up to one view from the sidebar and up to one view from the main
+view to perform an operation. Users can also perform an operation to composed views.
+For example, a layered view can then be horizontal concatenated with another view.
+Then, inside the concatenated views, the right view can be selected to repeat.
+
+To edit composed view, users can select a view in the main view. Then, click "EDIT"
+configure properties of the selected view.
+
+Pleiades also perform minor validation before committing to any operation to prevent
+an unexpected output. For example, when the user selects operands to layer, if one
+of the operands is not a unit spec or layer spec, the "LAYER" button is disabled.
+And if both operands do not have compatible axes, the "LAYER" button will show a
+warning sign with tooltip that the axes are not compatible.
+
+Pleiades also provides Inner View Navigator that shows the view from inner spec
+of repeat or facet view. Repeat and facet operation produces a view containing
+replication of the operand. When selecting repeat or facet view, the Inner View
+Navigator shows the original view before the replication. This is useful when
+the original view is also a composite view. Then, we can select the inner view
+to edit from the Inner View Navigator.
+
+Finally when the user is done with composing view, they can export to Vega-Lite
+json file to use normally with any Vega-Lite compiler.
+
+\subsection{Operations for View Composition}
+There are 5 main operations users can do to compose views
+
+\subsubsection{Place}
+When the main view is empty, user can select a view in the sidebar. Then click
+"PLACE" to place the view to the main view.
+
+\subsubsection{Layer}
+
+
+% how to do paragraph
+\paragraph{how to add paragraph}
+
+this is how to add pagrgraph
+
+%% if specified like this the section will be committed in review mode
+\acknowledgments{
+The authors wish to thank A, B, C. This work was supported in part by
+a grant from XYZ.}
+
+\bibliographystyle{abbrv}
+%%use following if all content of bibtex file should be shown
+%\nocite{*}
+\bibliography{template}
+\end{document}
