@@ -9,7 +9,14 @@ import Fab from '@material-ui/core/Fab';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { sidebarWidth, borderWidth } from '../variables';
+import {
+  sidebarWidth,
+  borderWidth,
+  activeBorderColor,
+  borderColor,
+  hoverBorderColor,
+  mouseDownBorderColor,
+} from '../variables';
 import { VegaLite } from './VegaLite';
 
 export interface ISpecPreviewProps {
@@ -45,15 +52,16 @@ const useStyles = makeStyles(theme => ({
     marginRight: 'auto',
     border: borderWidth,
     borderColor: ((active: boolean) =>
-      active ? '#3caea3' : 'lightgrey') as any,
+      active ? activeBorderColor : borderColor) as any,
     borderStyle: 'solid',
     '&:hover': {
       borderColor: ((active: boolean) =>
-        active ? '#3caea3' : 'darkgrey') as any,
+        active ? activeBorderColor : hoverBorderColor) as any,
     },
     '&:active': {
-      borderColor: 'grey',
+      borderColor: mouseDownBorderColor,
     },
+    cursor: 'pointer',
   },
   center: {
     position: 'absolute',

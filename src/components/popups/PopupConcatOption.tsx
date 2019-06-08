@@ -16,7 +16,7 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import { ConcatView } from '../../SyntaxTree/ConcatView';
-import { ViewPreview } from '../operations/ViewPreview';
+import { ViewPreview } from './ViewPreview';
 import makeStyles from '@material-ui/styles/makeStyles';
 
 export interface IPopupConcatOptionProps {

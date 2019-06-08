@@ -1,7 +1,13 @@
 import React, { SetStateAction } from 'react';
 import { VegaLite } from '../VegaLite';
 import { makeStyles } from '@material-ui/core/styles';
-import { borderWidth } from '../../variables';
+import {
+  borderWidth,
+  activeBorderColor,
+  borderColor,
+  hoverBorderColor,
+  mouseDownBorderColor,
+} from '../../variables';
 
 export interface IViewPreviewProps {
   view: View;
@@ -12,15 +18,16 @@ const useStyles = makeStyles(() => ({
   preview: {
     border: borderWidth,
     borderColor: ((active: boolean) =>
-      active ? '#3caea3' : 'lightgrey') as any,
+      active ? activeBorderColor : borderColor) as any,
     borderStyle: 'solid',
     '&:hover': {
       borderColor: ((active: boolean) =>
-        active ? '#3caea3' : 'darkgrey') as any,
+        active ? activeBorderColor : hoverBorderColor) as any,
     },
     '&:active': {
-      borderColor: 'grey',
+      borderColor: mouseDownBorderColor,
     },
+    cursor: 'pointer',
   },
 }));
 

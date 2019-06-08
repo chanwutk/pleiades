@@ -12,7 +12,7 @@ import {
 import Close from '@material-ui/icons/Close';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import { ViewPreview } from '../operations/ViewPreview';
+import { ViewPreview } from './ViewPreview';
 import { LayerView } from '../../SyntaxTree/LayerView';
 import makeStyles from '@material-ui/styles/makeStyles';
 

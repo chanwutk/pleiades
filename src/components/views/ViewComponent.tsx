@@ -2,22 +2,38 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-import { borderWidth } from '../../variables';
+import {
+  borderWidth,
+  activeBorderColor,
+  borderColor,
+  hoverBorderColor,
+  mouseDownBorderColor,
+} from '../../variables';
+
+interface ActiveStatus {
+  isActive: boolean;
+  toHover: boolean;
+}
 
 export const useStyles = makeStyles(_ => ({
   main: {
     padding: 10,
     border: borderWidth,
-    borderColor: ((active: boolean) =>
-      active ? '#3caea3' : 'lightgrey') as any,
+    borderColor: ((status: ActiveStatus) =>
+      status.isActive ? activeBorderColor : borderColor) as any,
     borderStyle: 'solid',
     '&:hover': {
-      borderColor: ((active: boolean) =>
-        active ? '#3caea3' : 'darkgrey') as any,
+      borderColor: ((status: ActiveStatus) =>
+        status.isActive
+          ? activeBorderColor
+          : status.toHover
+          ? borderColor
+          : hoverBorderColor) as any,
     },
     '&:active': {
-      borderColor: 'grey',
+      borderColor: mouseDownBorderColor,
     },
+    cursor: 'pointer',
     backgroundColor: 'white',
     display: 'flex',
     justifyContent: 'center',
@@ -47,7 +63,10 @@ export const makeViewComponent = (
       });
     }
   };
-  const classes = useStyles(isOperandIncluded);
+  const classes = useStyles({
+    isActive: isOperandIncluded,
+    toHover: isHoveringChild,
+  });
   return (
     <div
       className={classes.main}
