@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
-import { isUnitSpec } from 'vega-lite/build/src/spec';
+import { isUnitSpec, isLayerSpec } from 'vega-lite/build/src/spec';
 import { LayerView } from '../../SyntaxTree/LayerView';
 import { makeStyles } from '@material-ui/core/styles';
 import { UnitView } from '../../SyntaxTree/View';
@@ -130,7 +130,8 @@ function layerDisabledCheck(
   return (
     mainViewOperand === null ||
     (!(mainViewOperand.view instanceof LayerView) &&
-      !isUnitSpec(mainViewOperand.view.export()))
+      !isUnitSpec(mainViewOperand.view.export()) &&
+      !isLayerSpec(mainViewOperand.view.export()))
   );
 }
 

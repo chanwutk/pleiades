@@ -131,10 +131,12 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec }) => {
   };
 
   const classes = useStyles(active);
-  const table = [
-    ['Data URL', dataToString(spec.spec.data)],
-    ['Mark Type', markToString(spec.spec.mark)],
-  ];
+  const table = spec.spec.mark
+    ? [
+        ['Data URL', dataToString(spec.spec.data)],
+        ['Mark Type', markToString(spec.spec.mark)],
+      ]
+    : [['Composite View', getCompositeViewType(spec.spec)]];
 
   return (
     <>
@@ -187,3 +189,12 @@ export const SpecPreview: React.FC<ISpecPreviewProps> = ({ spec }) => {
     </>
   );
 };
+
+function getCompositeViewType(spec): string {
+  if (spec.layer) return 'Layer View';
+  else if (spec.concat || spec.hconcat || spec.vconcat) return 'Concat View';
+  else if (spec.spec) {
+    if (spec.facet) return 'Facet View';
+    else return 'Repeat View';
+  } else return 'Undefined';
+}

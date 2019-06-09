@@ -28,11 +28,7 @@ export class LayerView extends CompositeView<UnitView> {
   public isCompatible(view: UnitView): boolean {
     const spec = view.export();
     return (
-      !spec['spec'] &&
-      !spec['layer'] &&
-      !spec['concat'] &&
-      !spec['hconcat'] &&
-      !spec['vconcat']
+      !spec['spec'] && !spec['concat'] && !spec['hconcat'] && !spec['vconcat']
     );
   }
 
