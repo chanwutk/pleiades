@@ -120,7 +120,10 @@ function layerDisabledCheck(
     mainViewOperands.length !== 1 ||
     navBarOperands.length !== 1 ||
     specs.filter(
-      spec => navBarOperands.includes(spec.id) && !isUnitSpec(spec.spec)
+      spec =>
+        navBarOperands.includes(spec.id) &&
+        !isUnitSpec(spec.spec) &&
+        !isLayerSpec(spec.spec)
     ).length !== 0
   ) {
     return true;
