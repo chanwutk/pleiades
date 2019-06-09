@@ -36,8 +36,8 @@ export const useStyles = makeStyles(_ => ({
     cursor: 'pointer',
     backgroundColor: 'white',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
 }));
 

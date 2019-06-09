@@ -13,7 +13,7 @@ import { InnerViewNavigator } from './components/InnerSpecNevigator';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: 540,
+    minHeight: 540,
     display: 'flex',
   },
   left: {
