@@ -76,6 +76,7 @@ p { margin: 0 0 10px 0; }
       to users to prevent them from composing not-fully-compatible views. In the end, the users can export the composed view into Vega-Lite
       JSON specification, to render normally with Vega-Lite compiler.
     </em>
+    <br/>
     <em>
       Link to
       <a href="./paper.pdf">paper</a> and
@@ -87,16 +88,22 @@ p { margin: 0 0 10px 0; }
   <section>
     <h2>Abstract</h2>
     <p><em>
-      Since Vega-Lite is a high-level grammar, the grammar is easy to understand, so the range of users using the software can
-      be from computer science expert to coding beginner. Although users with less JSON experience can work with most
-      of the Vega-Lite easily, View Composition requires a good understanding of tree structure since View Composition can be
-      nested inside each other to create complex views. Beginner users can struggle using this feature.
+      Vega-Lite is a high-level grammar which is easy to understand. Naturally,
+      the user base of Vega-Lite ranges from beginners to experts in the field of
+      visualization. Although users with less JSON experience have no trouble working
+      with most of the features of Vega-lite, composing different views together has
+      a sharp learning curve. View composition requires a good understanding of tree
+      structure since different views can be nested inside each other to create more
+      complex views.
     </em></p>
     <p><em>
-      This software provides a graphical user interface for users to compose Vega-Lite charts. The users can add charts that
-      they want to work with to the software, then they can compose them with layer, concat, repeat, and facet. They can also
-      compose composed chart with one of the four technique. The software also provide warnings when the users are trying to
-      compose charts that are incompatible with each other to avoid unexpected behaviors.
+      Pleiades provides a graphical user interface for users to compose Vega-Lite charts.
+      The users can add charts that they want to work with the software, then use them to
+      compose complex views. The operations they can perform are layer, concat, repeat, and
+      facet. Using these four techniques, the users can keep on composing and constructing
+      complex visualizations. Pleiades provides the users with warnings and restrictions when
+      composing charts that would be incompatible. We provide this level of abstraction to
+      help users focus more on the visualization and less about the nitty-gritty details of Vega-lite. 
     </em></p>
   </section>
 

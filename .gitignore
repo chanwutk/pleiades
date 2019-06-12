@@ -23,10 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # paper
-/paper/*-converted-to.pdf
-/paper/*.aux
-/paper/*.fdb_latexmk
-/paper/*.fls
-/paper/*.log
-/paper/*.out
-/paper/*.synctex.gz
+/final/paper/*-converted-to.pdf
+/final/paper/*.aux
+/final/paper/*.fdb_latexmk
+/final/paper/*.fls
+/final/paper/*.log
+/final/paper/*.out
+/final/paper/*.synctex.gz
