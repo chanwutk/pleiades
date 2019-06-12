@@ -403,7 +403,7 @@ macro-operation is a group of micro-operations. We then relax our goal to
 only apply to macro-operations. That is, every macro-operation preserves
 well-formedness. For micro-operations that does not preserve well-formedness,
 the operation won’t affect the working area directly. Rather, it is confined
-inside a dialog box so that a batch of micro-operations can be readily reversed.
+inside a dialog box so that a batch of micro-operations can be readily reverted.
 
 \subsection{Syntax Tree}
 The state of the composite view for the output in the working area is internally
@@ -436,15 +436,15 @@ a list of fields and encoding channel of row repeat and/or a list of fields and
 encoding channel of column repeat. Everything else of RepeatView is the same as
 FacetView.
 
-\paragraph{The benefit of using syntax tree} With the syntax tree, inner views
-can be located to modify easily. Furthermore, when the working view is output to
+\paragraph{The benefit of syntax tree} With the concept of syntax tree, inner views
+can be located to modify easily. When the working view is output to
 the working area, it can be rendered recursively through each node in the tree.
 This recursive rendering allows us to render inner views as separate views from
 the outer view. For example, when rendering concat view, the inner views are
 rendered separately in a way that users can select either the inner view or
 the whole concat view.
 
-\subsection{How data of each spec is pulled to the top level in facet and repeat}
+\subsection{Data Pulling}
 In facet and repeat spec, data must be at the topmost level of the output JSON
 spec. When RepeatView or FacetView is exported to JSON, Pleiades pull out all
 the data source in every children view of the inner view to the top level. If
@@ -455,36 +455,58 @@ validate if there should be a warning shown for the current operand for facet/re
 
 \section{Results}
 
-The key result for Pleiades was how easy it became to compose graph. 
-During our presentation, we asked a lot of our peers to try out our 
-application and compare their workflow to that when they used the 
-Vega-Lite API along with a JSON spec. The results were as we expected: Pleiades 
-gives a better understanding and ease at composing different charts and see
-what fits the best. The key-idea behind why Pleiades makes composing charts 
-easier and more intuitive is because the process is bottom-up, 
-whereas Vega-lite is top-down. Also, the graphical user interface 
-provided used with a smother way to compose charts, than to write nested JSON specs. 
+To evaluate our system, we perform a case study aiming to answer the following
+questions:
 
-One more results that we found was, having the ability to perform 
-the four operations: Layer, Concat, Facet and Repeat, it gave the user
-a better understanding of these operations and how to properly use then. 
-he validation steps, along with the error message that Pleiades provides 
-helps users to understand what they are doing wrong, helping them in their 
-education about visualization in general. 
+\begin{itemize}
+\item How easy is it to use Pleiades?
+\item Does Pleiades allow effective view composition?
+\end{itemize}
 
-In terms of exploring data, the time it takes to compose different 
-charts and see find useful results, went down by a lot because of the 
-high-level of interactivity provided. Users don’t have to worry about 
-updating JSON code for every small change in their chart.
+For the question how easy it is to use Pleiades, two participants of the case
+study report back that the tool is mostly easy to use. They wish that
+the tool provides more visual cues and that they prefer drag and drop to
+operand/operator selection, however. Some of these suggestions are already
+incorporated into the final version of the tool.
 
-Overall, Pleiades resulted in easing beginners to develop composite 
-charts, save time for users, ease data-exploration, and act as a 
-support toolkit for education. 
+For the question whether Pleiades allows effective view composition,
+the participants' feedback is highly positive, stating that charts
+can be composited in an intuitive way and visually responsive.
 
+During our poster presentation, we additionally asked a lot of our peers
+to try out our application and compare their workflow to that when they used the
+Vega-Lite API along with a JSON spec. The feedback is similar to what we have
+seen in the case study.
+
+Based on these results, we conclude that Pleiades eases beginners to
+develop composite charts, save time for users, ease data-exploration,
+and act as a support toolkit for education.
 
 \section{Discussion}
 
-discussion here
+As we expected, the results show that Pleiades gives users a better understanding
+and ease them at composing different charts and see what fits the best.
+The key idea behind why Pleiades makes composing charts
+easier and more intuitive is because the process allows users to compose small
+charts and rearrange them into a bigger charts. We call this approach
+\emph{bottom-up}. This contrasts with Vega-lite's \emph{top-down approach}
+which demands users to know the layout of the entire structure already
+beforehand and hence is very rigid and inflexible. Also, the graphical user interface
+provided used with a smoother way to compose charts, than to write nested JSON specs.
+
+One interesting result we found was that the ability to perform
+the four operations gave users a better understanding of these operations
+and how to properly use then. The validation steps, along with the error message
+that Pleiades provides helps users to understand what they are doing wrong,
+helping them in their education about visualization in general.
+
+In terms of exploring data, the time it takes to compose different
+charts and see find useful results, went down by a lot because of the
+high-level of interactivity provided. Users don’t have to worry about
+updating JSON code for every small change in their chart. Moreover,
+a bad layout could be a hindrance that shows interesting trends in a chart.
+Our tool which allows users to experiment with composition easily thus helps
+with data exploration too.
 
 \section{Future Work}
 We are currently working on extending our software to perform a better validation

@@ -20,7 +20,7 @@ To view the project locally in the production mode, run `python3 -m http.server`
 
 - Design & Implementation:
   - Syntax tree for representing a state of working Vega-Lite view
-  - Validation for an operation, such as axis compatibility before layering, and datasets compatibility before facet-/repeating
+  - Validation for operations, such as axis compatibility before layering, and datasets compatibility before facet-/repeating
   - The logic for syntax tree modification for operations
   - Inner View Navigator
 - Paper:
@@ -35,7 +35,8 @@ To view the project locally in the production mode, run `python3 -m http.server`
 ### Sorawee Porncharoenwase
 
 - Design & Implementation:
-  - Project Infrastructure (React setup, Webpack setup, React state management design)
+  - Project Infrastructure (React setup, Webpack setup)
+  - React state management design and undo/redo system
   - Overall layout
   - Interaction design (operands and operator)
   - Sidebar for choosing specifications
