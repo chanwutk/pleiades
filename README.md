@@ -30,7 +30,12 @@ To view the project locally in the production mode, run `python3 -m http.server`
 
 ### Manesh Jhawar
 
-- todo: add your part here
+- Design & Implementation:
+  - General Developement
+- Paper: 
+  - Abstract 
+  - Introduction 
+  - Result
 
 ### Sorawee Porncharoenwase
 
