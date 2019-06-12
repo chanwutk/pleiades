@@ -46,3 +46,10 @@ To view the project locally in the production mode, run `python3 -m http.server`
   - Discussion
 
 ## Project Process
+1. We meet weekly to discuss our idea and progress on the application.
+2. We started by designing Syntax Tree for representing composite view structure.
+3. Then, we started designing overall interface and implement it with also incoperating the syntax tree implemented.
+4. After that, we implement the four main composite operation (layer, concat, facet, repeat) and add validation to each operations.
+5. In the end that we got a working application, we sent out a survey to peers who have experience in Vega-Lite and ask their opinion about our application.
+6. We then make a poster for the demo. And from the demo, we observed how our peers use our application. And then, we made some adjustment to issues mentioned by them.
+7. From both feedbacks from the survey and from the demo, we use them to analyze our result in the final paper.
