@@ -32,7 +32,7 @@ interface IState {
   tree: View | null;
 }
 
-type Operator = 'layer' | 'concat' | 'repeat' | 'facet' | 'place';
+type Operator = 'layer' | 'concat' | 'repeat' | 'facet' | 'place' | 'replace';
 
 type InsertOrder = 'append' | 'prepend';
 

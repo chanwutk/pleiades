@@ -14,11 +14,17 @@ export const PlaceButton: React.FC<IOperationProps> = ({
   const operate = operateFactory(useDispatch(), operands);
 
   const placeDisabled =
-    tree !== null || mainViewOperands.length > 0 || navBarOperands.length !== 1;
+    (mainViewOperands.length === 0 ? tree !== null : false) ||
+    navBarOperands.length !== 1;
+
+  const toReplace = tree !== null;
 
   return (
-    <Button onClick={() => operate('place')} disabled={placeDisabled}>
-      Place
+    <Button
+      onClick={() => operate(toReplace ? 'replace' : 'place')}
+      disabled={placeDisabled}
+    >
+      {toReplace ? 'Replace' : 'Place'}
     </Button>
   );
 };

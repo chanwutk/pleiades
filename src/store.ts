@@ -185,6 +185,14 @@ const reducer = (globalState = initialState, action: Action): IGlobalState => {
                   newTree = facet;
                 }
                 break;
+              case 'replace':
+                const leftView = new UnitView(findInNav(left[0]));
+                if (parent) {
+                  parent.replaceChild(leftView, view.id);
+                } else {
+                  newTree = leftView;
+                }
+                break;
               default:
                 return assertNever(action.operator);
             }
