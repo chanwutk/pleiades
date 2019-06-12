@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { operateFactory } from './Utils';
 import { IOperationProps } from '../OperationBar';
 import { Menu, MenuItem } from '@material-ui/core';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
 export const ConcatButton: React.FC<IOperationProps> = ({
   navBarOperands,
@@ -41,6 +42,7 @@ export const ConcatButton: React.FC<IOperationProps> = ({
         aria-haspopup="true"
       >
         Concat
+        <ArrowDropDown />
       </Button>
 
       <Menu

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import { isUnitSpec, isLayerSpec } from 'vega-lite/build/src/spec';
 import { LayerView } from '../../SyntaxTree/LayerView';
 import { makeStyles } from '@material-ui/core/styles';
@@ -76,6 +77,7 @@ export const LayerButton: React.FC<IOperationProps> = ({
             aria-haspopup="true"
           >
             <ErrorOutlineOutlined className={classes.error} /> &nbsp; Layer
+            <ArrowDropDown />
           </Button>
         </TooltipTable>
       ) : (
@@ -87,6 +89,7 @@ export const LayerButton: React.FC<IOperationProps> = ({
           aria-haspopup="true"
         >
           Layer
+          <ArrowDropDown />
         </Button>
       )}
       <Menu

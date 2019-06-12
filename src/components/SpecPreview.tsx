@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
       position: 'absolute',
       width: sidebarWidth - 2 * borderWidth,
       backgroundImage:
-        'linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.75))',
+        'linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5))',
       height: '75%',
       content: "''",
       bottom: 0,
