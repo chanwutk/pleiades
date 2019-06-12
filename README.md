@@ -17,8 +17,16 @@ To view the project locally in the production mode, run `python3 -m http.server`
 ## How the work is split
 
 ### Chanwut Kittivorawong
-
-- todo: add your part here
+- Design & Implement:
+  - Syntax tree for representing a state of working Vega-Lite view.
+  - Validation for operation, such as axis compatibility before layering, and datasets compatibility before facet-/repeating.
+  - Operations and their logics for modifying the Syntax Tree when there is an opeation.
+  - Inner View Navigator
+- Paper:
+  - Related work
+  - Methods
+  - Future work
+  
 
 ### Manesh Jhawar
 
