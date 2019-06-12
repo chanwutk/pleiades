@@ -17,10 +17,11 @@ To view the project locally in the production mode, run `python3 -m http.server`
 ## Teamwork
 
 ### Chanwut Kittivorawong
+
 - Design & Implementation:
-  - Syntax tree for representing a state of working Vega-Lite view.
-  - Validation for operation, such as axis compatibility before layering, and datasets compatibility before facet-/repeating.
-  - Operations and their logics for modifying the Syntax Tree when there is an opeation.
+  - Syntax tree for representing a state of working Vega-Lite view
+  - Validation for an operation, such as axis compatibility before layering, and datasets compatibility before facet-/repeating
+  - The logic for syntax tree modification for operations
   - Inner View Navigator
 - Paper:
   - Related work
@@ -36,6 +37,7 @@ To view the project locally in the production mode, run `python3 -m http.server`
 - Design & Implementation:
   - Project Infrastructure (React setup, Webpack setup, React state management design)
   - Overall layout
+  - Interaction design (operands and operator)
   - Sidebar for choosing specifications
   - Editor for editing specifications
 - Paper:
