@@ -14,19 +14,19 @@ To build the project in the development mode, run `yarn start`. To build the pro
 
 To view the project locally in the production mode, run `python3 -m http.server` in `docs` and navigate to http://0.0.0.0:8000/. Alternatively, you can view the project from the development mode or from our [public project page](https://cse512-19s.github.io/FP-Pleiades/).
 
-## How the work is split
+## Teamwork
 
 ### Chanwut Kittivorawong
-- Design & Implement:
-  - Syntax tree for representing a state of working Vega-Lite view.
-  - Validation for operation, such as axis compatibility before layering, and datasets compatibility before facet-/repeating.
-  - Operations and their logics for modifying the Syntax Tree when there is an opeation.
+
+- Design & Implementation:
+  - Syntax tree for representing a state of working Vega-Lite view
+  - Validation for an operation, such as axis compatibility before layering, and datasets compatibility before facet-/repeating
+  - The logic for syntax tree modification for operations
   - Inner View Navigator
 - Paper:
   - Related work
   - Methods
   - Future work
-  
 
 ### Manesh Jhawar
 
@@ -34,6 +34,14 @@ To view the project locally in the production mode, run `python3 -m http.server`
 
 ### Sorawee Porncharoenwase
 
-- todo: add your part here
+- Design & Implementation:
+  - Project Infrastructure (React setup, Webpack setup, React state management design)
+  - Overall layout
+  - Interaction design (operands and operator)
+  - Sidebar for choosing specifications
+  - Editor for editing specifications
+- Paper:
+  - Well-formedness
+  - Discussion
 
 ## Project Process
