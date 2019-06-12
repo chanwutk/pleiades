@@ -247,6 +247,12 @@ there are one selected view from the sidebar and one selected view from the work
 area. Then, the selected view in the working area is replaced with the selceted
 view in the sidebar.
 
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=3in]{replace.png}
+ \caption{Before and after replacing the selcted bar chart with the selected scatter plot}
+\end{figure}
+
 \subsubsection{Layer}
 Users can perform layering when there are one selected view from the sidebar and
 one selected view from the working area. When clicking “LAYER”, the users are
@@ -265,6 +271,18 @@ these two operands but not fully compatible.
 working area. Then, click “EDIT”. The supported editing functionalities for layer
 view are to remove inner views and rearrange the layering order.
 
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=3in]{layer.png}
+ \caption{Before and after layering the selcted error-band chart with the selected scatter plot}
+\end{figure}
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=3in]{layer_warn.png}
+ \caption{Warning when axes of layering views are not fully compatible (between the bar chart and the scatter plot)}
+\end{figure}
+
 \subsubsection{Concatenation}
 The user can perform concatenation when there is one selected view from the sidebar
 and one selected view from the working area. When clicking “CONCAT”, the user is
@@ -276,15 +294,21 @@ working area. Then, click “EDIT”. In the edit popup window, the user can rea
 the order of concatenation, remove inner views, and switch between vertical and
 horizontal concatenation.
 
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=3in]{concat.png}
+ \caption{Before and after concatenating the selcted bar chart with the selected scatter plot}
+\end{figure}
+
 \subsubsection{Facet}
 The user can perform faceting when there is one selected view from the working
 area. When clicking “FACET”, a popup window will show prompting the user to select,
 for each repeating direction (row or column or both), a field and its type to facet.
-Note that facetting will be applied to all inner views of the operand. Due to our time
+Note that facet-ing will be applied to all inner views of the operand. Due to our time
 constraints, selecting a subset of inner views to only perform facet on the set of
 inner views is unavailable right now.
 
-\paragraph{Validation} Since parameters for facet are fields, facetting
+\paragraph{Validation} Since parameters for facet are fields, facet-ing
 depends on the dataset. Thus, “FACET” button will show a warning signal when the
 operand has multiple data source. For instance, selecting a concat view that
 contains a chart from cars dataset and population dataset will result in having
@@ -304,6 +328,18 @@ and might break the well-formedness of the state. In practice, this is not a pro
 because Pleiades supports undo and redo, so users can always go back to the previous
 state when the output is invalid resulting from this modification.
 
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=3in]{facet.png}
+ \caption{Before and after facet-ing the selected scatter plot with ``Origin'' as the field for facet-ing column.}
+\end{figure}
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=3in]{facet_warn.png}
+ \caption{Warning on repeat and facet when not every dataset in the selected view are from the same source.}
+\end{figure}
+
 \subsubsection{Repeat}
 Every interaction in repeat operation works the same way as it would work in
 facet operation with the exception of the operation button to “REPEAT” and the
@@ -316,6 +352,12 @@ all inner views of the operand as same as faceting.
 operation does.
 
 \paragraph{Editing} Users can edit repeat view with the same methods as editing facet view.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=3in]{repeat.png}
+ \caption{Before and after repeating the selected scatter plot with ``Displacement'' and ``Cylinders'' as the list of fields for repeat column on x-axis.}
+\end{figure}
 
 \subsection{Well-Formedness}
 As mentioned, Pleiades will restrict users from performing some operations that
