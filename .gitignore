@@ -21,3 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# paper
+/final/paper/*-converted-to.pdf
+/final/paper/*.aux
+/final/paper/*.fdb_latexmk
+/final/paper/*.fls
+/final/paper/*.log
+/final/paper/*.out
+/final/paper/*.synctex.gz
