@@ -9,9 +9,7 @@ import { FacetView } from '../../SyntaxTree/FacetView';
 import { PopupConcatOption } from '../popups/PopupConcatOption';
 import { PopupLayerOption } from '../popups/PopupLayerOption';
 
-export interface IEditButtonProps {}
-
-export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
+export const EditButton: React.FC<IOperationProps> = ({
   navBarOperands,
   mainViewOperands,
   tree,
@@ -51,12 +49,10 @@ export const EditButton: React.FC<IOperationProps & IEditButtonProps> = ({
       <PopupLayerOption
         isOpen={isLayerPopupOpen}
         onClose={() => setters.layer(false)}
-        tree={tree!}
       />
       <PopupConcatOption
         isOpen={isConcatPopupOpen}
         onClose={() => setters.concat(false)}
-        tree={tree!}
       />
       <PopupRepeatOption
         isOpen={isRepeatPopupOpen}

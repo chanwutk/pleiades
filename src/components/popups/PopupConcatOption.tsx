@@ -22,7 +22,6 @@ import makeStyles from '@material-ui/styles/makeStyles';
 export interface IPopupConcatOptionProps {
   isOpen: boolean;
   onClose: () => void;
-  tree: View | null;
 }
 
 const useStyles = makeStyles(() => ({
@@ -43,7 +42,6 @@ const useStyles = makeStyles(() => ({
 export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
   isOpen,
   onClose,
-  tree,
 }) => {
   const [subViewIdsOrder, setSubViewIdsOrder] = useState<number[]>([]);
   const [currentOrient, setCurrentOrient] = useState<ConcatOrient>('h');
@@ -54,6 +52,7 @@ export const PopupConcatOption: React.FC<IPopupConcatOptionProps> = ({
   const classes = useStyles(currentOrient === 'h');
 
   const operands = useSelector((state: IGlobalState) => state.current.operands);
+  const tree = useSelector((state: IGlobalState) => state.current.tree);
   const dispatch = useDispatch();
 
   const handleEntering = () => {

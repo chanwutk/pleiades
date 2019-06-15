@@ -19,7 +19,6 @@ import makeStyles from '@material-ui/styles/makeStyles';
 export interface IPopupLayerOptionProps {
   isOpen: boolean;
   onClose: () => void;
-  tree: View | null;
 }
 
 const useStyles = makeStyles(() => ({
@@ -40,7 +39,6 @@ const useStyles = makeStyles(() => ({
 export const PopupLayerOption: React.FC<IPopupLayerOptionProps> = ({
   isOpen,
   onClose,
-  tree,
 }) => {
   const classes = useStyles();
   const [subViewIdsOrder, setSubViewIdsOrder] = useState<number[]>([]);
@@ -50,6 +48,7 @@ export const PopupLayerOption: React.FC<IPopupLayerOptionProps> = ({
   );
 
   const operands = useSelector((state: IGlobalState) => state.current.operands);
+  const tree = useSelector((state: IGlobalState) => state.current.tree);
   const dispatch = useDispatch();
 
   const handleEntering = () => {
