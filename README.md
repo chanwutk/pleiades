@@ -1,5 +1,10 @@
 # FP-Pleiades
 
+## Sites
+
+- [public project page](https://chanwutk.github.io/pleiades/)
+- [application](https://chanwutk.github.io/pleiades/app.html)
+
 ## Team members
 
 - Chanwut Kittivorawong
