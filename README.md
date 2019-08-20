@@ -1,15 +1,15 @@
 # FP-Pleiades
 
-## Sites
-
-- [public project page](https://chanwutk.github.io/pleiades/)
-- [application](https://chanwutk.github.io/pleiades/app.html)
-
 ## Team members
 
 - Chanwut Kittivorawong
 - Manesh Jhawar
 - Sorawee Porncharoenwase
+
+## Sites
+
+- [public project page](https://chanwutk.github.io/pleiades/)
+- [application](https://chanwutk.github.io/pleiades/app.html)
 
 ## Installation & Building
 
